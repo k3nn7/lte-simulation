@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <h1>LTE Protocols Stack Simulation</h1>
+  <div id="main-container">
+    <div id="controls-container">
+      <h2>Controls</h2>
+      <h3>Data Rates</h3>
+      <div>
+        <label>A</label>
+        <input type="number" value="10">
+      </div>
+      <div>
+        <label>B</label>
+        <input type="number" value="10">
+      </div>
+      <div>
+        <label>C</label>
+        <input type="number" value="10">
+      </div>
+      <div>
+        <label>D</label>
+        <input type="number" value="10">
+      </div>
+
+      <h3>PBR</h3>
+      <div>
+        <label>A</label>
+        <input type="number" value="10">
+      </div>
+      <div>
+        <label>B</label>
+        <input type="number" value="10">
+      </div>
+      <div>
+        <label>C</label>
+        <input type="number" value="10">
+      </div>
+
+      <input type="button" id="start-simulation" value="Start"/>
+    </div>
+    <div id="simulation-container">
+      <h2>Simulation</h2>
+
+      <canvas id="simulation" width="400" height="400"></canvas>
+    </div>
+  </div>
+
+  <script data-main="index.ts" type="application/javascript" src="bundle.js" defer></script>
+</body>
+</html>

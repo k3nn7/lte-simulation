@@ -1,0 +1,31 @@
+#main-container {
+  display: flex;
+}
+
+#controls-container {
+  border: 1px solid #a0a0a0;
+}
+
+#simulation-container {
+  border: 1px solid #a0a0a0;
+}
+
+#simulation {
+  border: 1px solid #a0a0a0;
+}
+
+.layer {
+  border: 1px solid #a0a0a0;
+}
+
+#channels-container {
+  display: flex;
+}
+
+.channel {
+  border-radius: 50%;
+  border: 1px solid #a0a0a0;
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+}
