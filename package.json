@@ -7,14 +7,22 @@
     "doc": "doc"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "TS_NODE_PROJECT=tsconfig.test.json mocha --require ts-node/register tests/**/*.spec.ts"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/chai": "^4.2.5",
+    "@types/mocha": "^5.2.7",
+    "@types/sinon-chai": "^3.2.3",
+    "chai": "^4.2.0",
     "css-loader": "^3.2.0",
+    "mocha": "^6.2.2",
+    "sinon": "^7.5.0",
+    "sinon-chai": "^3.3.0",
     "style-loader": "^1.0.0",
     "ts-loader": "^6.2.1",
+    "ts-node": "^8.5.4",
     "typescript": "^3.6.4",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
