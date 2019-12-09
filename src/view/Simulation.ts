@@ -40,7 +40,7 @@ export class Simulation extends RenderableObject {
 
   private createChannels() {
     ['PCCH', 'BCCH', 'CCCH', 'DCCH', 'DTCH', 'MCCH', 'MTCH'].forEach((channel) => {
-      const channelObject = new Channel(0);
+      const channelObject = new Channel(0, channel);
       this.logicalChannels.set(
         channel,
         channelObject
@@ -49,7 +49,7 @@ export class Simulation extends RenderableObject {
     });
 
     ['PCH', 'BCH', 'DL_SCH', 'MCH'].forEach((channel => {
-      const channelObject = new Channel(0);
+      const channelObject = new Channel(0, channel);
       this.transportChannels.set(
         channel,
         channelObject

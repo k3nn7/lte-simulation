@@ -2,10 +2,12 @@ import {RenderableObject} from "../engine/RenderableObject";
 
 export class Channel extends RenderableObject {
   private bits: number;
+  private name: string;
 
-  constructor(bits: number) {
+  constructor(bits: number, name: string) {
     super();
 
+    this.name = name;
     this.bits = bits;
   }
 
@@ -19,5 +21,6 @@ export class Channel extends RenderableObject {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('' + this.bits, 0, 0);
+    ctx.fillText(this.name, 0, 21);
   }
 }
