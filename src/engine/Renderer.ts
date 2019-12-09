@@ -23,12 +23,8 @@ export default class Renderer {
     const now = (new Date()).getTime();
 
     this.objects.forEach((object: Renderable) => {
-      this.ctx.save();
       this.ctx.strokeStyle = 'black';
-      this.ctx.beginPath();
       object.render(this.ctx, now);
-      this.ctx.stroke();
-      this.ctx.restore();
     });
 
   }
