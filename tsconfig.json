@@ -11,7 +11,8 @@
       "es2015",
       "scripthost",
       "es2015.collection"
-    ]
+    ],
+    "downlevelIteration": true
   },
   "include": [
     "./src/**/*"
