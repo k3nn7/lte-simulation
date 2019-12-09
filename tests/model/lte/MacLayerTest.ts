@@ -1,7 +1,7 @@
 import {expect} from 'chai';
-import {MacLayer} from "../../src/lte/MacLayer";
-import {LogicalChannelType, TransportChannelType} from "../../src/lte/ChannelType";
-import {TransmitPacketDownLink} from "../../src/lte/Action";
+import {MacLayer} from "../../../src/model/lte/MacLayer";
+import {LogicalChannelType, TransportChannelType} from "../../../src/model/lte/ChannelType";
+import {TransmitPacketDownLink} from "../../../src/model/lte/Action";
 
 describe('MacLayer', () => {
   let macLayer: MacLayer;
