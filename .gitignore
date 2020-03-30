@@ -4,3 +4,12 @@
 
 node_modules
 dist/bundle.js
+
+# Latex files
+docs/thesis/pl/*.aux
+docs/thesis/pl/*.toc
+docs/thesis/pl/*.xml
+docs/thesis/pl/*.log
+docs/thesis/pl/*.pdf
+docs/thesis/pl/*.blg
+docs/thesis/pl/*.bbl
