@@ -5,27 +5,26 @@ Od lat 80. XX wieku możemy zaobserwować coraz szybszy rozwój telefonii komór
 
 Sposób wykorzystania sieci komórkowej uległ znaczniej zmianie - zamiast transmisji, przede wszystkim połączeń głosowych, obecnie ruch sieciowy zdominowany jest przez transmisję danych w oparciu o protokół IP.
 
-Infrastruktura sieci komórkowej musi wspierać coraz większą liczbę podłączonych urządzeń. Z kolei urządzenia wykorzystywane są już nie tylko do rozmów głosowych ale również do przesyłania wideo, muzyki, prowadzenia widekonferencji oraz rozrywki elektronicznej. Dodatkowo użytkownicy oczekują, że dostęp do sieci będzie możliwy ciągle i w każdym miejscu bez zauważalnych spadków prędkości.
+Infrastruktura sieci komórkowej musi wspierać coraz większą liczbę podłączonych urządzeń. Z kolei urządzenia wykorzystywane są już nie tylko do rozmów głosowych ale również do przesyłania wideo, muzyki, prowadzenia wideokonferencji oraz rozrywki elektronicznej. Dodatkowo użytkownicy oczekują, że dostęp do sieci będzie możliwy ciągle i w każdym miejscu bez zauważalnych spadków prędkości.
 
-Sposób wykorzystania sieci komórkowej również ulega zmianie - sieć, która wykorzystywana była głównie do transimsji głosu obecnie w znaczniej mierze wykorzystywana jest do transmisji danych z wykorzystaniem protokołu IP.
 
-W odpowiedzi na to technolgia dostępu zdalnego rozwija się w zawrotnym tempie co powoduje, że jest coraz bardziej złożona. Aby zrozumieć zasady jej działania obecnie potrzebne jest zdobycie rozległej wiedzy z zakresu przetwarzania sygnałów cyfrowych, sieci komputerowych, informatyki. Własnie nad problemem wysokiego progu wejścia w technologię LTE postanowiłem się pokłonić w mojej pracy.
+W odpowiedzi na to technologia dostępu zdalnego rozwija się w zawrotnym tempie co powoduje, że jest coraz bardziej złożona. Aby zrozumieć zasady jej działania obecnie potrzebne jest zdobycie rozległej wiedzy z zakresu przetwarzania sygnałów cyfrowych, sieci komputerowych, informatyki. Właśnie nad problemem wysokiego progu wejścia w technologię LTE postanowiłem się pokłonić w mojej pracy.
 
-\section{Cele pracy}
+\section{Cele pracy}					
 \label{sec:celePracy}
 
-Celem pracy było przygotowanie interaktywnej symulacji stosu protokołów używanych w LTE po to, aby ułatwić jego zrozumienia osobie chcącej zapoznać się z tym systemem. Ilośc mechanizmów obecnych LTE oraz ich wzajemnie zależności mogą stanowić wysoki próg wejścia dla osoby chcącej zaglębić się w ten system. Chociaż publicznia dostępna jest specjalistyczna iteratura na ten temat to jednak często język w jakim jest pisana może nie być przystępny dla osób które dopiero poznają zagadnienia związane z zasadami działania LTE. 
+Celem pracy było przygotowanie interaktywnej symulacji stosu protokołów używanych w LTE po to, aby ułatwić jego zrozumienia osobie chcącej zapoznać się z tym systemem. Ilość mechanizmów obecnych LTE oraz ich wzajemnie zależności mogą stanowić wysoki próg wejścia dla osoby chcącej zagłębić się w ten system. Chociaż publicznie dostępna jest specjalistyczna literatura na ten temat to jednak często język w jakim jest pisana może nie być przystępny dla osób które dopiero poznają zagadnienia związane z zasadami działania LTE. 
 
 \section{Zawartość pracy}
 \label{sec:zawartoscPracy}
 
-W mojej pracy skupiłem się na przygotowaniu symulacji oraz opisie podwarstw warstwy 2. stosu protokołów LTE. Ograniczyłem się również tylko do płaszczyzny danych użytkownika (user plane). Ostatecznie pozwoliło to zasymulować kompletny proces przesyłu pakietu IP od urządzenia użytkownika do stacji bazowej oraz od stacji bazowej do urządzenia użytkownika.
+W mojej pracy skupiłem się na przygotowaniu symulacji oraz opisie podwarstw warstwy 2. stosu protokołów LTE. Ograniczyłem się również tylko do płaszczyzny danych użytkownika (user plane). Ostatecznie pozwoliło to symulować kompletny proces przesyłu pakietu IP od urządzenia użytkownika do stacji bazowej oraz od stacji bazowej do urządzenia użytkownika.
 
 \begin{enumerate}%[1)]
 
 \item Rozdział \ref{cha:protokoly} przedstawia ogólnie stos protokołów LTE
 \item Rozdział \ref{cha:pdcp} skupia się na przedstawieniu zadań podwarstwy Packet Data Convergence Protocol
 \item Rozdział \ref{cha:rlc} opisuje zakres odpowiedzialności podwarstwy Radio Link Control
-\item W rozdziale \ref{cha:mac} opisano zadania podwearstwy Medium Access Control
+\item W rozdziale \ref{cha:mac} opisano zadania podwarstwy Medium Access Control
 
 \end{enumerate}
