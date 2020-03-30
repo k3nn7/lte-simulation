@@ -1,5 +1,5 @@
 {
-  "name": "typescript-game",
+  "name": "lte-simulation",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,28 +11,19 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/bootstrap": "^4.3.1",
-    "@types/chai": "^4.2.5",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^13.1.4",
-    "@types/sinon-chai": "^3.2.3",
+    "@babel/core": "^7.8.4",
+    "babel-loader": "^8.0.6",
     "bootstrap": "^4.4.1",
-    "chai": "^4.2.0",
     "css-loader": "^3.2.0",
     "file-loader": "^5.0.2",
     "jquery": "^3.4.1",
-    "mocha": "^6.2.2",
-    "sinon": "^7.5.0",
-    "sinon-chai": "^3.3.0",
     "style-loader": "^1.0.0",
-    "ts-loader": "^6.2.1",
-    "ts-node": "^8.5.4",
-    "typescript": "^3.6.4",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "pixi.js": "^5.2.1"
+    "pixi.js": "^5.2.1",
+    "@tweenjs/tween.js": "^18.5.0"
   }
 }

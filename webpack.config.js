@@ -1,14 +1,14 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: './src/index.js',
   devtool: 'inline-source-map',
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: '/node_modules/',
+        test: /\.m?js$/,
+        exclude: '/(node_modules)/',
+        use: 'babel-loader',
       },
       {
         test: /\.css$/,
@@ -25,15 +25,12 @@ module.exports = {
       }
     ],
   },
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
-  },
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'docs'),
   },
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname, 'docs'),
     compress: true,
     port: 9000
   }
