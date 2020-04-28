@@ -11,6 +11,8 @@ export default class Timer extends PIXI.Container {
     this.timer = new PIXI.Graphics();
     this.drawTimer(START_ANGLE);
     this.addChild(this.timer);
+    this.isCounting = false;
+    this.isFinished = false;
   }
 
   drawTimer(angle) {
@@ -32,7 +34,15 @@ export default class Timer extends PIXI.Container {
           this.drawTimer(angle.angle);
         })
         .start()
-        .onComplete(resolve);
+        .onStart(() => {
+          this.isCounting = true;
+          this.isFinished = false;
+        })
+        .onComplete(() => {
+          this.isCounting = false;
+          this.isFinished = true;
+          resolve();
+        });
     });
   }
 }
