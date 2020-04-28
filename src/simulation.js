@@ -8,6 +8,9 @@ import PHY from "./layer/phy";
 import KneeConnector from "./layer/kneeConnector";
 import MinimizedPacket from "./layer/minimized-packet";
 import TWEEN from "@tweenjs/tween.js";
+import {getRandomInt} from "./utils";
+
+const PACKET_START_POINT = new PIXI.Point(215, 15);
 
 export class Simulation extends PIXI.Container {
   constructor(resources) {
@@ -24,47 +27,6 @@ export class Simulation extends PIXI.Container {
     this.addChild(this.ueProtocols);
     this.addChild(this.enbProtocols);
     this.addChild(this.entitiesConnector);
-
-    // const layers = new PIXI.Container();
-    // layers.position.set(0, 50);
-    //
-    // const pdcpLayer1 = new Layer('RLC');
-    // pdcpLayer1.position.set(5, 5);
-    // layers.addChild(pdcpLayer1);
-    //
-    // const rlcLayer1 = new Layer();
-    // rlcLayer1.position.set(5, 125);
-    // layers.addChild(rlcLayer1);
-    //
-    // const macLayer1 = new Layer();
-    // macLayer1.position.set(5, 245);
-    // layers.addChild(macLayer1);
-    //
-    // const phyLayer1 = new Layer();
-    // phyLayer1.position.set(5, 365);
-    // layers.addChild(phyLayer1);
-    //
-    // const pdcpLayer2 = new Layer();
-    // pdcpLayer2.position.set(340, 5);
-    // layers.addChild(pdcpLayer2);
-    //
-    // const rlcLayer2 = new Layer();
-    // rlcLayer2.position.set(340, 125);
-    // layers.addChild(rlcLayer2);
-    //
-    // const macLayer2 = new Layer();
-    // macLayer2.position.set(340, 245);
-    // layers.addChild(macLayer2);
-    //
-    // const phyLayer2 = new Layer();
-    // phyLayer2.position.set(340, 365);
-    // layers.addChild(phyLayer2)
-    //
-    // this.addChild(layers);
-    //
-    // this.packet = new Packet();
-    // this.packet.position.set(120, 5);
-    // this.addChild(this.packet);
   }
 
   createUEProtocols(resources) {
@@ -78,6 +40,7 @@ export class Simulation extends PIXI.Container {
     ue.addChild(ue.pdcpUp);
 
     ue.rlcUp = new RLC(resources);
+    ue.rlcUp.setOnSDUHandler((sdu) => this.onRLCUpSDU(sdu));
     ue.rlcUp.position.set(0, ue.pdcpUp.height + ue.pdcpUp.y + 50);
     ue.addChild(ue.rlcUp);
 
@@ -143,33 +106,64 @@ export class Simulation extends PIXI.Container {
   }
 
   async start() {
-    // await this.enbProtocols.pdcpUp.packet.minimize();
-    // await this.enbProtocols.rlcUp.timer.startCounting(2000);
     await this.movePacket();
   }
 
   async movePacket() {
-    const packet = new MinimizedPacket();
-    packet.position.set(215, 15);
+    const size = getRandomInt(20, 70);
+    const packet = new MinimizedPacket(size);
+    packet.position = PACKET_START_POINT;
 
     this.addChild(packet);
 
     packet.activate();
     await this.movePacketToThePoint(packet, {x: 215, y: 50});
 
-    await Promise.all([
-      this.swallowPacket(packet),
-      this.ueProtocols.pdcpUp.pushPacket(packet.tint)
-    ]);
-    await this.ueProtocols.pdcpUp.processPacket();
-    packet.position.set(215, 200);
-    await Promise.all([
-      this.ueProtocols.pdcpUp.popPacket(),
-      this.spitPacket(packet)
-    ]);
+    // await Promise.all([
+    //   this.swallowPacket(packet),
+    //   this.ueProtocols.pdcpUp.pushPacket(packet.tint)
+    // ]);
+    // await this.ueProtocols.pdcpUp.processPacket();
+    // packet.position.set(215, 200);
+    // await Promise.all([
+    //   this.ueProtocols.pdcpUp.popPacket(),
+    //   this.spitPacket(packet)
+    // ]);
 
     await this.movePacketToThePoint(packet, {x: 215, y: 250});
+
+    await Promise.all([
+      this.swallowPacket(packet),
+      this.ueProtocols.rlcUp.addPacket(packet)
+    ]);
+    this.removeChild(packet);
+
+    // packet.position.set(215, 400);
+    // await this.movePacketToThePoint(packet, {x: 215, y: 450});
+    // packet.position.set(215, 600);
+    // await this.movePacketToThePoint(packet, {x: 215, y: 650});
+    // packet.position.set(215, 800);
+    // await this.movePacketToThePoint(packet, {x: 215, y: 850});
+    // await this.movePacketToThePoint(packet, {x: 815, y: 850});
+    //
+    // await this.movePacketToThePoint(packet, {x: 815, y: 800});
+    // packet.position.set(815, 650);
+    // await this.movePacketToThePoint(packet, {x: 815, y: 600});
+    // packet.position.set(815, 450);
+    // await this.movePacketToThePoint(packet, {x: 815, y: 400});
+    // packet.position.set(815, 250);
+    // await this.movePacketToThePoint(packet, {x: 815, y: 200});
+    // packet.position.set(815, 50);
+    // await this.movePacketToThePoint(packet, {x: 815, y: 15});
+
+    // this.removeChild(packet);
+  }
+
+  async onRLCUpSDU(sdu) {
+    const packet = new MinimizedPacket(50);
     packet.position.set(215, 400);
+    this.addChild(packet);
+
     await this.movePacketToThePoint(packet, {x: 215, y: 450});
     packet.position.set(215, 600);
     await this.movePacketToThePoint(packet, {x: 215, y: 650});
