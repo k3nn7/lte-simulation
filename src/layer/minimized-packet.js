@@ -1,16 +1,20 @@
 import * as PIXI from 'pixi.js';
-import {BG_MEDIUM_2, FG_1} from "../colors";
+import {BG_MEDIUM_2} from "../colors";
 import TWEEN from "@tweenjs/tween.js";
 
 export default class MinimizedPacket extends PIXI.Graphics {
-  constructor() {
+  constructor(size) {
     super();
 
-    const val = Math.random();
+    this.size = size;
+
+    const val1 = Math.random(),
+      val2 = Math.random(),
+      val3 = Math.random();
     const tint = PIXI.utils.rgb2hex([
-      val,
-      val,
-      val,
+      val1,
+      val2,
+      val3,
     ]);
 
     this.beginFill(BG_MEDIUM_2);
