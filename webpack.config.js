@@ -22,6 +22,11 @@ module.exports = {
         loader: [
           'file-loader'
         ]
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
       }
     ],
   },
@@ -37,6 +42,7 @@ module.exports = {
   resolve: {
     alias: {
       Common: path.resolve(__dirname, 'src/Common/'),
-    }
+    },
+    extensions: ['.tsx', '.ts', '.js'],
   }
 };
