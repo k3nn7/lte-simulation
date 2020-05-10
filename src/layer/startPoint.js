@@ -1,7 +1,11 @@
-import * as PIXI from 'pixi.js';
+import Connectable from "Common/connectable";
 
-export default class StartPoint extends PIXI.Graphics {
+export default class StartPoint extends Connectable {
   constructor() {
     super();
+  }
+
+  async addDataUnit(data) {
+    await this.channelB(data);
   }
 }
