@@ -1,5 +1,5 @@
-import {getRandomInt} from "../random";
-import {IPPacket} from "./IPPacket";
+import {getRandomInt} from 'Common/random';
+import {IPPacket} from 'Common/IP/IPPacket';
 
 export class IPPacketGenerator {
   currentID: number;
