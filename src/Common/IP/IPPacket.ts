@@ -1,7 +1,12 @@
 import * as PIXI from 'pixi.js';
 
 export class IPPacket {
-  constructor(data, id) {
+  data: string;
+  size: number;
+  id: number;
+  tint: number;
+
+  constructor(data: string, id: number) {
     this.data = data;
     this.size = data.length;
     this.id = id;

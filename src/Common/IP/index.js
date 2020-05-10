@@ -1,2 +1,2 @@
-export * from 'Common/IP/ipPacket';
-export * from 'Common/IP/ipPacketGenerator';
+export * from 'Common/IP/IPPacket';
+export * from 'Common/IP/IPPacketGenerator';

@@ -1,13 +1,15 @@
-import {IPPacket} from 'Common/IP';
-import {getRandomInt} from 'Common/random';
+import {getRandomInt} from "../random";
+import {IPPacket} from "./IPPacket";
 
 export class IPPacketGenerator {
+  currentID: number;
+
   constructor() {
-    this.currentId = 0;
+    this.currentID = 0;
   }
 
   generate() {
-    const id = this.currentId++;
+    const id = this.currentID++;
     const size = getRandomInt(20, 70);
     const data = 'x'.repeat(size);
 
