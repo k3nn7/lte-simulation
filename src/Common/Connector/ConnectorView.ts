@@ -1,11 +1,14 @@
 import * as PIXI from 'pixi.js';
-import Connectable from 'Common/connectable';
 import {BG_MEDIUM_2} from 'Common/colors';
 import {moveToThePoint, scaleDown, scaleUp} from 'Common/tweens';
-import ConnectorItemView from 'Common/Connector/connectorItemView';
+import {ConnectorItemView} from 'Common/Connector/ConnectorItemView';
+import Connectable, {Channel} from 'Common/Connectable';
 
-export default class ConnectorView extends Connectable {
-  constructor(componentA, componentB) {
+export class ConnectorView extends Connectable {
+  channelAPosition: PIXI.Point;
+  channelBPosition: PIXI.Point;
+
+  constructor(componentA: Connectable, componentB: Connectable) {
     super();
 
     const startPointPosition = new PIXI.Point(
@@ -30,40 +33,43 @@ export default class ConnectorView extends Connectable {
       endPointPosition.y - startPointPosition.y
     );
 
-    componentA.setChannelB((data) => this.onChannelA(data));
-    componentB.setChannelA((data) => this.onChannelB(data));
+    componentA.setChannelB((data: any) => this.onChannelA(data));
+    componentB.setChannelA((data: any) => this.onChannelB(data));
 
-    this.setChannelB((data) => componentB.onChannelA(data));
-    this.setChannelA((data) => componentA.onChannelB(data));
+    this.setChannelB((data: any) => componentB.onChannelA(data));
+    this.setChannelA((data: any) => componentA.onChannelB(data));
   }
 
-  async onChannelA(data) {
+  async onChannelA(data: any) {
+    await this.transferData(
+      data,
+      this.channelAPosition,
+      this.channelBPosition,
+      this.channelB,
+    );
+  }
+
+  async onChannelB(data: any) {
+    await this.transferData(
+      data,
+      this.channelBPosition,
+      this.channelAPosition,
+      this.channelA
+    );
+  }
+
+  async transferData(data: any, from: PIXI.Point, to: PIXI.Point, channel: Channel) {
     const itemView = new ConnectorItemView(data);
     this.addChild(itemView);
     itemView.scale.set(0, 0);
-    itemView.position = this.channelAPosition;
+    itemView.position = from;
     await scaleUp(itemView, 200);
     itemView.activate();
 
-    await moveToThePoint(itemView, this.channelBPosition, 500);
+    await moveToThePoint(itemView, to, 500);
     await scaleDown(itemView, 200);
     itemView.stop();
     this.removeChild(itemView);
-    this.channelB(data);
-  }
-
-  async onChannelB(data) {
-    const itemView = new ConnectorItemView(data);
-    this.addChild(itemView);
-    itemView.scale.set(0, 0);
-    itemView.position = this.channelBPosition;
-    await scaleUp(itemView, 200);
-    itemView.activate();
-
-    await moveToThePoint(itemView, this.channelAPosition, 500);
-    await scaleDown(itemView, 200);
-    itemView.stop();
-    this.removeChild(itemView);
-    this.channelA(data);
+    channel(data);
   }
 }
