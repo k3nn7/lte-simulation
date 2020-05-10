@@ -1,14 +1,13 @@
 import * as PIXI from 'pixi.js';
 import PDCP from './layer/pdcp';
 import RLC from './layer/rlc';
-import Connector from './layer/connector';
 import StartPoint from './layer/startPoint';
 import MAC from './layer/mac';
 import PHY from './layer/phy';
 import KneeConnector from './layer/kneeConnector';
-import MinimizedPacket from './layer/minimized-packet';
-import {getRandomInt} from './/src/utils';
 import RLCView from './eNB/RLC';
+import {IPPacketGenerator} from 'Common/IP';
+import ConnectorView from 'Common/Connector/connectorView';
 
 export class Simulation extends PIXI.Container {
   constructor(resources) {
@@ -21,6 +20,8 @@ export class Simulation extends PIXI.Container {
       this.ueProtocols.phyDown,
       this.enbProtocols.phyDown
     );
+
+    this.ipPacketGenerator = new IPPacketGenerator();
 
     this.addChild(this.ueProtocols);
     this.addChild(this.enbProtocols);
@@ -49,16 +50,16 @@ export class Simulation extends PIXI.Container {
     ue.phyDown.position.set(0, ue.macUp.y + ue.macUp.height + 50);
     ue.addChild(ue.phyDown);
 
-    ue.startToPdcp = new Connector(ue.endPoint, ue.pdcpUp);
+    ue.startToPdcp = new ConnectorView(ue.endPoint, ue.pdcpUp);
     ue.addChild(ue.startToPdcp);
 
-    ue.pdcpToRlc = new Connector(ue.pdcpUp, ue.rlcUp);
+    ue.pdcpToRlc = new ConnectorView(ue.pdcpUp, ue.rlcUp);
     ue.addChild(ue.pdcpToRlc);
 
-    ue.rlcToMac = new Connector(ue.rlcUp, ue.macUp);
+    ue.rlcToMac = new ConnectorView(ue.rlcUp, ue.macUp);
     ue.addChild(ue.rlcToMac);
 
-    ue.macToPhy = new Connector(ue.macUp, ue.phyDown);
+    ue.macToPhy = new ConnectorView(ue.macUp, ue.phyDown);
     ue.addChild(ue.macToPhy);
 
     return ue;
@@ -87,24 +88,23 @@ export class Simulation extends PIXI.Container {
     enb.phyDown.position.set(0, enb.macUp.y + enb.macUp.height + 50);
     enb.addChild(enb.phyDown);
 
-    enb.startToPdcp = new Connector(enb.endPoint, enb.pdcpUp);
+    enb.startToPdcp = new ConnectorView(enb.endPoint, enb.pdcpUp);
     enb.addChild(enb.startToPdcp);
 
-    enb.pdcpToRlc = new Connector(enb.pdcpUp, enb.rlcUp);
+    enb.pdcpToRlc = new ConnectorView(enb.pdcpUp, enb.rlcUp);
     enb.addChild(enb.pdcpToRlc);
 
-    enb.rlcToMac = new Connector(enb.rlcUp, enb.macUp);
+    enb.rlcToMac = new ConnectorView(enb.rlcUp, enb.macUp);
     enb.addChild(enb.rlcToMac);
 
-    enb.macToPhy = new Connector(enb.macUp, enb.phyDown);
+    enb.macToPhy = new ConnectorView(enb.macUp, enb.phyDown);
     enb.addChild(enb.macToPhy);
 
     return enb;
   }
 
   async start() {
-    const size = getRandomInt(20, 70);
-    const packet = new MinimizedPacket(size);
-    await this.ueProtocols.endPoint.addDataUnit(packet);
+    const ipPacket = this.ipPacketGenerator.generate();
+    await this.ueProtocols.endPoint.addDataUnit(ipPacket);
   }
 }

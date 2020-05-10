@@ -1,9 +1,10 @@
 import * as PIXI from 'pixi.js';
 import Connectable from 'Common/connectable';
-import {moveToThePoint, spit, swallow} from "../utils";
 import {BG_MEDIUM_2} from 'Common/colors';
+import {moveToThePoint, scaleDown, scaleUp} from 'Common/tweens';
+import ConnectorItemView from 'Common/Connector/connectorItemView';
 
-export default class Connector extends Connectable {
+export default class ConnectorView extends Connectable {
   constructor(componentA, componentB) {
     super();
 
@@ -37,30 +38,32 @@ export default class Connector extends Connectable {
   }
 
   async onChannelA(data) {
-    this.addChild(data);
-    data.scale.set(0, 0);
-    data.position = this.channelAPosition;
-    await spit(data, 200);
-    data.activate();
+    const itemView = new ConnectorItemView(data);
+    this.addChild(itemView);
+    itemView.scale.set(0, 0);
+    itemView.position = this.channelAPosition;
+    await scaleUp(itemView, 200);
+    itemView.activate();
 
-    await moveToThePoint(data, this.channelBPosition, 500);
-    await swallow(data, 200);
-    data.stop();
-    this.removeChild(data);
+    await moveToThePoint(itemView, this.channelBPosition, 500);
+    await scaleDown(itemView, 200);
+    itemView.stop();
+    this.removeChild(itemView);
     this.channelB(data);
   }
 
   async onChannelB(data) {
-    this.addChild(data);
-    data.scale.set(0, 0);
-    data.position = this.channelBPosition;
-    await spit(data, 200);
-    data.activate();
+    const itemView = new ConnectorItemView(data);
+    this.addChild(itemView);
+    itemView.scale.set(0, 0);
+    itemView.position = this.channelBPosition;
+    await scaleUp(itemView, 200);
+    itemView.activate();
 
-    await moveToThePoint(data, this.channelAPosition, 500);
-    await swallow(data, 200);
-    data.stop();
-    this.removeChild(data);
+    await moveToThePoint(itemView, this.channelAPosition, 500);
+    await scaleDown(itemView, 200);
+    itemView.stop();
+    this.removeChild(itemView);
     this.channelA(data);
   }
 }
