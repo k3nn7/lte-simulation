@@ -3,10 +3,10 @@ import PacketBuffer from "./packet-buffer";
 import Action from "./action";
 import SDU from "./rlc/sdu";
 import Timer from "./timer";
-import {appear, moveToThePoint, swallow} from "../utils";
 import FlatSDU from "./rlc/flatSdu";
 import * as PIXI from "pixi.js";
 import MinimizedPacket from "./minimized-packet";
+import {appear, moveToThePoint, scaleDown} from 'Common/tweens';
 
 export default class RLC extends Layer {
   constructor(resources) {
@@ -86,7 +86,7 @@ export default class RLC extends Layer {
       this.retransmissionBuffer.addDirectly(flatSDURetransmission)
     ]);
 
-    swallow(flatSDU, 500);
+    scaleDown(flatSDU, 500);
 
     this.channelB(new MinimizedPacket(50));
 
@@ -98,7 +98,7 @@ export default class RLC extends Layer {
     newSDU.position = this.toLocal(new PIXI.Point(0, 0), sdu);
     this.body.addChild(newSDU);
     await moveToThePoint(newSDU, {x: 138, y: 125}, 500);
-    swallow(newSDU, 500);
+    scaleDown(newSDU, 500);
 
     this.channelB(new MinimizedPacket(50));
   }

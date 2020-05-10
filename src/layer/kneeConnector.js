@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Connectable from 'Common/connectable';
 import {BG_MEDIUM_2} from 'Common/colors';
-import {moveToThePoint, spit, swallow} from "../utils";
+import {moveToThePoint, scaleDown, scaleUp} from 'Common/tweens';
 
 export default class KneeConnector extends Connectable {
   constructor(componentA, componentB) {
@@ -45,13 +45,13 @@ export default class KneeConnector extends Connectable {
     this.addChild(data);
     data.scale.set(0, 0);
     data.position = this.channelAPosition;
-    await spit(data, 200);
+    await scaleUp(data, 200);
     data.activate();
 
     await moveToThePoint(data, this.knee1Position, 500);
     await moveToThePoint(data, this.knee2Position, 500);
     await moveToThePoint(data, this.channelBPosition, 500);
-    await swallow(data, 200);
+    await scaleDown(data, 200);
     data.stop();
     this.removeChild(data);
     this.channelB(data);

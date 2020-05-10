@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import {BG_DARK_2, BG_MEDIUM_2, FG_1, FG_2} from 'Common/colors';
-import {moveToThePoint} from "../utils";
 import {Mutex} from 'async-mutex';
+import {moveToThePoint} from 'Common/tweens';
 
 const WIDTH = 120;
 const HEIGHT = 130;
@@ -53,7 +53,6 @@ export default class PacketBuffer extends PIXI.Graphics {
     this.addChild(packet);
     const destination = {x: 5, y: HEIGHT - 5 - 20 - TITLE_HEIGHT - this.packets.length * 25};
     await Promise.all([
-      // changeSize(packet, {width: 90, height: 16}, 100),
       moveToThePoint(packet, destination, 500),
     ]);
     this.packets.push(packet);
