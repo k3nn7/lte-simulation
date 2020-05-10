@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import {BG_DARK_2, BG_MEDIUM_2, FG_1, FG_2} from "../colors";
-import {changeSize, moveRelative, moveToThePoint} from "../utils";
+import {changeSize, moveToThePoint} from "../utils";
 import {Mutex} from "async-mutex";
 
 const WIDTH = 120;
