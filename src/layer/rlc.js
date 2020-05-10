@@ -1,4 +1,4 @@
-import Layer from "./layer";
+import Layer from "../layer";
 import PacketBuffer from "./packet-buffer";
 import Action from "./action";
 import SDU from "./rlc/sdu";
@@ -6,6 +6,7 @@ import Timer from "./timer";
 import {appear, moveToThePoint, swallow} from "../utils";
 import FlatSDU from "./rlc/flatSdu";
 import * as PIXI from "pixi.js";
+import MinimizedPacket from "./minimized-packet";
 
 export default class RLC extends Layer {
   constructor(resources) {
@@ -27,8 +28,8 @@ export default class RLC extends Layer {
     this.initEmptySDU();
   }
 
-  setOnSDUHandler(handler) {
-    this.onSDUHandler = handler;
+  async onChannelA(data) {
+    await this.addPacket(data);
   }
 
   async addPacket(packet) {
@@ -85,21 +86,9 @@ export default class RLC extends Layer {
       this.retransmissionBuffer.addDirectly(flatSDURetransmission)
     ]);
 
-    // const sduCopy = sdu.makeClone();
-
-    // sduCopy.position.set(sdu.position.x + 5, sdu.position.y + 5);
-    // this.body.addChild(sduCopy);
-
-    // await moveToThePoint(sduCopy, {x: 275, y: 15}, 500);
-    // this.body.removeChild(sduCopy);
-
-    // await Promise.all([
-    //   this.retransmissionBuffer.addPacket(sduCopy),
-    //   moveToThePoint(sdu, {x: 138, y: 125}, 500),
-    // ]);
     swallow(flatSDU, 500);
 
-    this.onSDUHandler(flatSDU);
+    this.channelB(new MinimizedPacket(50));
 
     this.initEmptySDU();
   }
@@ -111,6 +100,6 @@ export default class RLC extends Layer {
     await moveToThePoint(newSDU, {x: 138, y: 125}, 500);
     swallow(newSDU, 500);
 
-    this.onSDUHandler(newSDU);
+    this.channelB(new MinimizedPacket(50));
   }
 }

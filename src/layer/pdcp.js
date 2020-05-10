@@ -1,4 +1,4 @@
-import Layer from "./layer";
+import Layer from "../layer";
 import * as PIXI from 'pixi.js';
 import {BG_DARK_2, FG_1, FG_2} from "../colors";
 import Action from "./action";
@@ -33,6 +33,13 @@ export default class PDCP extends Layer {
     this.actionsContainer.addChild(this.addHeaderAction);
 
     this.body.addChild(this.actionsContainer);
+  }
+
+  async onChannelA(data) {
+    await this.pushPacket(data.tint);
+    await this.processPacket();
+    await this.popPacket();
+    await this.channelB(data);
   }
 
   async pushPacket(tint) {
