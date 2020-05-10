@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import Connectable from 'Common/connectable';
+import Connectable from 'Common/Connectable';
 import {BG_DARK_2, BG_LIGHT_1, FG_2} from 'Common/colors';
 
 const HEADER_WIDTH = 30;

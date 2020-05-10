@@ -7,7 +7,7 @@ import PHY from './layer/phy';
 import KneeConnector from './layer/kneeConnector';
 import RLCView from './eNB/RLC';
 import {IPPacketGenerator} from 'Common/IP';
-import ConnectorView from 'Common/Connector/connectorView';
+import {ConnectorView} from 'Common/Connector';
 
 export class Simulation extends PIXI.Container {
   constructor(resources) {

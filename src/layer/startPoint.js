@@ -1,4 +1,4 @@
-import Connectable from "Common/connectable";
+import Connectable from "Common/Connectable";
 
 export default class StartPoint extends Connectable {
   constructor() {
