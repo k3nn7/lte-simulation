@@ -22,11 +22,6 @@ export async function moveToThePoint(object, destination, duration) {
   });
 }
 
-export async function moveRelative(object, x, y, duration) {
-  const destination = {x: object.x + x, y: object.y + y};
-  return moveToThePoint(object, destination, duration);
-}
-
 export async function swallow(object, duration) {
   return new Promise(resolve => {
     const scale = {scale: 1.0};
@@ -38,6 +33,24 @@ export async function swallow(object, duration) {
         object.scale.set(scale.scale, scale.scale);
       })
       .onComplete(resolve)
+      .start();
+  });
+}
+
+export async function spit(object, duration) {
+  return new Promise(resolve => {
+    const scale = {scale: 0.0};
+    const destination = {scale: 1.0};
+    new TWEEN.Tween(scale)
+      .to(destination, duration)
+      .easing(TWEEN.Easing.Quadratic.Out)
+      .onUpdate(() => {
+        object.scale.set(scale.scale, scale.scale);
+      })
+      .onComplete(() => {
+        object.activate();
+        resolve();
+      })
       .start();
   });
 }
