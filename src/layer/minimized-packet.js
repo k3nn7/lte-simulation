@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import {BG_MEDIUM_2} from "../colors";
+import {BG_MEDIUM_2} from 'Common/colors';
 import TWEEN from "@tweenjs/tween.js";
 
 export default class MinimizedPacket extends PIXI.Graphics {

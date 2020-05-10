@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
-import TWEEN from "@tweenjs/tween.js";
-import {BG_DARK_2, FG_1, FG_2} from "../colors";
+import TWEEN from '@tweenjs/tween.js';
+import {BG_DARK_2, FG_1} from 'Common/colors';
 
 export default class Action extends PIXI.Graphics {
   constructor(resources, text) {

@@ -1,6 +1,6 @@
 import Layer from "../layer";
 import * as PIXI from 'pixi.js';
-import {BG_DARK_2, FG_1, FG_2} from "../colors";
+import {BG_DARK_2} from 'Common/colors';
 import Action from "./action";
 import Packet from "./packet";
 import TWEEN from "@tweenjs/tween.js";

@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import {BG_DARK_2, BG_MEDIUM_2, FG_1} from "../../colors";
+import {BG_DARK_2, FG_1} from 'Common/colors';
 import Timer from "../timer";
 
 const WIDTH = 124;

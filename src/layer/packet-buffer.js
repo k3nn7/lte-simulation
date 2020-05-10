@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
-import {BG_DARK_2, BG_MEDIUM_2, FG_1, FG_2} from "../colors";
-import {changeSize, moveToThePoint} from "../utils";
-import {Mutex} from "async-mutex";
+import {BG_DARK_2, BG_MEDIUM_2, FG_1, FG_2} from 'Common/colors';
+import {moveToThePoint} from "../utils";
+import {Mutex} from 'async-mutex';
 
 const WIDTH = 120;
 const HEIGHT = 130;

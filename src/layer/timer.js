@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import TWEEN from "@tweenjs/tween.js";
-import {BG_MEDIUM_3} from "../colors";
+import {BG_MEDIUM_3} from 'Common/colors';
 
 const START_ANGLE = -Math.PI / 2;
 

@@ -1,8 +1,7 @@
 import * as PIXI from 'pixi.js';
-import {BG_DARK_2, BG_MEDIUM_3} from "../../colors";
+import {BG_DARK_2} from 'Common/colors';
 import {moveToThePoint} from "../../utils";
 import {Mutex} from "async-mutex";
-import TWEEN from "@tweenjs/tween.js";
 
 const WIDTH = 122;
 const HEIGHT = 20;
