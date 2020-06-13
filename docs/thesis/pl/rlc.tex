@@ -1,2 +1,11 @@
-\chapter{Warstwa Radio Link Control}
+\chapter{Podwarstwa Radio Link Control}
 \label{cha:rlc}
+
+Podwarstwa RLC odbiera jednostki danych z podwarstw PDCP oraz RLC a następnie przekazuje je do podwarstwy MAC. RLC może działać w jednym z 3 trybów: transparentnym, z potwierdzeniami lub bez potwierdzeń. W zależności od trybu działania odpowiada on za:
+
+\begin{enumerate}
+	\item Segmentację i\\lub łączenie transmitowanych jednostek danych tak aby maksymalnie wykorzystać dostępne pasmo
+	\item Wykrywanie zduplikowanych jednostek danych podczas ich odbierania z niższych warstw
+	\item Zapewnienie dostarczenia jednostek danych w odpowiedniej kolejności
+	\item Naprawa błędów poprzez ponowne wysyłanie jednostek danych
+\end{enumerate}
