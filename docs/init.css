@@ -1,0 +1,23 @@
+.custom-bg-light {
+  background-color: rgb(101, 114, 122);
+}
+
+.custom-bg-medium {
+  background-color: rgb(58, 71, 78);
+}
+
+.custom-bg-dark {
+  background-color: rgb(20, 32, 38);
+}
+
+.d-none {
+  display: none;
+}
+
+#loading {
+  margin: 150px auto;
+  padding: 100px 200px;
+  width: 500px;
+  color: white;
+  text-align: center;
+}
