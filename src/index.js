@@ -9,7 +9,10 @@ import {Simulation} from "./simulation";
 const application = new PIXI.Application({width: 1200, height: 900, transparent: true, antialias: true});
 
 // const startButton = document.getElementById('start-simulation');
-document.getElementById('simulation-container').appendChild(application.view);
+const loading = document.getElementById('loading');
+const navbar = document.getElementById('navbar');
+const simulationContainer = document.getElementById('simulation-container');
+simulationContainer.appendChild(application.view);
 
 application.loader
   .add('helpIcon', 'help-icon.png')
@@ -27,4 +30,8 @@ application.loader.load((loader, resources) => {
     .addEventListener('click', async() => {
       await simulation.start();
     });
+
+  simulationContainer.classList.remove('d-none');
+  navbar.classList.remove('d-none');
+  loading.classList.add('d-none');
 });
