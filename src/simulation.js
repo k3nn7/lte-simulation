@@ -8,10 +8,18 @@ import KneeConnector from './layer/kneeConnector';
 import RLCView from './eNB/RLC';
 import {IPPacketGenerator} from 'Common/IP';
 import {ConnectorView} from 'Common/Connector';
+import ButtonView from 'Common/ButtonView';
 
 export class Simulation extends PIXI.Container {
   constructor(resources) {
     super();
+
+    this.startButton = new ButtonView('Send packet →');
+    this.startButton.position.set(30, 0);
+    this.startButton.setOnClick(() => {
+      this.start();
+    });
+    this.addChild(this.startButton);
 
     this.ueProtocols = this.createUEProtocols(resources);
     this.enbProtocols = this.createEnbProtocols(resources);
