@@ -9,6 +9,7 @@ import RLCView from './eNB/RLC';
 import {IPPacketGenerator} from 'Common/IP';
 import {ConnectorView} from 'Common/Connector';
 import ButtonView from 'Common/ButtonView';
+import PDCPView from './eNB/PDCP/PDCPView';
 
 export class Simulation extends PIXI.Container {
   constructor(resources) {
@@ -42,7 +43,7 @@ export class Simulation extends PIXI.Container {
     ue.endPoint = new StartPoint();
     ue.endPoint.position.set(215, 10);
 
-    ue.pdcpUp = new PDCP(resources);
+    ue.pdcpUp = new PDCPView(resources);
     ue.pdcpUp.position.set(0, 50);
     ue.addChild(ue.pdcpUp);
 
