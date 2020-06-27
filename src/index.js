@@ -15,6 +15,7 @@ simulationContainer.appendChild(application.view);
 
 application.loader
   .add('helpIcon', 'help-icon.png')
+  .add('lock', 'lock.png')
   .add('bullet', 'bullet.png');
 
 application.loader.load((loader, resources) => {
