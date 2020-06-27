@@ -73,6 +73,18 @@ export function heartbeat(object) {
     })
     .yoyo(true)
     .repeat(Infinity);
+}
 
-
+export async function quadraticTween(from, to, duration, onUpdate) {
+  return new Promise(resolve => {
+    new TWEEN.Tween(from)
+      .to(to, duration)
+      .easing(TWEEN.Easing.Quadratic.Out)
+      .onUpdate(() => {
+          onUpdate(from);
+        }
+      )
+      .onComplete(resolve)
+      .start();
+  });
 }
