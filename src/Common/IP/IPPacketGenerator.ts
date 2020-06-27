@@ -8,7 +8,7 @@ export class IPPacketGenerator {
     this.currentID = 0;
   }
 
-  generate() {
+  generate(): IPPacket {
     const id = this.currentID++;
     const size = getRandomInt(20, 70);
     const data = 'x'.repeat(size);
