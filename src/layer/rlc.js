@@ -55,7 +55,7 @@ export default class RLC extends Layer {
       });
 
       if (!this.timer.isFinished && !this.timer.isCounting) {
-        this.timer.startCounting(2000);
+        this.timer.startCounting(10000);
       }
     }
 
