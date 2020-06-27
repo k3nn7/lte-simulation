@@ -62,11 +62,11 @@ export async function appear(object, duration) {
   });
 }
 
-export function heartbeat(object) {
+export function heartbeat(object, duration = 500) {
   const scale = {scale: 1.0};
   const to = {scale: 1.3};
   return new TWEEN.Tween(scale)
-    .to(to, 500)
+    .to(to, duration)
     .easing(TWEEN.Easing.Quadratic.InOut)
     .onUpdate(() => {
       object.scale.set(scale.scale, scale.scale)
