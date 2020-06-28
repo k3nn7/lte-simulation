@@ -12,7 +12,7 @@ import ButtonView from 'Common/ButtonView';
 import PDCPView from './eNB/PDCP/PDCPView';
 
 export class Simulation extends PIXI.Container {
-  constructor(resources) {
+  constructor(resources, ticker) {
     super();
 
     this.startButton = new ButtonView('Send packet →');
@@ -21,6 +21,17 @@ export class Simulation extends PIXI.Container {
       this.start();
     });
     this.addChild(this.startButton);
+
+    this.pauseButton = new ButtonView('Pause');
+    this.pauseButton.position.set(250, 0);
+    this.pauseButton.setOnClick(() => {
+      if (ticker.started) {
+        ticker.stop();
+      } else {
+        ticker.start();
+      }
+    });
+    this.addChild(this.pauseButton);
 
     this.ueProtocols = this.createUEProtocols(resources);
     this.enbProtocols = this.createEnbProtocols(resources);

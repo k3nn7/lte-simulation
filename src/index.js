@@ -19,7 +19,7 @@ application.loader
   .add('bullet', 'bullet.png');
 
 application.loader.load((loader, resources) => {
-  const simulation = new Simulation(resources);
+  const simulation = new Simulation(resources, application.ticker);
   application.stage.addChild(simulation);
 
   application.ticker.add(() => {
