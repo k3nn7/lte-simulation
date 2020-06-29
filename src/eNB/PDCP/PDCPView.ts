@@ -11,6 +11,7 @@ export default class PDCPView extends LayerView {
   pdu: PDUView;
   actionsContainer: ActionsContainerView;
   resources: Partial<Record<string, PIXI.LoaderResource>>;
+  sequenceNumber: number;
 
   constructor(resources: Partial<Record<string, PIXI.LoaderResource>>) {
     super(resources, 'PDCP');
@@ -20,6 +21,7 @@ export default class PDCPView extends LayerView {
     this.actionsContainer = new ActionsContainerView(resources);
     this.actionsContainer.position.set(10, 20);
     this.body.addChild(this.actionsContainer);
+    this.sequenceNumber = 0;
   }
 
 
@@ -46,9 +48,11 @@ export default class PDCPView extends LayerView {
   }
 
   async processPacket() {
+    this.actionsContainer.sequenceAction.setSequenceNumber(this.sequenceNumber);
     this.actionsContainer.sequenceAction.activate();
-    await this.pdu.giveOrderNumber(1);
+    await this.pdu.giveOrderNumber(this.sequenceNumber);
     this.actionsContainer.sequenceAction.deactivate();
+    this.sequenceNumber++;
 
     this.actionsContainer.compressAction.activate();
     await this.pdu.compressHeader();
