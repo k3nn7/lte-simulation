@@ -5,6 +5,7 @@ import PDUView from './PDUView';
 import {appear, scaleDown} from '../../Common/tweens';
 import ActionsContainerView from './ActionsContainerView';
 import Mutex from 'async-mutex/lib/Mutex';
+import ReceptionBufferView from './ReceptionBufferView';
 
 export default class PDCPView extends LayerView {
   mutex: Mutex;
@@ -12,6 +13,7 @@ export default class PDCPView extends LayerView {
   actionsContainer: ActionsContainerView;
   resources: Partial<Record<string, PIXI.LoaderResource>>;
   sequenceNumber: number;
+  receptionBuffer: ReceptionBufferView;
 
   constructor(resources: Partial<Record<string, PIXI.LoaderResource>>) {
     super(resources, 'PDCP');
@@ -19,8 +21,12 @@ export default class PDCPView extends LayerView {
     this.mutex = new Mutex();
     this.resources = resources;
     this.actionsContainer = new ActionsContainerView(resources);
-    this.actionsContainer.position.set(10, 20);
+    this.actionsContainer.position.set(140, 10);
     this.body.addChild(this.actionsContainer);
+    this.receptionBuffer = new ReceptionBufferView(resources);
+    this.receptionBuffer.position.set(10, 10);
+    this.body.addChild(this.receptionBuffer);
+
     this.sequenceNumber = 0;
   }
 

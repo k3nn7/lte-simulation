@@ -39,18 +39,20 @@ class Action extends PIXI.Graphics {
       text,
       {
         fill: FG_1,
-        fontSize: 20,
+        fontSize: 12,
       }
     );
     this.actionText.anchor.set(0, 0.5);
-    this.actionText.position.set(30, 20);
+    this.actionText.position.set(20, 10);
 
     this.lineStyle(2, BG_DARK_2);
-    this.drawRect(0, 0, this.actionText.width + 40, 40);
+    this.drawRect(0, 0, this.actionText.width + 30, 20);
 
     this.bullet = new PIXI.Sprite(resources.bullet.texture);
     this.bullet.anchor.set(0.5, 0.5);
-    this.bullet.position.set(15, 20);
+    this.bullet.position.set(10, 10);
+    this.bullet.width = 12;
+    this.bullet.height = 12;
 
     this.addChild(this.bullet);
     this.addChild(this. actionText);
