@@ -12,8 +12,10 @@ import enbPDCPView from './eNB/PDCP/PDCPView';
 import uePDCPView from './UE/PDCP/PDCPView' ;
 
 export class Simulation extends PIXI.Container {
-  constructor(resources, ticker) {
+  constructor(resources, ticker, debugMode) {
     super();
+
+    this.debugMode = debugMode;
 
     this.startButton = new ButtonView('Send packet →');
     this.startButton.position.set(30, 0);
@@ -92,7 +94,7 @@ export class Simulation extends PIXI.Container {
     enb.endPoint = new StartPoint();
     enb.endPoint.position.set(215, 0);
 
-    enb.pdcpUp = new uePDCPView(resources);
+    enb.pdcpUp = new uePDCPView(resources, this.debugMode);
     enb.pdcpUp.position.set(0, 50);
     enb.addChild(enb.pdcpUp);
 
