@@ -6,6 +6,9 @@ import {appear, scaleDown} from '../../Common/tweens';
 import ActionsContainerView from './ActionsContainerView';
 import Mutex from 'async-mutex/lib/Mutex';
 import ReceptionBufferView from './ReceptionBufferView';
+import BufferItemView from './BufferItemView';
+import ButtonView from '../../Common/ButtonView';
+import {PDCPDataUnit} from '../../Common/DataUnit/PDCPDataUnit';
 
 export default class PDCPView extends LayerView {
   mutex: Mutex;
@@ -15,7 +18,9 @@ export default class PDCPView extends LayerView {
   sequenceNumber: number;
   receptionBuffer: ReceptionBufferView;
 
-  constructor(resources: Partial<Record<string, PIXI.LoaderResource>>) {
+  sendPacketButton: ButtonView;
+
+  constructor(resources: Partial<Record<string, PIXI.LoaderResource>>, debugMode: boolean = false) {
     super(resources, 'PDCP');
 
     this.mutex = new Mutex();
@@ -27,9 +32,30 @@ export default class PDCPView extends LayerView {
     this.receptionBuffer.position.set(10, 10);
     this.body.addChild(this.receptionBuffer);
 
+    if (debugMode) {
+      let sequenceNumber = 0;
+      this.sendPacketButton = new ButtonView('+', 20, 20);
+      this.sendPacketButton.setOnClick(() => {
+        this.onChannelB(
+          new PDCPDataUnit(
+            new IPPacket('foooo sdafasdfasdfasdfasdfasdf dsfafdsfasfasdfa', 10),
+            sequenceNumber++
+          )
+        );
+      });
+      this.sendPacketButton.position.set(5, 120);
+      this.addChild(this.sendPacketButton);
+    }
+
     this.sequenceNumber = 0;
   }
 
+  async onChannelB(data: any): Promise<void> {
+    if (data instanceof PDCPDataUnit) {
+      const bufferItem = new BufferItemView(data, 'SDU');
+      await this.receptionBuffer.addItem(bufferItem);
+    }
+  }
 
   async onChannelA(data: any): Promise<void> {
     if (data instanceof IPPacket) {
