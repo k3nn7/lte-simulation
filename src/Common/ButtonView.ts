@@ -4,11 +4,11 @@ import {BG_MEDIUM_2, FG_2} from './colors';
 export default class ButtonView extends PIXI.Graphics {
   onClick: () => void;
 
-  constructor(caption: string) {
+  constructor(caption: string, width: number = 120, height: number = 30) {
     super();
 
     this.beginFill(BG_MEDIUM_2);
-    this.drawRoundedRect(0, 0, 120, 30, 10);
+    this.drawRoundedRect(0, 0, width, height, 10);
     this.endFill();
 
     this.interactive = true;
