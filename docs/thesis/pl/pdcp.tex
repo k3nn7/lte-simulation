@@ -27,12 +27,30 @@ Pierwszym krokiem po otrzymaniu pakietu z warstwy IP w obrębie podwarstwy PDCP 
 
 \begin{figure}
 	\centering
-		\includegraphics[width=0.5\textwidth]{pdcp.png}
-	\caption{PDCP}
+		\includegraphics[width=0.5\textwidth]{images/pdcp_1.png}
+	\caption{Nadanie numeru sekwencyjnego pakietowi IP}
 \end{figure}
 
 Drugim krokiem jest kompresja nagłówka pakietu IP przy użyciu metody ROHC (Robust Header Compression). Ogólna zasada działania opiera się na założeniu, że jeżeli pakiety IP wysyłane są pomiędzy dwoma urządzeniami wówczas większość pól w ich nagłówkach jest taka sama. W przypadku pakietu IPv4 rozmiar nagłówka wynosi 20 bajtów. Jeżeli jest on użyty w połączeniu z protokołami UDP i RTP wówczas rozmiar nagłówka w sumie wynosi 40 bajtów. ROHC pozwala zmniejszyć rozmiar takiego nagłówka do 2 - 4 bajtów. Warto również zauważyć, że protokół RTP używany zazwyczaj w kodowaniu głosu w czasie rzeczywistym transportuje niewielkie ilości danych - zazwyczaj 20 - 40 bajtów. Porównując to z nieskompresowanym nagłówkiem o ilości 40 bajtów widać, że narzut nagłówka jest znaczny. Dzięki temu zastosowanie kompresji ROHC pozwala zaoszczędzić znaczną część pasma.
 
+\begin{figure}
+	\centering
+		\includegraphics[width=0.5\textwidth]{images/pdcp_2.png}
+	\caption{Kompresja nagłówka pakietu IP}
+\end{figure}
+
 Po kompresji następuje szyfrowanie danych zawartych w pakiecie
 
+\begin{figure}
+	\centering
+		\includegraphics[width=0.5\textwidth]{images/pdcp_3.png}
+	\caption{Szyfrowanie danych zawartych w pakiecie IP}
+\end{figure}
+
 Ostatnim krokiem jest dodanie nagłówka 
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.5\textwidth]{images/pdcp_4.png}
+	\caption{Dodanie nagłówka podwarstwy PDCP do pakietu IP}
+\end{figure}
