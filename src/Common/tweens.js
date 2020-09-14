@@ -16,13 +16,13 @@ export async function moveToThePoint(object, destination, duration) {
 
 export async function scaleDown(object, duration) {
   return new Promise(resolve => {
-    const scale = {scale: 1.0};
-    const destination = {scale: 0.0};
+    const scale = {x: object.scale.x, y: object.scale.y};
+    const destination = {x: 0.0, y: 0.0};
     new TWEEN.Tween(scale)
       .to(destination, duration)
       .easing(TWEEN.Easing.Quadratic.Out)
       .onUpdate(() => {
-        object.scale.set(scale.scale, scale.scale);
+        object.scale.set(scale.x, scale.y);
       })
       .onComplete(resolve)
       .start();
@@ -49,8 +49,23 @@ export async function scaleUp(object, duration) {
 
 export async function appear(object, duration) {
   return new Promise(resolve => {
-    const alpha = {alpha: 0.0};
+    const alpha = {alpha: object.alpha};
     const destination = {alpha: 1.0};
+    new TWEEN.Tween(alpha)
+      .to(destination, duration)
+      .easing(TWEEN.Easing.Quadratic.Out)
+      .onUpdate(() => {
+        object.alpha = alpha.alpha;
+      })
+      .onComplete(resolve)
+      .start();
+  });
+}
+
+export async function disappear(object, duration) {
+  return new Promise(resolve => {
+    const alpha = {alpha: object.alpha};
+    const destination = {alpha: 0.0};
     new TWEEN.Tween(alpha)
       .to(destination, duration)
       .easing(TWEEN.Easing.Quadratic.Out)

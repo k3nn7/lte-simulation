@@ -1,37 +1,46 @@
 import * as PIXI from 'pixi.js';
 import {BG_DARK_2, BG_MEDIUM_2, FG_1, FG_2} from '../../Common/colors';
-import {IPPacket} from '../../Common/IP/IPPacket';
-import {appear, quadraticTween} from '../../Common/tweens';
+import {appear, disappear, quadraticTween} from '../../Common/tweens';
 import StretchableBoxView from '../../Common/StretchableBoxView';
+import {PDCPDataUnit} from "../../Common/DataUnit/PDCPDataUnit";
 
 const ACTION_DURATION = 700;
 
 export default class PDUView extends PIXI.Graphics {
   packetBox: StretchableBoxView;
   dataBox: StretchableBoxView;
-  packet: IPPacket;
+  packet: PDCPDataUnit;
   headerBox: StretchableBoxView;
   orderNumber: OrderNumber;
   lockIcon: PIXI.Sprite;
   pduHeaderBox: StretchableBoxView;
 
-  constructor(packet: IPPacket, resources: Partial<Record<string, PIXI.LoaderResource>>) {
+  constructor(packet: PDCPDataUnit, resources: Partial<Record<string, PIXI.LoaderResource>>) {
     super();
     this.packet = packet;
 
-    this.packetBox = new StretchableBoxView('IP Packet', BG_DARK_2, FG_2, 250, 20);
-    this.headerBox = new StretchableBoxView('HEADER', BG_MEDIUM_2, FG_1, 125, 30);
+    this.packetBox = new StretchableBoxView('IP Packet', BG_DARK_2, FG_2, 205, 20);
+    this.headerBox = new StretchableBoxView('HEADER', BG_MEDIUM_2, FG_1, 80, 30);
     this.headerBox.position.set(0, 20);
     this.dataBox = new StretchableBoxView('DATA', BG_MEDIUM_2, FG_1, 124, 30);
-    this.dataBox.position.set(126, 20);
+    this.dataBox.position.set(81, 20);
     this.lockIcon = new PIXI.Sprite(resources.lock.texture);
     this.lockIcon.anchor.set(0.5, 0.5);
     this.lockIcon.width = 20;
     this.lockIcon.height = 20;
     this.lockIcon.position.set(100, 15);
+    this.dataBox.addChild(this.lockIcon);
+
+    this.orderNumber = new OrderNumber(packet.sequenceNumber);
+    this.orderNumber.position.set(-31, 0);
+
+    this.pduHeaderBox = new StretchableBoxView('HDR', BG_MEDIUM_2, FG_1, 40, 50);
+    this.pduHeaderBox.position.set(-72, 0);
 
     this.pivot.set(125, 25);
 
+    this.addChild(this.pduHeaderBox);
+    this.addChild(this.orderNumber);
     this.addChild(this.packetBox);
     this.addChild(this.dataBox);
     this.addChild(this.headerBox);
@@ -39,8 +48,8 @@ export default class PDUView extends PIXI.Graphics {
 
   async compressHeader() {
     await Promise.all([
-        this.headerBox.resizeTween(80, 30, ACTION_DURATION),
-        this.packetBox.resizeTween(205, 20, ACTION_DURATION),
+        this.headerBox.resizeTween(125, 30, ACTION_DURATION),
+        this.packetBox.resizeTween(250, 20, ACTION_DURATION),
         this.tweenDataBox(),
       ]
     );
@@ -56,23 +65,18 @@ export default class PDUView extends PIXI.Graphics {
   }
 
   async addHeader() {
-    this.pduHeaderBox = new StretchableBoxView('HDR', BG_MEDIUM_2, FG_1, 40, 50);
-    this.pduHeaderBox.alpha = 0.0;
-    this.pduHeaderBox.position.set(-72, 0);
-    this.addChild(this.pduHeaderBox);
-
-    return appear(this.pduHeaderBox, ACTION_DURATION);
+    await disappear(this.pduHeaderBox, ACTION_DURATION);
+    this.removeChild(this.pduHeaderBox);
   }
 
   async encryptData() {
-    this.lockIcon.alpha = 0.0;
-    this.dataBox.addChild(this.lockIcon);
-    return appear(this.lockIcon, ACTION_DURATION);
+    await disappear(this.lockIcon, ACTION_DURATION);
+    this.dataBox.removeChild(this.lockIcon);
   }
 
   private async tweenDataBox() {
     const position = {x: this.dataBox.position.x};
-    return quadraticTween(position, {x: 81}, ACTION_DURATION, () => {
+    return quadraticTween(position, {x: 126}, ACTION_DURATION, () => {
       this.dataBox.position.x = position.x;
     });
   }

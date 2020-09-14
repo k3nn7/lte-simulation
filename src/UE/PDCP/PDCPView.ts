@@ -52,51 +52,50 @@ export default class PDCPView extends LayerView {
 
   async onChannelB(data: any): Promise<void> {
     if (data instanceof PDCPDataUnit) {
-      const bufferItem = new BufferItemView(data, 'SDU');
-      await this.receptionBuffer.addItem(bufferItem);
-    }
-  }
-
-  async onChannelA(data: any): Promise<void> {
-    if (data instanceof IPPacket) {
       const release = await this.mutex.acquire();
 
       await this.pushPacket(data);
       await this.processPacket();
-      await this.popPacket();
-      this.channelB(data);
+      this.popPacket();
 
       release();
+
+      const bufferItem = new BufferItemView(data, 'SDU');
+      await this.receptionBuffer.addItem(bufferItem);
+
+      // this.channelA(data);
     }
   }
 
-  async pushPacket(packet: IPPacket) {
+  async pushPacket(packet: PDCPDataUnit) {
     this.pdu = new PDUView(packet, this.resources);
     this.pdu.alpha = 0.0;
-    this.pdu.position.set(220, 100);
+    this.pdu.scale.set(0.7, 0.7);
+    this.pdu.position.set(280, 80);
     this.body.addChild(this.pdu);
 
     return appear(this.pdu, 500);
   }
 
   async processPacket() {
-    this.actionsContainer.sequenceAction.setSequenceNumber(this.sequenceNumber);
-    this.actionsContainer.sequenceAction.activate();
-    await this.pdu.giveOrderNumber(this.sequenceNumber);
-    this.actionsContainer.sequenceAction.deactivate();
-    this.sequenceNumber++;
-
-    this.actionsContainer.compressAction.activate();
-    await this.pdu.compressHeader();
-    this.actionsContainer.compressAction.deactivate();
+    this.actionsContainer.addHeaderAction.activate();
+    await this.pdu.addHeader();
+    this.actionsContainer.addHeaderAction.deactivate();
 
     this.actionsContainer.encryptAction.activate();
     await this.pdu.encryptData();
     this.actionsContainer.encryptAction.deactivate();
 
-    this.actionsContainer.addHeaderAction.activate();
-    await this.pdu.addHeader();
-    this.actionsContainer.addHeaderAction.deactivate();
+    this.actionsContainer.compressAction.activate();
+    await this.pdu.compressHeader();
+    this.actionsContainer.compressAction.deactivate();
+
+    this.actionsContainer.sequenceAction.activate();
+    this.sequenceNumber = this.pdu.packet.sequenceNumber;
+    this.actionsContainer.sequenceAction.setSequenceNumber(this.sequenceNumber);
+    await this.pdu.giveOrderNumber(this.sequenceNumber);
+    this.actionsContainer.sequenceAction.deactivate();
+
   }
 
   async popPacket() {
