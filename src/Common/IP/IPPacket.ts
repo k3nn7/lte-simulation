@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
+import {DataUnit} from "../DataUnit";
 
-export class IPPacket {
+export class IPPacket implements DataUnit {
   data: string;
   size: number;
   id: number;

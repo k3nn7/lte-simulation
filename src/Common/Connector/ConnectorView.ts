@@ -3,6 +3,7 @@ import {BG_MEDIUM_2} from 'Common/colors';
 import {moveToThePoint, scaleDown, scaleUp} from 'Common/tweens';
 import {ConnectorItemView} from 'Common/Connector/ConnectorItemView';
 import Connectable, {Channel} from 'Common/Connectable';
+import {DataUnit} from "../DataUnit";
 
 export class ConnectorView extends Connectable {
   channelAPosition: PIXI.Point;
@@ -33,33 +34,33 @@ export class ConnectorView extends Connectable {
       endPointPosition.y - startPointPosition.y
     );
 
-    componentA.setChannelB((data: any) => this.onChannelA(data));
-    componentB.setChannelA((data: any) => this.onChannelB(data));
+    componentA.setChannelB((dataUnit: DataUnit) => this.onChannelA(dataUnit));
+    componentB.setChannelA((dataUnit: DataUnit) => this.onChannelB(dataUnit));
 
-    this.setChannelB((data: any) => componentB.onChannelA(data));
-    this.setChannelA((data: any) => componentA.onChannelB(data));
+    this.setChannelB((dataUnit: DataUnit) => componentB.onChannelA(dataUnit));
+    this.setChannelA((dataUnit: DataUnit) => componentA.onChannelB(dataUnit));
   }
 
-  async onChannelA(data: any) {
+  async onChannelA(dataUnit: DataUnit) {
     await this.transferData(
-      data,
+      dataUnit,
       this.channelAPosition,
       this.channelBPosition,
       this.channelB,
     );
   }
 
-  async onChannelB(data: any) {
+  async onChannelB(dataUnit: DataUnit) {
     await this.transferData(
-      data,
+      dataUnit,
       this.channelBPosition,
       this.channelAPosition,
       this.channelA
     );
   }
 
-  async transferData(data: any, from: PIXI.Point, to: PIXI.Point, channel: Channel) {
-    const itemView = new ConnectorItemView(data);
+  async transferData(dataUnit: DataUnit, from: PIXI.Point, to: PIXI.Point, channel: Channel) {
+    const itemView = new ConnectorItemView(dataUnit);
     this.addChild(itemView);
     itemView.scale.set(0, 0);
     itemView.position = from;
@@ -70,6 +71,6 @@ export class ConnectorView extends Connectable {
     await scaleDown(itemView, 200);
     itemView.stop();
     this.removeChild(itemView);
-    channel(data);
+    channel(dataUnit);
   }
 }

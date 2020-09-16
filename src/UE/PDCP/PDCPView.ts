@@ -9,6 +9,7 @@ import ReceptionBufferView from './ReceptionBufferView';
 import BufferItemView from './BufferItemView';
 import ButtonView from '../../Common/ButtonView';
 import {PDCPDataUnit} from '../../Common/DataUnit/PDCPDataUnit';
+import {DataUnit} from "../../Common/DataUnit";
 
 export default class PDCPView extends LayerView {
   mutex: Mutex;
@@ -55,13 +56,13 @@ export default class PDCPView extends LayerView {
     if (this.receptionBuffer.items.length > 0) {
       const item = await this.receptionBuffer.popItem();
 
-      this.channelA(item);
+      this.channelA(item.wrappedItem);
     }
 
     setTimeout(() => this.forwardPDU(), 5000);
   }
 
-  async onChannelB(data: any): Promise<void> {
+  async onChannelB(data: DataUnit): Promise<void> {
     if (data instanceof PDCPDataUnit) {
       const release = await this.mutex.acquire();
 

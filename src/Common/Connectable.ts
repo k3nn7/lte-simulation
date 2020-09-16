@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
+import {DataUnit} from "./DataUnit";
 
-export type Channel = (data: any) => Promise<void>
+export type Channel = (data: DataUnit) => Promise<void>
 
 export default class Connectable extends PIXI.Graphics {
   channelA: Channel;
@@ -14,13 +15,13 @@ export default class Connectable extends PIXI.Graphics {
     this.channelB = channel;
   }
 
-  async onChannelA(data: any) {
+  async onChannelA(data: DataUnit) {
     if (this.channelB) {
       await this.channelB(data);
     }
   }
 
-  async onChannelB(data: any) {
+  async onChannelB(data: DataUnit) {
     if (this.channelA) {
       await this.channelA(data);
     }

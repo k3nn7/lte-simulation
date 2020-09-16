@@ -5,6 +5,8 @@ import PDUView from './PDUView';
 import {appear, scaleDown} from '../../Common/tweens';
 import ActionsContainerView from './ActionsContainerView';
 import Mutex from 'async-mutex/lib/Mutex';
+import {DataUnit} from "../../Common/DataUnit";
+import {PDCPDataUnit} from "../../Common/DataUnit/PDCPDataUnit";
 
 export default class PDCPView extends LayerView {
   mutex: Mutex;
@@ -24,15 +26,14 @@ export default class PDCPView extends LayerView {
     this.sequenceNumber = 0;
   }
 
-
-  async onChannelA(data: any): Promise<void> {
-    if (data instanceof IPPacket) {
+  async onChannelA(dataUnit: DataUnit): Promise<void> {
+    if (dataUnit instanceof IPPacket) {
       const release = await this.mutex.acquire();
 
-      await this.pushPacket(data);
-      await this.processPacket();
+      await this.pushPacket(dataUnit);
+      const result = await this.processPacket(dataUnit);
       await this.popPacket();
-      this.channelB(data);
+      this.channelB(result);
 
       release();
     }
@@ -47,10 +48,11 @@ export default class PDCPView extends LayerView {
     return appear(this.pdu, 500);
   }
 
-  async processPacket() {
+  async processPacket(packet: IPPacket): Promise<PDCPDataUnit> {
     this.actionsContainer.sequenceAction.setSequenceNumber(this.sequenceNumber);
     this.actionsContainer.sequenceAction.activate();
     await this.pdu.setSequenceNumber(this.sequenceNumber);
+    const result = new PDCPDataUnit(packet, this.sequenceNumber);
     this.actionsContainer.sequenceAction.deactivate();
     this.sequenceNumber++;
 
@@ -65,6 +67,8 @@ export default class PDCPView extends LayerView {
     this.actionsContainer.addHeaderAction.activate();
     await this.pdu.addHeader();
     this.actionsContainer.addHeaderAction.deactivate();
+
+    return result;
   }
 
   async popPacket() {
