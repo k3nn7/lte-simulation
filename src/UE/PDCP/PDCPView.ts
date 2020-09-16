@@ -48,6 +48,17 @@ export default class PDCPView extends LayerView {
     }
 
     this.sequenceNumber = 0;
+    setTimeout(() => this.forwardPDU(), 5000);
+  }
+
+  async forwardPDU() {
+    if (this.receptionBuffer.items.length > 0) {
+      const item = await this.receptionBuffer.popItem();
+
+      this.channelA(item);
+    }
+
+    setTimeout(() => this.forwardPDU(), 5000);
   }
 
   async onChannelB(data: any): Promise<void> {
@@ -62,8 +73,6 @@ export default class PDCPView extends LayerView {
 
       const bufferItem = new BufferItemView(data, 'SDU');
       await this.receptionBuffer.addItem(bufferItem);
-
-      // this.channelA(data);
     }
   }
 

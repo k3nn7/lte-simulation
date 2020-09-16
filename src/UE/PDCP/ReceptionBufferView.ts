@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import {Mutex} from 'async-mutex';
-import {moveToThePoint} from 'Common/tweens';
+import {disappear, moveToThePoint} from 'Common/tweens';
 import BufferView from '../../Common/BufferView';
 import BufferItemView from '../../Common/BufferItemView';
 
@@ -25,6 +25,19 @@ export default class ReceptionBufferView extends BufferView {
     await this.updateItemsView();
 
     release();
+  }
+
+  async popItem(): Promise<BufferItemView> {
+    const release = await this.mutex.acquire();
+
+    const result = this.items.shift();
+    await disappear(result, 100);
+    await this.updateItemsView();
+    this.removeChild(result);
+
+    release();
+
+    return result;
   }
 
   async updateItemsView() {
