@@ -35,70 +35,32 @@ export class Simulation extends PIXI.Container {
     });
     this.addChild(this.pauseButton);
 
+    this.enbProtocols = this.createENBProtocols(resources);
     this.ueProtocols = this.createUEProtocols(resources);
-    this.enbProtocols = this.createEnbProtocols(resources);
 
     this.entitiesConnector = new KneeConnector(
-      this.ueProtocols.phyDown,
-      this.enbProtocols.phyDown
+      this.enbProtocols.phyDown,
+      this.ueProtocols.phyDown
     );
 
     this.ipPacketGenerator = new IPPacketGenerator();
 
-    this.addChild(this.ueProtocols);
     this.addChild(this.enbProtocols);
+    this.addChild(this.ueProtocols);
     this.addChild(this.entitiesConnector);
   }
 
-  createUEProtocols(resources) {
-    const ue = new PIXI.Container();
-
-    ue.endPoint = new StartPoint();
-    ue.endPoint.position.set(215, 10);
-
-    ue.pdcpUp = new enbPDCPView(resources);
-    ue.pdcpUp.position.set(0, 50);
-    ue.addChild(ue.pdcpUp);
-
-    ue.rlcUp = new RLC(resources);
-    ue.rlcUp.position.set(0, ue.pdcpUp.height + ue.pdcpUp.y + 50);
-    ue.addChild(ue.rlcUp);
-
-    ue.macUp = new MAC(resources);
-    ue.macUp.position.set(0, ue.rlcUp.y + ue.rlcUp.height + 50);
-    ue.addChild(ue.macUp);
-
-    ue.phyDown = new PHY(resources);
-    ue.phyDown.position.set(0, ue.macUp.y + ue.macUp.height + 50);
-    ue.addChild(ue.phyDown);
-
-    ue.startToPdcp = new ConnectorView(ue.endPoint, ue.pdcpUp);
-    ue.addChild(ue.startToPdcp);
-
-    ue.pdcpToRlc = new ConnectorView(ue.pdcpUp, ue.rlcUp);
-    ue.addChild(ue.pdcpToRlc);
-
-    ue.rlcToMac = new ConnectorView(ue.rlcUp, ue.macUp);
-    ue.addChild(ue.rlcToMac);
-
-    ue.macToPhy = new ConnectorView(ue.macUp, ue.phyDown);
-    ue.addChild(ue.macToPhy);
-
-    return ue;
-  }
-
-  createEnbProtocols(resources) {
+  createENBProtocols(resources) {
     const enb = new PIXI.Container();
-    enb.position.set(600, 0);
 
     enb.endPoint = new StartPoint();
-    enb.endPoint.position.set(215, 0);
+    enb.endPoint.position.set(215, 10);
 
-    enb.pdcpUp = new uePDCPView(resources, this.debugMode);
+    enb.pdcpUp = new enbPDCPView(resources);
     enb.pdcpUp.position.set(0, 50);
     enb.addChild(enb.pdcpUp);
 
-    enb.rlcUp = new RLCView(resources);
+    enb.rlcUp = new RLC(resources);
     enb.rlcUp.position.set(0, enb.pdcpUp.height + enb.pdcpUp.y + 50);
     enb.addChild(enb.rlcUp);
 
@@ -125,8 +87,46 @@ export class Simulation extends PIXI.Container {
     return enb;
   }
 
+  createUEProtocols(resources) {
+    const ue = new PIXI.Container();
+    ue.position.set(600, 0);
+
+    ue.endPoint = new StartPoint();
+    ue.endPoint.position.set(215, 0);
+
+    ue.pdcpUp = new uePDCPView(resources, this.debugMode);
+    ue.pdcpUp.position.set(0, 50);
+    ue.addChild(ue.pdcpUp);
+
+    ue.rlcUp = new RLCView(resources);
+    ue.rlcUp.position.set(0, ue.pdcpUp.height + ue.pdcpUp.y + 50);
+    ue.addChild(ue.rlcUp);
+
+    ue.macUp = new MAC(resources);
+    ue.macUp.position.set(0, ue.rlcUp.y + ue.rlcUp.height + 50);
+    ue.addChild(ue.macUp);
+
+    ue.phyDown = new PHY(resources);
+    ue.phyDown.position.set(0, ue.macUp.y + ue.macUp.height + 50);
+    ue.addChild(ue.phyDown);
+
+    ue.startToPdcp = new ConnectorView(ue.endPoint, ue.pdcpUp);
+    ue.addChild(ue.startToPdcp);
+
+    ue.pdcpToRlc = new ConnectorView(ue.pdcpUp, ue.rlcUp);
+    ue.addChild(ue.pdcpToRlc);
+
+    ue.rlcToMac = new ConnectorView(ue.rlcUp, ue.macUp);
+    ue.addChild(ue.rlcToMac);
+
+    ue.macToPhy = new ConnectorView(ue.macUp, ue.phyDown);
+    ue.addChild(ue.macToPhy);
+
+    return ue;
+  }
+
   async start() {
     const ipPacket = this.ipPacketGenerator.generate();
-    await this.ueProtocols.endPoint.addDataUnit(ipPacket);
+    await this.enbProtocols.endPoint.addDataUnit(ipPacket);
   }
 }
