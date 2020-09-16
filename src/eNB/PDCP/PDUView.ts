@@ -4,7 +4,7 @@ import {IPPacket} from '../../Common/IP/IPPacket';
 import {appear, quadraticTween} from '../../Common/tweens';
 import StretchableBoxView from '../../Common/StretchableBoxView';
 
-const ACTION_DURATION = 700;
+const ACTION_DURATION = 300;
 
 export default class PDUView extends PIXI.Graphics {
   packetBox: StretchableBoxView;
