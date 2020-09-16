@@ -11,7 +11,7 @@ export default class PDUView extends PIXI.Graphics {
   dataBox: StretchableBoxView;
   packet: PDCPDataUnit;
   headerBox: StretchableBoxView;
-  orderNumber: OrderNumber;
+  sequenceNumber: SequenceNumber;
   lockIcon: PIXI.Sprite;
   pduHeaderBox: StretchableBoxView;
 
@@ -31,8 +31,8 @@ export default class PDUView extends PIXI.Graphics {
     this.lockIcon.position.set(100, 15);
     this.dataBox.addChild(this.lockIcon);
 
-    this.orderNumber = new OrderNumber(packet.sequenceNumber);
-    this.orderNumber.position.set(-31, 0);
+    this.sequenceNumber = new SequenceNumber(packet.sequenceNumber);
+    this.sequenceNumber.position.set(-31, 0);
 
     this.pduHeaderBox = new StretchableBoxView('HDR', BG_MEDIUM_2, FG_1, 40, 50);
     this.pduHeaderBox.position.set(-72, 0);
@@ -40,7 +40,7 @@ export default class PDUView extends PIXI.Graphics {
     this.pivot.set(125, 25);
 
     this.addChild(this.pduHeaderBox);
-    this.addChild(this.orderNumber);
+    this.addChild(this.sequenceNumber);
     this.addChild(this.packetBox);
     this.addChild(this.dataBox);
     this.addChild(this.headerBox);
@@ -55,13 +55,13 @@ export default class PDUView extends PIXI.Graphics {
     );
   }
 
-  async giveOrderNumber(orderNumber: number) {
-    this.orderNumber = new OrderNumber(orderNumber);
-    this.orderNumber.alpha = 0.0;
-    this.orderNumber.position.set(-31, 0);
-    this.addChild(this.orderNumber);
+  async setSequenceNumber(sequenceNumber: number) {
+    this.sequenceNumber = new SequenceNumber(sequenceNumber);
+    this.sequenceNumber.alpha = 0.0;
+    this.sequenceNumber.position.set(-31, 0);
+    this.addChild(this.sequenceNumber);
 
-    return appear(this.orderNumber, ACTION_DURATION);
+    return appear(this.sequenceNumber, ACTION_DURATION);
   }
 
   async addHeader() {
@@ -82,8 +82,8 @@ export default class PDUView extends PIXI.Graphics {
   }
 }
 
-class OrderNumber extends PIXI.Graphics {
-  constructor(orderNumber: number) {
+class SequenceNumber extends PIXI.Graphics {
+  constructor(sequenceNumber: number) {
     super();
 
     this.beginFill(BG_MEDIUM_2);
@@ -91,7 +91,7 @@ class OrderNumber extends PIXI.Graphics {
     this.endFill();
 
     const caption = new PIXI.Text(
-      '#' + orderNumber.toString(),
+      '#' + sequenceNumber.toString(),
       {
         fontSize: 14,
         fill: FG_1,

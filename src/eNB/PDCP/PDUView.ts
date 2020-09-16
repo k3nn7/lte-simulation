@@ -11,7 +11,7 @@ export default class PDUView extends PIXI.Graphics {
   dataBox: StretchableBoxView;
   packet: IPPacket;
   headerBox: StretchableBoxView;
-  orderNumber: OrderNumber;
+  sequenceNumber: SequenceNumber;
   lockIcon: PIXI.Sprite;
   pduHeaderBox: StretchableBoxView;
 
@@ -46,13 +46,13 @@ export default class PDUView extends PIXI.Graphics {
     );
   }
 
-  async giveOrderNumber(orderNumber: number) {
-    this.orderNumber = new OrderNumber(orderNumber);
-    this.orderNumber.alpha = 0.0;
-    this.orderNumber.position.set(-31, 0);
-    this.addChild(this.orderNumber);
+  async setSequenceNumber(sequenceNumber: number) {
+    this.sequenceNumber = new SequenceNumber(sequenceNumber);
+    this.sequenceNumber.alpha = 0.0;
+    this.sequenceNumber.position.set(-31, 0);
+    this.addChild(this.sequenceNumber);
 
-    return appear(this.orderNumber, ACTION_DURATION);
+    return appear(this.sequenceNumber, ACTION_DURATION);
   }
 
   async addHeader() {
@@ -78,8 +78,8 @@ export default class PDUView extends PIXI.Graphics {
   }
 }
 
-class OrderNumber extends PIXI.Graphics {
-  constructor(orderNumber: number) {
+class SequenceNumber extends PIXI.Graphics {
+  constructor(sequenceNumber: number) {
     super();
 
     this.beginFill(BG_MEDIUM_2);
@@ -87,7 +87,7 @@ class OrderNumber extends PIXI.Graphics {
     this.endFill();
 
     const caption = new PIXI.Text(
-      '#' + orderNumber.toString(),
+      '#' + sequenceNumber.toString(),
       {
         fontSize: 14,
         fill: FG_1,

@@ -102,7 +102,7 @@ export default class PDCPView extends LayerView {
     this.actionsContainer.sequenceAction.activate();
     this.sequenceNumber = this.pdu.packet.sequenceNumber;
     this.actionsContainer.sequenceAction.setSequenceNumber(this.sequenceNumber);
-    await this.pdu.giveOrderNumber(this.sequenceNumber);
+    await this.pdu.setSequenceNumber(this.sequenceNumber);
     this.actionsContainer.sequenceAction.deactivate();
 
   }
