@@ -3,10 +3,11 @@ import {BG_MEDIUM_2} from 'Common/colors';
 import TWEEN from "@tweenjs/tween.js";
 
 export default class MinimizedPacket extends PIXI.Graphics {
-  constructor(size) {
+  constructor(size, packets) {
     super();
 
     this.size = size;
+    this.packets = packets;
 
     const val1 = Math.random(),
       val2 = Math.random(),

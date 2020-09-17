@@ -70,8 +70,10 @@ export default class RLC extends Layer {
     this.sdu.acceptsPackets = false;
     this.body.removeChild(this.timer);
 
-    const flatSDU = new FlatSDU(),
-      flatSDURetransmission = new FlatSDU(90);
+    const rawPackets = this.sdu.packets.map((packet) => packet.wrappedPacket);
+
+    const flatSDU = new FlatSDU(rawPackets),
+      flatSDURetransmission = new FlatSDU(rawPackets, 90);
     flatSDU.alpha = 0.0;
     flatSDURetransmission.alpha = 0.0;
     flatSDU.position.set(138, 60);
@@ -88,7 +90,7 @@ export default class RLC extends Layer {
 
     scaleDown(flatSDU, 500);
 
-    this.channelB(new MinimizedPacket(50));
+    this.channelB(new MinimizedPacket(50, flatSDU.packets));
 
     this.initEmptySDU();
   }

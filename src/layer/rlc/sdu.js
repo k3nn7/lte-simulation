@@ -5,7 +5,6 @@ import {moveToThePoint} from 'Common/tweens';
 
 const WIDTH = 122;
 const HEIGHT = 20;
-const CAPACITY = WIDTH;
 
 export default class SDU extends PIXI.Graphics {
   constructor() {
@@ -19,16 +18,6 @@ export default class SDU extends PIXI.Graphics {
     this.drawRect(0, 0, WIDTH, HEIGHT);
 
     this.acceptsPackets = true;
-  }
-
-  makeClone() {
-    const sdu = new SDU();
-
-    sdu.size = this.size;
-    sdu.packets = this.packets.map(packet => packet.makeClone());
-    sdu.packets.forEach(packet => sdu.addChild(packet));
-
-    return sdu;
   }
 
   async addPacket(packet) {

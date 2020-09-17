@@ -6,10 +6,10 @@ const WIDTH = 124;
 const HEIGHT = 20;
 
 export default class FlatSDU extends PIXI.Graphics {
-  constructor(width = WIDTH) {
+  constructor(packets, width = WIDTH) {
     super();
 
-
+    this.packets = packets;
     this.beginFill(BG_DARK_2);
     this.drawRect(0, 0, width, HEIGHT);
     this.endFill();
