@@ -110,7 +110,7 @@ export async function timeTween(onUpdate, onStart, onComplete, time) {
   return new TWEEN.Tween(angle)
     .to(to, time)
     .easing(TWEEN.Easing.Linear.None)
-    .onUpdate(() => onUpdate(angle))
+    .onUpdate(() => onUpdate(angle.angle))
     .onStart(onStart)
     .onComplete(onComplete)
     .start();

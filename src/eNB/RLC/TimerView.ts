@@ -27,11 +27,10 @@ export default class TimerView extends PIXI.Container {
     this.timer.endFill();
   }
 
-  async startCounting(time: number) {
-    return timeTween(
+  async startCounting(time: number): Promise<void> {
+    return new Promise(resolve => timeTween(
       (angle: number) => {
         this.drawTimer(angle);
-        console.log('angle: ', angle);
       },
       () => {
         this.isCounting = true;
@@ -40,8 +39,9 @@ export default class TimerView extends PIXI.Container {
       () => {
         this.isCounting = false;
         this.isFinished = true;
+        resolve();
       },
       time
-    );
+    ));
   }
 }
