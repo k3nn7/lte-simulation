@@ -1,7 +1,5 @@
 import * as PIXI from 'pixi.js';
 import StartPoint from './layer/startPoint';
-import MAC from './layer/mac';
-import PHY from './layer/phy';
 import KneeConnector from './layer/kneeConnector';
 import RLCView from './UE/RLC';
 import {IPPacketGenerator} from 'Common/IP';
@@ -10,6 +8,10 @@ import ButtonView from 'Common/ButtonView';
 import enbPDCPView from './eNB/PDCP/PDCPView';
 import uePDCPView from './UE/PDCP/PDCPView' ;
 import enbRLCView from './eNB/RLC/RLCView';
+import enbMACView from './eNB/MAC/MACView';
+import ueMACView from './UE/MAC/MACView';
+import enbPHYView from './eNB/PHY/PHYView';
+import uePHYView from './UE/PHY/PHYView';
 
 export class Simulation extends PIXI.Container {
   constructor(resources, ticker, debugMode) {
@@ -64,11 +66,11 @@ export class Simulation extends PIXI.Container {
     enb.rlcUp.position.set(0, enb.pdcpUp.height + enb.pdcpUp.y + 50);
     enb.addChild(enb.rlcUp);
 
-    enb.macUp = new MAC(resources);
+    enb.macUp = new enbMACView(resources);
     enb.macUp.position.set(0, enb.rlcUp.y + enb.rlcUp.height + 50);
     enb.addChild(enb.macUp);
 
-    enb.phyDown = new PHY(resources);
+    enb.phyDown = new enbPHYView(resources);
     enb.phyDown.position.set(0, enb.macUp.y + enb.macUp.height + 50);
     enb.addChild(enb.phyDown);
 
@@ -102,11 +104,11 @@ export class Simulation extends PIXI.Container {
     ue.rlcUp.position.set(0, ue.pdcpUp.height + ue.pdcpUp.y + 50);
     ue.addChild(ue.rlcUp);
 
-    ue.macUp = new MAC(resources);
+    ue.macUp = new ueMACView(resources);
     ue.macUp.position.set(0, ue.rlcUp.y + ue.rlcUp.height + 50);
     ue.addChild(ue.macUp);
 
-    ue.phyDown = new PHY(resources);
+    ue.phyDown = new uePHYView(resources);
     ue.phyDown.position.set(0, ue.macUp.y + ue.macUp.height + 50);
     ue.addChild(ue.phyDown);
 
