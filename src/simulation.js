@@ -1,9 +1,7 @@
 import * as PIXI from 'pixi.js';
-import StartPoint from './layer/startPoint';
-import KneeConnector from './layer/kneeConnector';
 import RLCView from './UE/RLC';
 import {IPPacketGenerator} from 'Common/IP';
-import {ConnectorView} from 'Common/Connector';
+import {ConnectorView} from 'Common/Connector/ConnectorView';
 import ButtonView from 'Common/ButtonView';
 import enbPDCPView from './eNB/PDCP/PDCPView';
 import uePDCPView from './UE/PDCP/PDCPView' ;
@@ -12,6 +10,8 @@ import enbMACView from './eNB/MAC/MACView';
 import ueMACView from './UE/MAC/MACView';
 import enbPHYView from './eNB/PHY/PHYView';
 import uePHYView from './UE/PHY/PHYView';
+import KneeConnector from 'Common/Connector/KneeConnector';
+import StartPoint from 'Common/StartPoint';
 
 export class Simulation extends PIXI.Container {
   constructor(resources, ticker, debugMode) {

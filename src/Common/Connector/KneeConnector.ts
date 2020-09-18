@@ -4,7 +4,12 @@ import {BG_MEDIUM_2} from 'Common/colors';
 import {moveToThePoint, scaleDown, scaleUp} from 'Common/tweens';
 
 export default class KneeConnector extends Connectable {
-  constructor(componentA, componentB) {
+  channelAPosition: PIXI.Point;
+  channelBPosition: PIXI.Point;
+  knee1Position: PIXI.Point;
+  knee2Position: PIXI.Point;
+
+  constructor(componentA: Connectable, componentB: Connectable) {
     super();
 
     const pointA = new PIXI.Point(
@@ -41,7 +46,7 @@ export default class KneeConnector extends Connectable {
     this.channelBPosition = new PIXI.Point(pointD.x - pointA.x, pointD.y - pointA.y);
   }
 
-  async onChannelA(data) {
+  async onChannelA(data: any) {
     this.addChild(data);
     data.scale.set(0, 0);
     data.position = this.channelAPosition;
