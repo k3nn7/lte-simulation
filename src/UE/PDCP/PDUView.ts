@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js';
-import {BG_DARK_2, BG_MEDIUM_2, FG_1, FG_2} from '../../Common/colors';
-import {appear, disappear, quadraticTween} from '../../Common/tweens';
-import StretchableBoxView from '../../Common/StretchableBoxView';
-import {PDCPDataUnit} from "../../Common/DataUnit/PDCPDataUnit";
+import {BG_DARK_2, BG_MEDIUM_2, FG_1, FG_2} from 'Common/Colors';
+import {appear, disappear, quadraticTween} from 'Common/tweens';
+import StretchableBoxView from 'Common/StretchableBoxView';
+import {PDCPDataUnit} from "Common/DataUnit/PDCPDataUnit";
 
 const ACTION_DURATION = 200;
 

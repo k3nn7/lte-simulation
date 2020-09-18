@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import {BG_DARK_2, FG_1} from 'Common/colors';
+import {BG_DARK_2, FG_1} from 'Common/Colors';
 import {PDCPDataUnit} from '../../Common/DataUnit/PDCPDataUnit';
 import TimerView from './TimerView';
 

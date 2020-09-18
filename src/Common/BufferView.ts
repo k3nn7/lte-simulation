@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import {BG_DARK_2, FG_2} from 'Common/colors';
+import {BG_DARK_2, FG_2} from 'Common/Colors';
 
 export default class BufferView extends PIXI.Graphics {
   title: PIXI.Text;

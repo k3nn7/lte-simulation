@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import {BG_DARK_2, FG_2} from 'Common/colors';
+import {BG_DARK_2, FG_2} from 'Common/Colors';
 import {Mutex} from 'async-mutex';
 import {moveToThePoint} from 'Common/tweens';
 import FlatSDU from "./FlatSDU";
