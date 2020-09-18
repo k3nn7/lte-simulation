@@ -103,3 +103,17 @@ export async function quadraticTween(from, to, duration, onUpdate) {
       .start();
   });
 }
+
+export async function timeTween(onUpdate, onStart, onComplete, time) {
+  const angle = {angle: -Math.PI / 2};
+  const to = {angle: 1.5 * Math.PI};
+  return new TWEEN.Tween(angle)
+    .to(to, time)
+    .easing(TWEEN.Easing.Linear.None)
+    .onUpdate(() => onUpdate(angle))
+    .onStart(onStart)
+    .onComplete(onComplete)
+    .start();
+}
+
+

@@ -1,15 +1,15 @@
 import * as PIXI from 'pixi.js';
-import RLC from './layer/rlc';
 import StartPoint from './layer/startPoint';
 import MAC from './layer/mac';
 import PHY from './layer/phy';
 import KneeConnector from './layer/kneeConnector';
-import RLCView from './eNB/RLC';
+import RLCView from './UE/RLC';
 import {IPPacketGenerator} from 'Common/IP';
 import {ConnectorView} from 'Common/Connector';
 import ButtonView from 'Common/ButtonView';
 import enbPDCPView from './eNB/PDCP/PDCPView';
 import uePDCPView from './UE/PDCP/PDCPView' ;
+import enbRLCView from './eNB/RLC/RLCView';
 
 export class Simulation extends PIXI.Container {
   constructor(resources, ticker, debugMode) {
@@ -60,7 +60,7 @@ export class Simulation extends PIXI.Container {
     enb.pdcpUp.position.set(0, 50);
     enb.addChild(enb.pdcpUp);
 
-    enb.rlcUp = new RLC(resources);
+    enb.rlcUp = new enbRLCView(resources);
     enb.rlcUp.position.set(0, enb.pdcpUp.height + enb.pdcpUp.y + 50);
     enb.addChild(enb.rlcUp);
 

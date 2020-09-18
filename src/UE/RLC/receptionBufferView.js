@@ -1,4 +1,4 @@
-import BufferView from 'Common/bufferView';
+import BufferView from 'Common/BufferView';
 import {Mutex} from 'async-mutex';
 import {disappear, moveToThePoint} from 'Common/tweens';
 

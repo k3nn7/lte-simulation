@@ -1,5 +1,5 @@
-import BufferItemView from 'Common/bufferItemView';
-import LayerView from 'Common/layerView';
+import BufferItemView from 'Common/BufferItemView';
+import LayerView from 'Common/LayerView';
 import ReceptionBufferView from "./receptionBufferView";
 
 export default class RLCView extends LayerView {
