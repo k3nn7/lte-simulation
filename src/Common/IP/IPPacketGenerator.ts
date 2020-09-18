@@ -1,4 +1,4 @@
-import {getRandomInt} from 'Common/random';
+import {getRandomInt} from 'Common/Random';
 import {IPPacket} from 'Common/IP/IPPacket';
 
 export class IPPacketGenerator {
