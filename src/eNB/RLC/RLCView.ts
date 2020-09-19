@@ -71,7 +71,6 @@ export default class RLCView extends LayerView {
     }
   }
 
-
   async transmitSDU() {
     this.sdu.acceptsPackets = false;
     this.body.removeChild(this.timer);

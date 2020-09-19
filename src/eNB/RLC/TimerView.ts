@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import {BG_MEDIUM_3} from 'Common/colors';
+import {BG_MEDIUM_3} from 'Common/Colors';
 import {timeTween} from "../../Common/tweens";
 
 const START_ANGLE = -Math.PI / 2;

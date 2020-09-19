@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import {BG_MEDIUM_2, FG_2} from './colors';
+import {BG_MEDIUM_2, FG_2} from './Colors';
 
 export default class ButtonView extends PIXI.Graphics {
   onClick: () => void;

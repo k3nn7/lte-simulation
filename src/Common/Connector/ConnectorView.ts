@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import {BG_MEDIUM_2} from 'Common/colors';
+import {BG_MEDIUM_2} from 'Common/Colors';
 import {moveToThePoint, scaleDown, scaleUp} from 'Common/tweens';
 import {ConnectorItemView} from 'Common/Connector/ConnectorItemView';
 import Connectable, {Channel} from 'Common/Connectable';

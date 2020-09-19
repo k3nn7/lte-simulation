@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import {heartbeat} from 'Common/tweens';
-import {BG_MEDIUM_2} from 'Common/colors';
+import {BG_MEDIUM_2} from 'Common/Colors';
 import {DataUnit} from "../DataUnit";
 
 export class ConnectorItemView extends PIXI.Graphics {

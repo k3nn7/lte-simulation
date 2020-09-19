@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
-import {BG_MEDIUM_2, FG_1} from 'Common/colors';
-import {PDCPDataUnit} from '../../Common/DataUnit/PDCPDataUnit';
+import {BG_MEDIUM_2, FG_1} from 'Common/Colors';
+import {PDCPDataUnit} from 'Common/DataUnit/PDCPDataUnit';
 
 export default class BufferItemView extends PIXI.Graphics {
   wrappedItem: PDCPDataUnit;

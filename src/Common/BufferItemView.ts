@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import {BG_MEDIUM_2, FG_1} from 'Common/colors';
+import {BG_MEDIUM_2, FG_1} from 'Common/Colors';
 
 export default class BufferItemView extends PIXI.Graphics {
   wrappedItem: any;
