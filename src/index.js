@@ -4,7 +4,7 @@ import './main.css';
 
 import * as PIXI from 'pixi.js';
 import TWEEN from '@tweenjs/tween.js';
-import {Simulation} from "./simulation";
+import {Simulation} from "./Simulation/Simulation";
 
 const application = new PIXI.Application({width: 1200, height: 900, transparent: true, antialias: true});
 
