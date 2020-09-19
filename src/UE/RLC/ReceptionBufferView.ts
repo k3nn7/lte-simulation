@@ -1,16 +1,21 @@
+import * as PIXI from 'pixi.js';
 import BufferView from 'Common/BufferView';
 import {Mutex} from 'async-mutex';
 import {disappear, moveToThePoint} from 'Common/tweens';
+import BufferItemView from 'Common/BufferItemView';
 
 export default class ReceptionBufferView extends BufferView {
-  constructor(resources) {
+  mutex: Mutex;
+  items: Array<BufferItemView>
+
+  constructor(resources: Partial<Record<string, PIXI.LoaderResource>>) {
     super(resources, 'Reception Buffer');
 
     this.mutex = new Mutex();
     this.items = [];
   }
 
-  async addItem(item) {
+  async addItem(item: BufferItemView) {
     const release = await this.mutex.acquire();
 
     item.position.set(5, 5);
@@ -22,7 +27,7 @@ export default class ReceptionBufferView extends BufferView {
     release();
   }
 
-  async popItem() {
+  async popItem(): Promise<BufferItemView> {
     const release = await this.mutex.acquire();
 
     const item = this.items.shift();

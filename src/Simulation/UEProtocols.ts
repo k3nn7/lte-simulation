@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import StartPoint from "Common/StartPoint";
 import uePDCPView from "../UE/PDCP/PDCPView";
-import RLCView from "../UE/RLC";
+import RLCView from "../UE/RLC/RLCView";
 import ueMACView from "../UE/MAC/MACView";
 import uePHYView from "../UE/PHY/PHYView";
 import {ConnectorView} from "Common/Connector/ConnectorView";

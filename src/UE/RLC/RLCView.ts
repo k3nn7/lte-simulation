@@ -1,9 +1,15 @@
+import * as PIXI from 'pixi.js';
 import BufferItemView from 'Common/BufferItemView';
 import LayerView from 'Common/LayerView';
 import ReceptionBufferView from "./receptionBufferView";
+import {DataUnit} from "../../Common/DataUnit";
+import FlatSDU from "../../eNB/RLC/FlatSDU";
+import {PDCPDataUnit} from "../../Common/DataUnit/PDCPDataUnit";
 
 export default class RLCView extends LayerView {
-  constructor(resources) {
+  receptionBuffer: ReceptionBufferView
+
+  constructor(resources: Partial<Record<string, PIXI.LoaderResource>>) {
     super(resources, 'RLC');
 
     this.receptionBuffer = new ReceptionBufferView(resources);
@@ -13,7 +19,7 @@ export default class RLCView extends LayerView {
     setTimeout(() => this.forwardSDU(), 5000);
   }
 
-  async onChannelB(data) {
+  async onChannelB(data: DataUnit) {
     const bufferItem = new BufferItemView(data, 'SDU');
     await this.receptionBuffer.addItem(bufferItem);
   }
@@ -22,7 +28,7 @@ export default class RLCView extends LayerView {
     if (this.receptionBuffer.items.length > 0) {
       const item = await this.receptionBuffer.popItem();
 
-      item.wrappedItem.packets.forEach((pdcpDataUnit) => {
+      item.wrappedItem.packets.forEach((pdcpDataUnit: PDCPDataUnit) => {
         this.channelA(pdcpDataUnit);
       });
     }
