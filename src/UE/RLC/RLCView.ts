@@ -30,7 +30,7 @@ export default class RLCView extends LayerView {
       const bufferItem = new BufferItemView(data, 'SDU');
       await this.receptionBuffer.addItem(bufferItem);
 
-      this.channelB.sendOut(new PDCPAck(data.packets[0], 1));
+      this.channelB(new PDCPAck(data.packets[0], 1));
     }
   }
 
@@ -39,7 +39,7 @@ export default class RLCView extends LayerView {
       const item = await this.receptionBuffer.popItem();
 
       item.wrappedItem.packets.forEach((pdcpDataUnit: PDCPDataUnit) => {
-        this.channelA.sendOut(pdcpDataUnit);
+        this.channelA(pdcpDataUnit);
       });
     }
 

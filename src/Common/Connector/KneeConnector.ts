@@ -1,7 +1,9 @@
 import * as PIXI from 'pixi.js';
-import Connectable from 'Common/Connectable';
+import Connectable, {Channel} from 'Common/Connectable';
 import {BG_MEDIUM_2} from 'Common/Colors';
 import {moveToThePoint, scaleDown, scaleUp} from 'Common/tweens';
+import {DataUnit} from "../DataUnit";
+import {ConnectorItemView} from "./ConnectorItemView";
 
 export default class KneeConnector extends Connectable {
   channelAPosition: PIXI.Point;
@@ -35,30 +37,49 @@ export default class KneeConnector extends Connectable {
     this.lineTo(pointC.x - pointA.x, pointC.y - pointA.y);
     this.lineTo(pointD.x - pointA.x, pointD.y - pointA.y);
 
-    componentA.setChannelB((data) => this.onChannelA(data));
-
-    this.setChannelB((data) => componentB.onChannelB(data));
-    this.setChannelA((data) => componentA.onChannelB(data));
-
     this.channelAPosition = new PIXI.Point(0, 0);
     this.knee1Position = new PIXI.Point(pointB.x - pointA.x, pointB.y - pointA.y);
     this.knee2Position = new PIXI.Point(pointC.x - pointA.x, pointC.y - pointA.y);
     this.channelBPosition = new PIXI.Point(pointD.x - pointA.x, pointD.y - pointA.y);
+
+    componentA.setChannelB((dataUnit: DataUnit) => this.onChannelA(dataUnit));
+    componentB.setChannelB((dataUnit: DataUnit) => this.onChannelB(dataUnit));
+
+    this.setChannelA((dataUnit: DataUnit) => componentA.onChannelB(dataUnit));
+    this.setChannelB((dataUnit: DataUnit) => componentB.onChannelB(dataUnit));
   }
 
-  async onChannelA(data: any) {
-    this.addChild(data);
-    data.scale.set(0, 0);
-    data.position = this.channelAPosition;
-    await scaleUp(data, 200);
-    data.activate();
+  async onChannelA(data: DataUnit) {
+    await this.transferData(
+      data,
+      [this.channelAPosition, this.knee1Position, this.knee2Position, this.channelBPosition],
+      this.channelB
+    );
+  }
 
-    await moveToThePoint(data, this.knee1Position, 500);
-    await moveToThePoint(data, this.knee2Position, 500);
-    await moveToThePoint(data, this.channelBPosition, 500);
-    await scaleDown(data, 200);
-    data.stop();
-    this.removeChild(data);
-    this.channelB(data);
+  async onChannelB(data: DataUnit) {
+    await this.transferData(
+      data,
+      [this.channelBPosition, this.knee2Position, this.knee1Position, this.channelAPosition],
+      this.channelA
+    );
+  }
+
+  async transferData(dataUnit: DataUnit, path: PIXI.Point[], channel: Channel) {
+    const itemView = new ConnectorItemView(dataUnit);
+    this.addChild(itemView);
+    itemView.scale.set(0, 0);
+    itemView.position = path[0];
+    await scaleUp(itemView, 200);
+    itemView.activate();
+
+    for (let i = 1; i < path.length; i++) {
+      await moveToThePoint(itemView, path[i], 500);
+    }
+
+    await scaleDown(itemView, 200);
+    itemView.stop();
+    this.removeChild(itemView);
+    channel(itemView.dataUnit);
   }
 }

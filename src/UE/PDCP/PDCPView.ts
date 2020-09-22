@@ -43,7 +43,7 @@ export default class PDCPView extends LayerView {
     if (this.receptionBuffer.items.length > 0) {
       const item = await this.receptionBuffer.popItem();
 
-      this.channelA.sendOut(item.wrappedItem);
+      this.channelA(item.wrappedItem);
     }
 
     setTimeout(() => this.forwardPDU(), 5000);
