@@ -4,8 +4,10 @@
 Podwarstwa RLC odbiera jednostki danych z podwarstw PDCP oraz RLC a następnie przekazuje je do podwarstwy MAC. RLC może działać w jednym z 3 trybów: transparentnym, z potwierdzeniami lub bez potwierdzeń. W zależności od trybu działania odpowiada on za:
 
 \begin{enumerate}
-	\item Segmentację i\\lub łączenie transmitowanych jednostek danych tak aby maksymalnie wykorzystać dostępne pasmo
+	\item Segmentację i\\lub łączenie transmitowanych jednostek danych
 	\item Wykrywanie zduplikowanych jednostek danych podczas ich odbierania z niższych warstw
 	\item Zapewnienie dostarczenia jednostek danych w odpowiedniej kolejności
 	\item Naprawa błędów poprzez ponowne wysyłanie jednostek danych
 \end{enumerate}
+
+Pierwszą z odpowiedzialności warstwy RLC jest dostosowanie rozmiaru transmitowanych jednostek danych tak aby możliwe było przesłanie ich do podwarstwy MAC oraz aby było to wykonane możliwe jak najbardziej optymalnie. W tym celu, po stronie urządzenia nadającego, jednostki danych otrzymane z podwarstwy PDCP są dzielone na mniejsze fragmenty jeżeli są zbyt duże aby było możliwe wysłanie ich w całości do podwarstwy MAC. Następnie po stronie urządzenia odbierającego jednostki danych są z powrotem łączone i przekazywane wyżej do podwarstwy PDCP. Natomiast mniejsze jednostki danych są łączone razem tak aby możliwie maksymalnie wykorzystać dostępne łącze. 
