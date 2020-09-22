@@ -2,11 +2,13 @@ import * as PIXI from 'pixi.js';
 import {BG_MEDIUM_2} from 'Common/Colors';
 import {PDCPDataUnit} from "../../Common/DataUnit/PDCPDataUnit";
 import {heartbeat} from "../../Common/tweens";
+import {DataUnit, Type} from 'Common/DataUnit';
 
-export default class MinimizedPacket extends PIXI.Graphics {
+export default class MinimizedPacket extends PIXI.Graphics implements DataUnit {
   size: number;
   packets: PDCPDataUnit[];
   tween: any;
+  type: Type;
 
   constructor(size: number, packets: PDCPDataUnit[]) {
     super();
@@ -29,6 +31,7 @@ export default class MinimizedPacket extends PIXI.Graphics {
     this.endFill();
 
     this.tween = heartbeat(this);
+    this.type = Type.Data;
   }
 
   activate() {
