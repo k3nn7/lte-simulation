@@ -5,10 +5,12 @@ import {DataUnit} from "../DataUnit";
 
 export class ConnectorItemView extends PIXI.Graphics {
   tween: any;
+  dataUnit: DataUnit;
 
   constructor(dataUnit: DataUnit) {
     super();
 
+    this.dataUnit = dataUnit;
     this.beginFill(BG_MEDIUM_2);
     this.tint = dataUnit.tint;
     this.drawCircle(0, 0, 10);
