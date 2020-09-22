@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js';
-import StartPoint from "../Common/StartPoint";
-import enbPDCPView from "../eNB/PDCP/PDCPView";
-import enbRLCView from "../eNB/RLC/RLCView";
-import enbMACView from "../eNB/MAC/MACView";
-import enbPHYView from "../eNB/PHY/PHYView";
-import {ConnectorView} from "../Common/Connector/ConnectorView";
+import StartPoint from 'Common/StartPoint';
+import enbPDCPView from '../eNB/PDCP/PDCPView';
+import enbRLCView from '../eNB/RLC/RLCView';
+import enbMACView from '../eNB/MAC/MACView';
+import enbPHYView from '../eNB/PHY/PHYView';
+import {ConnectorView} from 'Common/Connector/ConnectorView';
 
 export class ENBProtocols extends PIXI.Container {
   startPoint: StartPoint;
