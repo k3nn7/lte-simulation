@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js';
-import StartPoint from "Common/StartPoint";
-import uePDCPView from "../UE/PDCP/PDCPView";
-import RLCView from "../UE/RLC/RLCView";
-import ueMACView from "../UE/MAC/MACView";
-import uePHYView from "../UE/PHY/PHYView";
-import {ConnectorView} from "Common/Connector/ConnectorView";
+import StartPoint from 'Common/StartPoint';
+import uePDCPView from '../UE/PDCP/PDCPView';
+import RLCView from '../UE/RLC/RLCView';
+import ueMACView from '../UE/MAC/MACView';
+import uePHYView from '../UE/PHY/PHYView';
+import {ConnectorView} from 'Common/Connector/ConnectorView';
 
 export class UEProtocols extends PIXI.Container {
   endPoint: StartPoint;
@@ -12,6 +12,7 @@ export class UEProtocols extends PIXI.Container {
   rlcUp: RLCView;
   macUp: ueMACView;
   phyDown: uePHYView;
+
   startToPdcp: ConnectorView
   pdcpToRlc: ConnectorView;
   rlcToMac: ConnectorView;
@@ -29,7 +30,7 @@ export class UEProtocols extends PIXI.Container {
     this.pdcpUp.position.set(0, 50);
     this.addChild(this.pdcpUp);
 
-    this.rlcUp = new RLCView(resources);
+    this.rlcUp = new RLCView(resources, debugMode);
     this.rlcUp.position.set(0, this.pdcpUp.height + this.pdcpUp.y + 50);
     this.addChild(this.rlcUp);
 

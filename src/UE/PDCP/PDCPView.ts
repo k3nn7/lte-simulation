@@ -21,7 +21,7 @@ export default class PDCPView extends LayerView {
 
   sendPacketButton: ButtonView;
 
-  constructor(resources: Partial<Record<string, PIXI.LoaderResource>>, debugMode: boolean = false) {
+  constructor(resources: Partial<Record<string, PIXI.LoaderResource>>, debugMode: boolean) {
     super(resources, 'PDCP');
 
     this.mutex = new Mutex();
@@ -33,20 +33,7 @@ export default class PDCPView extends LayerView {
     this.receptionBuffer.position.set(10, 10);
     this.body.addChild(this.receptionBuffer);
 
-    if (debugMode) {
-      let sequenceNumber = 0;
-      this.sendPacketButton = new ButtonView('+', 20, 20);
-      this.sendPacketButton.setOnClick(() => {
-        this.onChannelB(
-          new PDCPDataUnit(
-            new IPPacket('foooo sdafasdfasdfasdfasdfasdf dsfafdsfasfasdfa', 10),
-            sequenceNumber++
-          )
-        );
-      });
-      this.sendPacketButton.position.set(5, 120);
-      this.addChild(this.sendPacketButton);
-    }
+    this.initDebugMode(debugMode);
 
     this.sequenceNumber = 0;
     setTimeout(() => this.forwardPDU(), 5000);
@@ -56,7 +43,7 @@ export default class PDCPView extends LayerView {
     if (this.receptionBuffer.items.length > 0) {
       const item = await this.receptionBuffer.popItem();
 
-      this.channelA(item.wrappedItem);
+      this.channelA.sendOut(item.wrappedItem);
     }
 
     setTimeout(() => this.forwardPDU(), 5000);
@@ -110,5 +97,22 @@ export default class PDCPView extends LayerView {
 
   async popPacket() {
     return scaleDown(this.pdu, 500);
+  }
+
+  private initDebugMode(debugMode: boolean) {
+    if (!debugMode) return;
+
+    let sequenceNumber = 0;
+    this.sendPacketButton = new ButtonView('+', 20, 20);
+    this.sendPacketButton.setOnClick(() => {
+      this.onChannelB(
+        new PDCPDataUnit(
+          new IPPacket('foooo sdafasdfasdfasdfasdfasdf dsfafdsfasfasdfa', 10),
+          sequenceNumber++
+        )
+      );
+    });
+    this.sendPacketButton.position.set(5, 120);
+    this.addChild(this.sendPacketButton);
   }
 }
