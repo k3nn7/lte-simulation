@@ -1,13 +1,52 @@
 \chapter{Podwarstwa Radio Link Control}
 \label{cha:rlc}
 
-Podwarstwa RLC odbiera jednostki danych z podwarstw PDCP oraz RLC a następnie przekazuje je do podwarstwy MAC. RLC może działać w jednym z 3 trybów: transparentnym, z potwierdzeniami lub bez potwierdzeń. W zależności od trybu działania odpowiada on za:
+Podwarstwa RLC (Radio Link Control) jest drugą z podwarstw warstwy Access Stratum. Odbiera ona jednostki danych z podwarstw PDCP oraz RRC a następnie przekazuje je do podwarstwy MAC. RLC może działać w jednym z 3 trybów transmisji: transparentnym, z potwierdzeniami lub bez potwierdzeń. Jest ona odpowiedzialna za:
 
 \begin{enumerate}
-	\item Segmentację i\\lub łączenie transmitowanych jednostek danych
+	\item Segmentację i/lub łączenie transmitowanych jednostek danych
 	\item Wykrywanie zduplikowanych jednostek danych podczas ich odbierania z niższych warstw
 	\item Zapewnienie dostarczenia jednostek danych w odpowiedniej kolejności
 	\item Naprawa błędów poprzez ponowne wysyłanie jednostek danych
 \end{enumerate}
 
-Pierwszą z odpowiedzialności warstwy RLC jest dostosowanie rozmiaru transmitowanych jednostek danych tak aby możliwe było przesłanie ich do podwarstwy MAC oraz aby było to wykonane możliwe jak najbardziej optymalnie. W tym celu, po stronie urządzenia nadającego, jednostki danych otrzymane z podwarstwy PDCP są dzielone na mniejsze fragmenty jeżeli są zbyt duże aby było możliwe wysłanie ich w całości do podwarstwy MAC. Następnie po stronie urządzenia odbierającego jednostki danych są z powrotem łączone i przekazywane wyżej do podwarstwy PDCP. Natomiast mniejsze jednostki danych są łączone razem tak aby możliwie maksymalnie wykorzystać dostępne łącze. 
+\section{Segmentacja i łączenie jednostek danych}
+
+Zanim podwarstwa RLC po stronie urządzenia transmitującego prześle dane do odbiornika musi poczekać na informację z podwarstwy MAC o tym, że własnie pojawiła się możliwość transmisji danych. Do tego czasu podwarstwa RLC przechowuje jednostki danych, które otrzymała z wyższych warstw w buforze transmisyjnym. Razem z informacją o możliwości transmisji podwarstwa MAC wysyła również informację o rozmiarze bloku transportowego czyli o tym jaka ilośc danych może zostać przesłana. Rozmiar dostępnego bloku transportowego może być za każdym razem inny i zależy on m.in. od jakości połączenia. Z tego powodu podwarstwa RLC musi dostosowywać rozmiar jednostek danych wysyłanych do podwarstwy MAC do rozmiaru bloku transportowego.
+
+W tym celu jednostki danych, zbyt duże aby w całości zmieścić się w bloku transportowym, są dzielone na mniejsze fragmenty i wysyłane w dwóch lub więcej blokach transportowych. Natomiast jeżeli jednostki danych są dużo mniejsze od bloku transportowego to kilka jednostek danych jest umieszczonych w pojedynczym bloku transportowym. Dzięki temu dostępna przepustowość jest wykorzystywana maksymalnie efektywnie.
+
+Z kolei po stronie urządzenia odbierającego dane podzielone jednostki danych sa łączone z powrotem i wysyłane do wyższych warstw.
+  
+\section{Wykrywanie zduplikowanych jednostek danych}
+
+Błędy podczas transmisji danych mogą spowodować, że niektóre jednostki danych dotrą do odbiornika więcej niż raz. Warstwa RLC odpowiada za wykrycie zduplikowanych pakietów a następnie odrzucenie ich tak aby nie zostały ona przekazane do wyższych warstw. W tym celu każda jednostka danych podczas wysyłania posiada w nagłówku przypisany numer sekwencyjny. Z kolei odbiornik po swojej stronie utrzymuje bufor z odebranymi jednostkami danych. Jeżeli nowo odebrana jednostka danych posiada taki sam numer sekwencyjny jak jednostka danych która znajduje się w buforze oznacza to, że jest ona duplikatem i zostaje odrzucona.
+
+\section{Zapewnienie kolejności}
+
+Numer sekwencyjny, przypiswany do jednostek danych, jest również wykorzystywany do zapewnienia aby jednostki danych po stronie odbiornika były dostarczone przez podwarstwę RLC do wyższych warstw w tej samej kolejności w jakiej zostały one wysłane po stronie nadajnika. Oznacza to, że jednostka danych o numerze sekwencyjnym N musi zostać dostarczona przed jednostką danych o numerze sekwencyjnym N+1. Mechanizm ten działa w odmienny sposób dla trybu transmisji z potwierdzeniami i bez potwierdzeń dlatego też został dokładniej opisany w sekcjach \ref{subsec:um} i \ref{subsec:am}.
+
+\section{Korekcja błędów}
+
+O ile usługi typu VoIP mogą działać prawidłowo nawet jeżeli niewielka liczba pakietów nie dotrze od nadajnika do odbiornika to usługi typu HTTP lub FTP nie będa dziąłać prawidłowo jeżeli jakiekolwiek dane zostaną utracone. W tym celu podwarstwa RLC implementuje mechanizm ARQ (Automatic Repeat Request) który ma za zadanie wykrycie czy jakieś jednostki danych nie zostały dostarczone i zarządanie od nadawacy aby ponowił ich wysłanie. Mechanizm ten jest używany tylko w trybie transmisji z potwierdzeniami.
+
+\section{Tryby transmisji}
+
+\subsection{Transparentny}
+
+Transparentny tryb transmisji jest używany przy przesyłaniu danych do kanałów sygnałowych takich jak BCCH, PCCH i CCCH. W tym trybie transmisji jednostki danych są przekazywane z wyższych warstw do niższych w niezmienionej postaci. Nie są dodawane nagłówki oraz większość wmechanizmów RLC nie jest używana. Jedynym wykorzystywanym mechanizmem jest bufor transmisyjny w którym jednostki danych są przechowywane dopóki podwarstwa MAC nie poinformuje o możliwości transmisji danych.
+
+\subsection{Bez potwierdzeń}
+\label{subsec:um}
+
+W trybie transmisji bez potwierdzeń dane przesyłane są poprzez kanał DTCH. Ten tryb jest używany przy serwisach gdzie utrata niewielkiej ilości pakietów jest akceptowalna (np. serwis VoIP). W pierwszej kolejności podlegają one procesowi segmentacji i/lub łączenia. Następnie dodawany jest nagłówek specyficzny dla transmisji bez potwierdzeń (Rys. \ref{}) zawierający: 
+\begin{enumerate}
+	\item numer sekwencyjny
+\end{enumerate}
+ Jeżeli podwartwa RLC po stronie odbiornika otrzyma zduplikowaną jednostkę danych to zostaje ona odrzucona. Jeżeli jednostka danych dotrze w złej kolejności, lub jeżeli jakaś jednostka danych nie dotrze w ogóle wówczas jest to ignorowane i wykorzystywane są tylko te jednostki danych, które dotarły w prawidłowej kolejności. Do wyższych warstw dostarczane są tylko te jednostki danych, które udało się w całości odtworzyć. 
+
+\subsection{Z potwierdzeniami}
+\label{subsec:am}
+
+Tryb transmisji z potwierdzeniami jest najbardziej złożony i to właśnie na nim skupiono się w przygotowanej symulacji. Jest on używany w serwisach w których do ich prawidłowego działania konieczne jest dostarczenie pakietów bez błędów, bez duplikatów i w odpowiedniej kolejności. W transmisji z potwierdzeniami wykorzystywane są kanały DCCH oraz DTCH. W pierwszej kolejności jednostki danych podlegają procesowi segmentacji i/lub łączenia tak aby zmieścić się i maksymalnie wykorzystać przestrzeń dostępną w bloku transportowym zdeklarowanym przez podwarstwę MAC. Wysłane jednostki danych następnie trafiają do bufora retransmisji. Jeżeli odbiorca potwierdzi odebrane jednostki danych zostaje ona usunięta z bufora retransmisji. Jeżeli jednak odbiorca wyśle zapytanie o ponowną transmisję jednostki danych wówczas zostanie ona pobrana z bufora retransisji i wysyłana ponownie. Należy zauważyć, że podczas ponownej transmisji dostępny blok transportowy może mieć już inny rozmiar. W tym celu jednostki danych z bufora rentransmisji mogą wymagać ponownej segmentacji i/lub łączeniu aby dostosować ich rozmiar do nowego bloku transportowego.
+Po stronie odbiornika w pierwszej kolejności następuje odrzucenie zduplikowanych jednostek danych jezeli takie zostaną wykryte. Następnie jednostki danych zostają umieszczone w buforze danych gdzie zostają zorganizowane w odpowiedniej kolejności (wg numeru sekwencyjnego). Zostają one wysłane do wyższych warstw dopiero wtedy gdy możliwe jest odtworzenie z nich kompletnej jednostki danych i nie ma wcześniejszych brakujących jednostek danych. Jeżeli któreś jednostki danych nie dotarły wówczas wysyłane jest zapytanie do nadajnika o ponowną transmisję brakujących jednostek danych. Również do nadajnika wysyłane jest potwierdzenie, które jednostki danych dotarły bez błędów.
