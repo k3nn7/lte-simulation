@@ -1,6 +1,12 @@
 \chapter{Podwarstwa Radio Link Control}
 \label{cha:rlc}
 
+\begin{figure}
+	\centerline{\includegraphics[width=0.4\textwidth]{images/rlc_overview.png}}
+	\caption{Umiejscowienie podwarstwy RLC w stosie protokołów LTE}
+	\label{fig:rlc_overview}
+\end{figure}
+
 Podwarstwa RLC (Radio Link Control) jest drugą z podwarstw warstwy Access Stratum. Odbiera ona jednostki danych z podwarstw PDCP oraz RRC a następnie przekazuje je do podwarstwy MAC. RLC może działać w jednym z 3 trybów transmisji: transparentnym, z potwierdzeniami lub bez potwierdzeń. Jest ona odpowiedzialna za:
 
 \begin{enumerate}
@@ -12,11 +18,17 @@ Podwarstwa RLC (Radio Link Control) jest drugą z podwarstw warstwy Access Strat
 
 \section{Segmentacja i łączenie jednostek danych}
 
-Zanim podwarstwa RLC po stronie urządzenia transmitującego prześle dane do odbiornika musi poczekać na informację z podwarstwy MAC o tym, że własnie pojawiła się możliwość transmisji danych. Do tego czasu podwarstwa RLC przechowuje jednostki danych, które otrzymała z wyższych warstw w buforze transmisyjnym. Razem z informacją o możliwości transmisji podwarstwa MAC wysyła również informację o rozmiarze bloku transportowego czyli o tym jaka ilośc danych może zostać przesłana. Rozmiar dostępnego bloku transportowego może być za każdym razem inny i zależy on m.in. od jakości połączenia. Z tego powodu podwarstwa RLC musi dostosowywać rozmiar jednostek danych wysyłanych do podwarstwy MAC do rozmiaru bloku transportowego.
+Zanim podwarstwa RLC po stronie urządzenia transmitującego prześle dane do odbiornika musi poczekać na informację z podwarstwy MAC o tym, że własnie pojawiła się możliwość transmisji danych. Do tego czasu podwarstwa RLC przechowuje jednostki danych, które otrzymała z wyższych warstw w buforze transmisyjnym (Transmission Buffer na Rys. \ref{fig:rlc_simulation}). Razem z informacją o możliwości transmisji podwarstwa MAC wysyła również informację o rozmiarze bloku transportowego czyli o tym jaka ilość danych może zostać przesłana. Rozmiar dostępnego bloku transportowego może być za każdym razem inny i zależy on m.in. od jakości połączenia. Z tego powodu podwarstwa RLC musi dostosowywać rozmiar jednostek danych wysyłanych do podwarstwy MAC do rozmiaru bloku transportowego.
 
-W tym celu jednostki danych, zbyt duże aby w całości zmieścić się w bloku transportowym, są dzielone na mniejsze fragmenty i wysyłane w dwóch lub więcej blokach transportowych. Natomiast jeżeli jednostki danych są dużo mniejsze od bloku transportowego to kilka jednostek danych jest umieszczonych w pojedynczym bloku transportowym. Dzięki temu dostępna przepustowość jest wykorzystywana maksymalnie efektywnie.
+W tym celu jednostki danych, zbyt duże aby w całości zmieścić się w bloku transportowym, są dzielone na mniejsze fragmenty i wysyłane w dwóch lub więcej blokach transportowych. Natomiast jeżeli jednostki danych są dużo mniejsze od bloku transportowego to kilka jednostek danych jest umieszczonych w pojedynczym bloku transportowym. Dzięki temu dostępna przepustowość jest wykorzystywana maksymalnie efektywnie. Po stronie urządzenia odbierającego dane podzielone jednostki danych sa łączone z powrotem i wysyłane do wyższych warstw.
 
-Z kolei po stronie urządzenia odbierającego dane podzielone jednostki danych sa łączone z powrotem i wysyłane do wyższych warstw.
+Na Rys. \ref{fig:rlc_simulation} przedstawiono zrzut ekranu z wykonanej symulacji przedstawiający podwarstwę RLC. W centralnej części widoczny jest blok transportowy zawierający 3 jednostki SDU, które były na tyle małe aby razem, w całości zmieścić się w bloku transportowym.
+
+\begin{figure}
+	\centerline{\includegraphics[width=0.5\textwidth]{images/rlc_transport_block.png}}
+	\caption{Segmentacja SDU w bloku transportowym}
+	\label{fig:rlc_simulation}
+\end{figure}
   
 \section{Wykrywanie zduplikowanych jednostek danych}
 
@@ -29,6 +41,17 @@ Numer sekwencyjny, przypiswany do jednostek danych, jest również wykorzystywan
 \section{Korekcja błędów}
 
 O ile usługi typu VoIP mogą działać prawidłowo nawet jeżeli niewielka liczba pakietów nie dotrze od nadajnika do odbiornika to usługi typu HTTP lub FTP nie będa dziąłać prawidłowo jeżeli jakiekolwiek dane zostaną utracone. W tym celu podwarstwa RLC implementuje mechanizm ARQ (Automatic Repeat Request) który ma za zadanie wykrycie czy jakieś jednostki danych nie zostały dostarczone i zarządanie od nadawacy aby ponowił ich wysłanie. Mechanizm ten jest używany tylko w trybie transmisji z potwierdzeniami.
+
+Po stronie odbiornika każda otrzymana jednostka danych jest weryfikowana pod kątem poprawności. W tym celu najczęściej używany jest mechanizm CRC (Cyclic Redundancy Check). Jeżeli odbiorca stwierdzi, że otrzymana jednostka danych jest błędna wysyła żądanie jej ponownej transmisji (NACK). Natomiast jednostka danych zostanie uznana za prawidłową zostaje wysłane potwierdzenie poprawnej transmisji (ACK). Po stronie nadawcy również dla każdej wysłanej jednostki danych startowany jest zegar, który odlicza czas do ponownej transmisji tej jednostki. Jeżeli przed upływem tego czasu zostanie otrzymane potwierdzenie (ACK) zegar jest zatrzymywana i jednostka danych usuwana z bufora po stronie nadawcy. W przeciwnym wypadku po upływie czasu jednostka danych jest ponownie transmitowana i odliczanie ponowione. Cały proces powtarza się dopóki nie zostanie odebrane potwierdzenie od odbiorcy lub dopóki cała komunikacja nie zostanie anulowana.
+
+
+Wyróżnia się trzy typy mechanizmu ARQ:
+
+\begin{enumerate}
+	\item Stop-and-Wait ARQ - jest to najbardziej podstawowa forma mechanizmu ARQ. Nadawca wysyła jeden pakiet i oczekuje na potwierdzenie (ACK) lub żadanie ponownej transmisji (NACK) od odbiorcy a także startuje licznik czasowy. Jeżeli przed upływem czasu nie otrzyma potwierdzenia lub jeżeli otrzyma żadanie ponownej transmisji wówczas ponownie wysyła ten sam pakiet. Dopiero kiedy otrzyma od odbiorcy potwierdzenie (ACK) wówczas wysyła kolejny pakiet.
+	\item Go-Back-N ARQ - w tym trybie określony jest pewien rozmiar okna transmisyjnego - N. Nadawca wysyła do N pakietów do odbiorcy a następnie oczekuje na ich potwierdzenia (ACK). Następnie sprawdza, które pakiety zostały potwierdzone i wznawia wysyłanie od pakietu o numerze sekwencyjnym, który jest kolejny po ostatnio potwierdzonym pakiecie. Odbiorca utrzymuje po swojej stronie informację o numerze sekwencyjnym następnego pakietu, który powinien dostać i ignoruje otrzymane pakiety jeżeli nie mają dokładnie tego numeru sekwencyjnego. Kiedy już otrzyma pakiet o wymaganym numerze sekwencyjnym wówczas wysyła do nadawcy potwierdzenie otrzymania pakietu (ACK) z załączonym numerem sekwencyjnym a następnie zwiększa u siebie oczekiwany numer sekwencyjny następnego pakietu o 1.
+	\item Selective Repeat ARQ - w tym trybie również używane jest okno transmisyjne o danym rozmiarze - N. Nadawca wysyła N pakietów od odbiorcy. Odbiorca akceptuje kolejne pakiety, nawet jeżeli, któryś wcześniejszy pakiet był błędny lub nie dotarł. Odbiorca utrzymuje po swojej stronie najmniejszy numer sekwencyjny pakietu, który nie dotarł (lub był błędny) i wysyła go z każdym potwierdzeniem odebrania pakietów. Nadawca po wysłaniu N pakietów ponawia wysłanie pakietów, które nie dotarły do odbiorcy a następnie kontynuje wysyłanie pakietów od miejsca gdzie skończył.
+\end{enumerate}
 
 \section{Tryby transmisji}
 
@@ -49,4 +72,6 @@ W trybie transmisji bez potwierdzeń dane przesyłane są poprzez kanał DTCH. T
 \label{subsec:am}
 
 Tryb transmisji z potwierdzeniami jest najbardziej złożony i to właśnie na nim skupiono się w przygotowanej symulacji. Jest on używany w serwisach w których do ich prawidłowego działania konieczne jest dostarczenie pakietów bez błędów, bez duplikatów i w odpowiedniej kolejności. W transmisji z potwierdzeniami wykorzystywane są kanały DCCH oraz DTCH. W pierwszej kolejności jednostki danych podlegają procesowi segmentacji i/lub łączenia tak aby zmieścić się i maksymalnie wykorzystać przestrzeń dostępną w bloku transportowym zdeklarowanym przez podwarstwę MAC. Wysłane jednostki danych następnie trafiają do bufora retransmisji. Jeżeli odbiorca potwierdzi odebrane jednostki danych zostaje ona usunięta z bufora retransmisji. Jeżeli jednak odbiorca wyśle zapytanie o ponowną transmisję jednostki danych wówczas zostanie ona pobrana z bufora retransisji i wysyłana ponownie. Należy zauważyć, że podczas ponownej transmisji dostępny blok transportowy może mieć już inny rozmiar. W tym celu jednostki danych z bufora rentransmisji mogą wymagać ponownej segmentacji i/lub łączeniu aby dostosować ich rozmiar do nowego bloku transportowego.
+
 Po stronie odbiornika w pierwszej kolejności następuje odrzucenie zduplikowanych jednostek danych jezeli takie zostaną wykryte. Następnie jednostki danych zostają umieszczone w buforze danych gdzie zostają zorganizowane w odpowiedniej kolejności (wg numeru sekwencyjnego). Zostają one wysłane do wyższych warstw dopiero wtedy gdy możliwe jest odtworzenie z nich kompletnej jednostki danych i nie ma wcześniejszych brakujących jednostek danych. Jeżeli któreś jednostki danych nie dotarły wówczas wysyłane jest zapytanie do nadajnika o ponowną transmisję brakujących jednostek danych. Również do nadajnika wysyłane jest potwierdzenie, które jednostki danych dotarły bez błędów.
+
