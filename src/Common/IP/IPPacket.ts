@@ -14,9 +14,9 @@ export class IPPacket implements DataUnit {
     this.id = id;
     this.type = Type.Data;
     this.tint = PIXI.utils.rgb2hex([
-      Math.random(),
-      Math.random(),
-      Math.random()
+      Math.random() / 2 + 0.5,
+      Math.random() / 2 + 0.5,
+      Math.random() / 2 + 0.5
     ]);
   }
 
