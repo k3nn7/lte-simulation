@@ -86,7 +86,7 @@ export class Packet extends PIXI.Graphics {
     this.endFill();
 
     this.caption = new PIXI.Text(
-      'PDU',
+      'SDU',
       {
         fontSize: 8,
         fill: FG_1,
