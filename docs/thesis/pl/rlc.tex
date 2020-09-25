@@ -17,10 +17,11 @@ Podwarstwa RLC (Radio Link Control) jest drugą z podwarstw warstwy Access Strat
 \end{enumerate}
 
 \section{Segmentacja i łączenie jednostek danych}
+\label{sec:segmentation}
 
 Zanim podwarstwa RLC po stronie urządzenia transmitującego prześle dane do odbiornika musi poczekać na informację z podwarstwy MAC o tym, że własnie pojawiła się możliwość transmisji danych. Do tego czasu podwarstwa RLC przechowuje jednostki danych, które otrzymała z wyższych warstw w buforze transmisyjnym (Transmission Buffer na Rys. \ref{fig:rlc_simulation}). Razem z informacją o możliwości transmisji podwarstwa MAC wysyła również informację o rozmiarze bloku transportowego czyli o tym jaka ilość danych może zostać przesłana. Rozmiar dostępnego bloku transportowego może być za każdym razem inny i zależy on m.in. od jakości połączenia. Z tego powodu podwarstwa RLC musi dostosowywać rozmiar jednostek danych wysyłanych do podwarstwy MAC do rozmiaru bloku transportowego.
 
-W tym celu jednostki danych, zbyt duże aby w całości zmieścić się w bloku transportowym, są dzielone na mniejsze fragmenty i wysyłane w dwóch lub więcej blokach transportowych. Natomiast jeżeli jednostki danych są dużo mniejsze od bloku transportowego to kilka jednostek danych jest umieszczonych w pojedynczym bloku transportowym. Dzięki temu dostępna przepustowość jest wykorzystywana maksymalnie efektywnie. Po stronie urządzenia odbierającego dane podzielone jednostki danych sa łączone z powrotem i wysyłane do wyższych warstw.
+W tym celu jednostki danych, zbyt duże aby w całości zmieścić się w bloku transportowym, są dzielone na mniejsze fragmenty i wysyłane w dwóch lub więcej blokach transportowych. Natomiast jeżeli jednostki danych są dużo mniejsze od bloku transportowego to kilka jednostek danych jest umieszczonych w pojedynczym bloku transportowym. Dzięki temu dostępna przepustowość jest wykorzystywana maksymalnie efektywnie. Po stronie odbiornika odebrane jednostki danych są umieszczane w buforze. Jeżeli możliwe jest z nich odtworzenie kompletnej jednostki danych wówczas są one łączone i wysyłane do wyższej warstwy.
 
 Na Rys. \ref{fig:rlc_simulation} przedstawiono zrzut ekranu z wykonanej symulacji przedstawiający podwarstwę RLC. W centralnej części widoczny jest blok transportowy zawierający 3 jednostki SDU, które były na tyle małe aby razem, w całości zmieścić się w bloku transportowym.
 
@@ -62,7 +63,7 @@ Transparentny tryb transmisji jest używany przy przesyłaniu danych do kanałó
 \subsection{Bez potwierdzeń}
 \label{subsec:um}
 
-W trybie transmisji bez potwierdzeń dane przesyłane są poprzez kanał DTCH. Ten tryb jest używany przy serwisach gdzie utrata niewielkiej ilości pakietów jest akceptowalna (np. serwis VoIP). W pierwszej kolejności podlegają one procesowi segmentacji i/lub łączenia. Następnie dodawany jest nagłówek specyficzny dla transmisji bez potwierdzeń (Rys. \ref{}) zawierający: 
+W trybie transmisji bez potwierdzeń dane przesyłane są poprzez kanał DTCH. Ten tryb jest używany przy serwisach gdzie utrata niewielkiej ilości pakietów jest akceptowalna (np. serwis VoIP). W pierwszej kolejności podlegają one procesowi segmentacji i/lub łączenia. Następnie dodawany jest nagłówek specyficzny dla transmisji bez potwierdzeń (Rys. ) zawierający: 
 \begin{enumerate}
 	\item numer sekwencyjny
 \end{enumerate}
@@ -73,5 +74,41 @@ W trybie transmisji bez potwierdzeń dane przesyłane są poprzez kanał DTCH. T
 
 Tryb transmisji z potwierdzeniami jest najbardziej złożony i to właśnie na nim skupiono się w przygotowanej symulacji. Jest on używany w serwisach w których do ich prawidłowego działania konieczne jest dostarczenie pakietów bez błędów, bez duplikatów i w odpowiedniej kolejności. W transmisji z potwierdzeniami wykorzystywane są kanały DCCH oraz DTCH. W pierwszej kolejności jednostki danych podlegają procesowi segmentacji i/lub łączenia tak aby zmieścić się i maksymalnie wykorzystać przestrzeń dostępną w bloku transportowym zdeklarowanym przez podwarstwę MAC. Wysłane jednostki danych następnie trafiają do bufora retransmisji. Jeżeli odbiorca potwierdzi odebrane jednostki danych zostaje ona usunięta z bufora retransmisji. Jeżeli jednak odbiorca wyśle zapytanie o ponowną transmisję jednostki danych wówczas zostanie ona pobrana z bufora retransisji i wysyłana ponownie. Należy zauważyć, że podczas ponownej transmisji dostępny blok transportowy może mieć już inny rozmiar. W tym celu jednostki danych z bufora rentransmisji mogą wymagać ponownej segmentacji i/lub łączeniu aby dostosować ich rozmiar do nowego bloku transportowego.
 
-Po stronie odbiornika w pierwszej kolejności następuje odrzucenie zduplikowanych jednostek danych jezeli takie zostaną wykryte. Następnie jednostki danych zostają umieszczone w buforze danych gdzie zostają zorganizowane w odpowiedniej kolejności (wg numeru sekwencyjnego). Zostają one wysłane do wyższych warstw dopiero wtedy gdy możliwe jest odtworzenie z nich kompletnej jednostki danych i nie ma wcześniejszych brakujących jednostek danych. Jeżeli któreś jednostki danych nie dotarły wówczas wysyłane jest zapytanie do nadajnika o ponowną transmisję brakujących jednostek danych. Również do nadajnika wysyłane jest potwierdzenie, które jednostki danych dotarły bez błędów.
+Po stronie odbiornika w pierwszej kolejności następuje odrzucenie zduplikowanych jednostek danych jezeli takie zostaną wykryte. Następnie jednostki danych zostają umieszczone w buforze danych gdzie zostają zorganizowane w odpowiedniej kolejności (wg numeru sekwencyjnego). Zostają one wysłane do wyższych warstw dopiero wtedy gdy możliwe jest odtworzenie z nich kompletnej jednostki danych i nie ma wcześniejszych brakujących jednostek danych. Jeżeli któreś jednostki danych nie dotarły lub zawierają błędy wówczas wysyłane jest żądanie (NACK) do nadajnika o ponowną transmisję brakujących jednostek danych. Dla jednostek danych, które dotarły bez błędów i w prawidłowej kolejności wysyłane jest potwierdzenie dostarczenia (ACK).
+
+Żądnie ponownego wysłania pakietu jak i potwierdzenie dostarczenia pakietu zawarte jest w jednostce danych nazywanej Status PDU przedstawionej na Rys. \ref{fig:status_pdu}. Składa się ona z następujących elementów:
+
+\begin{enumerate}
+	\item D/C (1 bit) informuje czy pakiet jest przeznaczony dla User Plane czy dla Control Plane
+	\item CPT (3 bity) zawiera informację o typie pakietu przeznaczonego dla Control Plane
+	\item ACK SN (10 bitów) zawiera numer sekwencyjny o 1 większy od numeru sekwencyjnego ostatnio poprawnie odebranego pakietu
+	\item NACK SN (10 bitów) zawiera numer sekwencyney pakietu uznanego za utracony po stronie odbiornika
+	\item E1 (1 bit) informuje czy dalsza część pakietu zawiera pola NACK SN, E1 i E2
+	\item E2 (1 bit) informuje czy po polu NACK SN znajdują się pola SO start i SO end
+	\item SO start (15 bitów) i SO end (15 bitów) wskazują na pozycję pierwsze i ostatniego bajtu jednostki danych która nie została prawidłowo odebrana
+\end{enumerate}
+
+\begin{figure}
+	\centerline{\includegraphics[width=0.4\textwidth]{images/rlc_status_pdu.png}}
+	\caption{Umiejscowienie podwarstwy RLC w stosie protokołów LTE}
+	\label{fig:status_pdu}
+\end{figure}
+
+Aby została ona wysłana musi zajść jedna z dwóch sytuacji:
+\begin{enumerate}
+	\item Licznik czasowy T status prohibit zakonczył odliczanie i została odebrana jednostka danych z włączoną flagą poll bit
+	\item Liczniki czasowe T status prohibit i T reordering zakończyły odliczanie
+\end{enumerate}
+
+Licznik czasowy T status prohibit zapewnia, że ten sam pakiet status PDU nie zostanie wysłany kilkakrotnie. Jego odliczanie jest wznawiane po każdym wysłaniu pakietu status PDU.
+
+Licznik czasowy T reordering jest startowany wówczas, gdy zostaną zauważone brakujące pakiety tj. gdy zostanie odebrany pakiet o numerze sekwencyjnym N a nie został jeszcze odebrany pakiet o numerze sekwencyjnym N - 1.
+
+Flaga poll bit jest ustawiana po stronie nadajnika w następujących sytuacjach:
+\begin{enumerate}
+	\item Jeżeli pakietów wysłanych od czasu ostatniego potwierdzenia przekroczyła liczbę określoną przez parametr Poll PDU
+	\item Jeżeli liczba bajtów wysłanych do odbiornika od czasu ostatniego potwierdzenia przekroczyła liczbę określoną przez parametr Poll Byte
+	\item Jeżeli licznik czasowy T poll retransmit zakończył odliczanie i nie ma żadnych pakietów w buforze transmisji lub retransmisji (wówczas ponownie wysyłany jest ostatnio wysłany pakiet danych z ustawioną flagą poll bit)
+\end{enumerate}
+
 
