@@ -60,19 +60,54 @@ Wyróżnia się trzy typy mechanizmu ARQ:
 
 Transparentny tryb transmisji jest używany przy przesyłaniu danych do kanałów sygnałowych takich jak BCCH, PCCH i CCCH. W tym trybie transmisji jednostki danych są przekazywane z wyższych warstw do niższych w niezmienionej postaci. Nie są dodawane nagłówki oraz większość wmechanizmów RLC nie jest używana. Jedynym wykorzystywanym mechanizmem jest bufor transmisyjny w którym jednostki danych są przechowywane dopóki podwarstwa MAC nie poinformuje o możliwości transmisji danych.
 
+\begin{figure}
+	\centerline{\includegraphics[width=0.3\textwidth]{images/rlc_tm_pdu.png}}
+	\caption{Struktura pakietu PDU dla transparentnego trybu transmisji}
+	\label{fig:rlc_tm_pdu}
+\end{figure}
+
 \subsection{Bez potwierdzeń}
 \label{subsec:um}
 
-W trybie transmisji bez potwierdzeń dane przesyłane są poprzez kanał DTCH. Ten tryb jest używany przy serwisach gdzie utrata niewielkiej ilości pakietów jest akceptowalna (np. serwis VoIP). W pierwszej kolejności podlegają one procesowi segmentacji i/lub łączenia. Następnie dodawany jest nagłówek specyficzny dla transmisji bez potwierdzeń (Rys. ) zawierający: 
+W trybie transmisji bez potwierdzeń dane przesyłane są poprzez kanał DTCH. Ten tryb jest używany przy serwisach gdzie utrata niewielkiej ilości pakietów jest akceptowalna (np. serwis VoIP). W pierwszej kolejności podlegają one procesowi segmentacji i/lub łączenia. Następnie dodawany jest nagłówek specyficzny dla transmisji bez potwierdzeń (Rys. \ref{fig:rlc_um_pdu}) zawierający: 
+
+\begin{figure}
+	\centerline{\includegraphics[width=0.3\textwidth]{images/rlc_um_pdu.png}}
+	\caption{Struktura pakietu PDU dla trybu transmisji bez potwierdzeń}
+	\label{fig:rlc_um_pdu}
+\end{figure}
+
 \begin{enumerate}
-	\item numer sekwencyjny
+	\item FI (2 bity) informuje czy na poczatku i/lub na końcu pakietu znajdują się posegmentowane jednostki danych	
+	\item E (1 bit) informuje czy dalsza część pakietu zawiera pola LI
+	\item SN (10 bitów) numer sekwencyjny pakietu
+	\item LI (11 bitów) zawiera informację jaki rozmiar ma transportowana jednostka danych. Jeżeli w pakiecie transportowane jest więcej jednostek danych to tyle samo razy w nagłówku pojawia się pole E i LI
 \end{enumerate}
+
  Jeżeli podwartwa RLC po stronie odbiornika otrzyma zduplikowaną jednostkę danych to zostaje ona odrzucona. Jeżeli jednostka danych dotrze w złej kolejności, lub jeżeli jakaś jednostka danych nie dotrze w ogóle wówczas jest to ignorowane i wykorzystywane są tylko te jednostki danych, które dotarły w prawidłowej kolejności. Do wyższych warstw dostarczane są tylko te jednostki danych, które udało się w całości odtworzyć. 
 
 \subsection{Z potwierdzeniami}
 \label{subsec:am}
 
 Tryb transmisji z potwierdzeniami jest najbardziej złożony i to właśnie na nim skupiono się w przygotowanej symulacji. Jest on używany w serwisach w których do ich prawidłowego działania konieczne jest dostarczenie pakietów bez błędów, bez duplikatów i w odpowiedniej kolejności. W transmisji z potwierdzeniami wykorzystywane są kanały DCCH oraz DTCH. W pierwszej kolejności jednostki danych podlegają procesowi segmentacji i/lub łączenia tak aby zmieścić się i maksymalnie wykorzystać przestrzeń dostępną w bloku transportowym zdeklarowanym przez podwarstwę MAC. Wysłane jednostki danych następnie trafiają do bufora retransmisji. Jeżeli odbiorca potwierdzi odebrane jednostki danych zostaje ona usunięta z bufora retransmisji. Jeżeli jednak odbiorca wyśle zapytanie o ponowną transmisję jednostki danych wówczas zostanie ona pobrana z bufora retransisji i wysyłana ponownie. Należy zauważyć, że podczas ponownej transmisji dostępny blok transportowy może mieć już inny rozmiar. W tym celu jednostki danych z bufora rentransmisji mogą wymagać ponownej segmentacji i/lub łączeniu aby dostosować ich rozmiar do nowego bloku transportowego.
+
+Na Rys. \ref{fig:rlc_am_pdu} przedstawiono strukturę pakietu PDU dla transmisji z potwierdzeniami. Składa się on z następujących elementów:
+
+\begin{enumerate}
+	\item D/C (1 bit) informuje czy pakiet jest przeznaczony dla User Plane czy dla Control Plane
+	\item RF (1 bit) informuje czy pakiet zawiera posegmentowaną jednostkę danych, która jest ponownie wysyłana
+	\item P (1 bit) polling Bit informuje czy odbiorca powinien wysłać do nadawcy pakiet status PDU
+	\item FI (2 bity) informuje czy na poczatku i/lub na końcu pakietu znajdują się posegmentowane jednostki danych
+	\item E (1 bit) informuje czy dalsza część pakietu zawiera pola LI
+	\item SN (10 bitów) numer sekwencyjny pakietu
+	\item LI (11 bitów) zawiera informację jaki rozmiar ma transportowana jednostka danych. Jeżeli w pakiecie transportowane jest więcej jednostek danych to tyle samo razy w nagłówku pojawia się pole E i LI
+\end{enumerate}
+
+\begin{figure}
+	\centerline{\includegraphics[width=0.3\textwidth]{images/rlc_am_pdu.png}}
+	\caption{Struktura pakietu PDU dla transmisji z potwierdzeniami}
+	\label{fig:rlc_am_pdu}
+\end{figure}
 
 Po stronie odbiornika w pierwszej kolejności następuje odrzucenie zduplikowanych jednostek danych jezeli takie zostaną wykryte. Następnie jednostki danych zostają umieszczone w buforze danych gdzie zostają zorganizowane w odpowiedniej kolejności (wg numeru sekwencyjnego). Zostają one wysłane do wyższych warstw dopiero wtedy gdy możliwe jest odtworzenie z nich kompletnej jednostki danych i nie ma wcześniejszych brakujących jednostek danych. Jeżeli któreś jednostki danych nie dotarły lub zawierają błędy wówczas wysyłane jest żądanie (NACK) do nadajnika o ponowną transmisję brakujących jednostek danych. Dla jednostek danych, które dotarły bez błędów i w prawidłowej kolejności wysyłane jest potwierdzenie dostarczenia (ACK).
 
@@ -89,8 +124,8 @@ Po stronie odbiornika w pierwszej kolejności następuje odrzucenie zduplikowany
 \end{enumerate}
 
 \begin{figure}
-	\centerline{\includegraphics[width=0.4\textwidth]{images/rlc_status_pdu.png}}
-	\caption{Umiejscowienie podwarstwy RLC w stosie protokołów LTE}
+	\centerline{\includegraphics[width=0.3\textwidth]{images/rlc_status_pdu.png}}
+	\caption{Struktura pakietu Status PDU}
 	\label{fig:status_pdu}
 \end{figure}
 
@@ -110,5 +145,3 @@ Flaga poll bit jest ustawiana po stronie nadajnika w następujących sytuacjach:
 	\item Jeżeli liczba bajtów wysłanych do odbiornika od czasu ostatniego potwierdzenia przekroczyła liczbę określoną przez parametr Poll Byte
 	\item Jeżeli licznik czasowy T poll retransmit zakończył odliczanie i nie ma żadnych pakietów w buforze transmisji lub retransmisji (wówczas ponownie wysyłany jest ostatnio wysłany pakiet danych z ustawioną flagą poll bit)
 \end{enumerate}
-
-
