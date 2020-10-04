@@ -58,7 +58,7 @@ Wyróżnia się trzy typy mechanizmu ARQ:
 
 \subsection{Transparentny}
 
-Transparentny tryb transmisji jest używany przy przesyłaniu danych do kanałów sygnałowych takich jak BCCH, PCCH i CCCH. W tym trybie transmisji jednostki danych są przekazywane z wyższych warstw do niższych w niezmienionej postaci. Nie są dodawane nagłówki oraz większość wmechanizmów RLC nie jest używana. Jedynym wykorzystywanym mechanizmem jest bufor transmisyjny w którym jednostki danych są przechowywane dopóki podwarstwa MAC nie poinformuje o możliwości transmisji danych.
+Transparentny tryb transmisji jest używany przy przesyłaniu danych do kanałów sygnałowych takich jak BCCH, PCCH i CCCH. W tym trybie transmisji jednostki danych są przekazywane z wyższych warstw do niższych w niezmienionej postaci. Nie są dodawane żadne nagłówki więc jednostka danych wysyłana do niższych warstw jest taka sama jak jednostka danych otrzymana z warstwy wyższej (Rys. \ref{fig:rlc_tm_pdu}). Większość mechanizmów RLC nie jest używana. Jedynym wykorzystywanym mechanizmem jest bufor transmisyjny w którym jednostki danych są przechowywane dopóki podwarstwa MAC nie poinformuje o możliwości transmisji danych.
 
 \begin{figure}
 	\centerline{\includegraphics[width=0.3\textwidth]{images/rlc_tm_pdu.png}}
