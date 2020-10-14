@@ -3,6 +3,6 @@ import LayerView from 'Common/LayerView';
 
 export default class PHYView extends LayerView {
   constructor(resources: Partial<Record<string, PIXI.LoaderResource>>) {
-    super(resources, 'PHY');
+    super(resources, 'PHY', 60);
   }
 }
