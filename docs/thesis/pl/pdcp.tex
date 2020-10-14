@@ -7,7 +7,7 @@
 	\label{fig:pdcpseq}
 \end{figure}
 
-Podwarstwa PDCP (Packet Data Convergence Protocol) jest pierwszą z podwarstw z których składa się warstwa AS (Access Stratum) stosu protokołów LTE. Dla każdego nośnika radiowego konfigurowana jest jej osobna instancja. Może ona odpowiadać za dane na płaszczyźnie użytkownika (wówczas świadczy usługi dla warstwy NAS) lub za dane na płaszczyźnie kontroli i wówczas korzysta z niej warstwa RRC. Warstwa PDCP przesyła pakiety dalej do podwarstwy RLC.
+Podwarstwa PDCP (Packet Data Convergence Protocol) jest pierwszą z podwarstw z których składa się warstwa 2. stosu protokołów LTE. Dla każdego nośnika radiowego konfigurowana jest jej osobna instancja. Może ona odpowiadać za dane na płaszczyźnie użytkownika (wówczas świadczy usługi dla warstwy IP) lub za dane na płaszczyźnie kontroli i wówczas korzysta z niej warstwa RRC. Warstwa PDCP przesyła pakiety dalej do podwarstwy RLC.
 
 W zależności od płaszczyzny danych, warstwa PDCP jest odpowiedzialna za:
 
@@ -29,7 +29,10 @@ W projekcie skupiono się na symulacji przesyłu danych na płaszczyźnie danych
 
 \section{Przetwarzanie pakietów IP na podwarstwie PDCP}
 
-Pierwszym krokiem po otrzymaniu pakietu z warstwy NAS przez podwarstwę PDCP jest nadanie numeru sekwencyjnego. Pozwala on podwarstwie PDCP po stronie odbiornika odrzucić zduplikowane jednostki danych oraz dostarczyć je do wyższych warstw w odpowiedniej kolejności (Rys. \ref{fig:pdcpseq}).
+\subsection{Nadawanie numeru sekwencyjnego}
+
+Pierwszym krokiem po otrzymaniu pakietu IP z warstwy sieciowej przez podwarstwę PDCP jest nadanie numeru sekwencyjnego. Pozwala on podwarstwie PDCP po stronie odbiornika odrzucić zduplikowane jednostki danych oraz dostarczyć je do wyższych warstw w odpowiedniej kolejności (Rys. \ref{fig:pdcpseq}). 
+W tym celu po stronie nadajnika utrzymywany jest liczniki, którego aktualna wartość jest przypisywana jako numer sekwencyjny nowo otrzymanemu pakietowi a następnie inkrementowana. Z kolei po stronie odbiornika odebrane pakiety są umieszczane w buforze gdzie następnie są sortowane na podstawie numeru sekwencyjnego i przekazywane w odpowiedniej kolejności do wyższych warstw.
 
 \begin{figure}[ht]
 	\centerline{\frame{\includegraphics[width=0.5\textwidth]{images/pdcp_1.png}}}

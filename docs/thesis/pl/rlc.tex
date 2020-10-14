@@ -7,7 +7,7 @@
 	\label{fig:rlc_overview}
 \end{figure}
 
-Podwarstwa RLC (Radio Link Control) jest drugą z podwarstw warstwy Access Stratum. Odbiera ona jednostki danych z podwarstw PDCP oraz RRC a następnie przekazuje je do podwarstwy MAC. RLC może działać w jednym z 3 trybów transmisji: transparentnym, z potwierdzeniami lub bez potwierdzeń. Jest ona odpowiedzialna za:
+Podwarstwa RLC (Radio Link Control) jest drugą z podwarstw warstwy 2. Odbiera ona jednostki danych z podwarstw PDCP oraz RRC a następnie przekazuje je do podwarstwy MAC. RLC może działać w jednym z 3 trybów transmisji: transparentnym, z potwierdzeniami lub bez potwierdzeń. Jest ona odpowiedzialna za:
 
 \begin{enumerate}
 	\item Segmentację i/lub łączenie transmitowanych jednostek danych
@@ -19,7 +19,7 @@ Podwarstwa RLC (Radio Link Control) jest drugą z podwarstw warstwy Access Strat
 \section{Segmentacja i łączenie jednostek danych}
 \label{sec:segmentation}
 
-Zanim podwarstwa RLC po stronie urządzenia transmitującego prześle dane do odbiornika musi poczekać na informację z podwarstwy MAC o tym, że własnie pojawiła się możliwość transmisji danych. Do tego czasu podwarstwa RLC przechowuje jednostki danych, które otrzymała z wyższych warstw w buforze transmisyjnym (Transmission Buffer na Rys. \ref{fig:rlc_simulation}). Razem z informacją o możliwości transmisji podwarstwa MAC wysyła również informację o rozmiarze bloku transportowego czyli o tym jaka ilość danych może zostać przesłana. Rozmiar dostępnego bloku transportowego może być za każdym razem inny i zależy on m.in. od jakości połączenia. Z tego powodu podwarstwa RLC musi dostosowywać rozmiar jednostek danych wysyłanych do podwarstwy MAC do rozmiaru bloku transportowego.
+Zanim podwarstwa RLC po stronie urządzenia transmitującego prześle dane do odbiornika musi poczekać na informację z podwarstwy MAC o tym, że własnie pojawiła się możliwość transmisji danych. Do tego czasu podwarstwa RLC przechowuje jednostki danych, które otrzymała z wyższych warstw w buforze transmisyjnym (Transmission Buffer na Rys. \ref{fig:rlc_simulation}). Razem z informacją o możliwości transmisji podwarstwa MAC wysyła również informację o rozmiarze bloku transportowego czyli o tym jaka ilość danych może zostać przesłana. Rozmiar dostępnego bloku transportowego może być za każdym razem inny i zależy on m.in. od jakości połączenia. Z tego powodu podwarstwa RLC musi dostosowywać rozmiar jednostek danych wysyłanych do podwarstwy MAC do rozmiaru bloku transportowego. \cite{Perez15}
 
 W tym celu jednostki danych, zbyt duże aby w całości zmieścić się w bloku transportowym, są dzielone na mniejsze fragmenty i wysyłane w dwóch lub więcej blokach transportowych. Natomiast jeżeli jednostki danych są dużo mniejsze od bloku transportowego to kilka jednostek danych jest umieszczonych w pojedynczym bloku transportowym. Dzięki temu dostępna przepustowość jest wykorzystywana maksymalnie efektywnie. Po stronie odbiornika odebrane jednostki danych są umieszczane w buforze. Jeżeli możliwe jest z nich odtworzenie kompletnej jednostki danych wówczas są one łączone i wysyłane do wyższej warstwy.
 
