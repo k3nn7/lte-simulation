@@ -9,7 +9,7 @@ export class ConnectorView extends Connectable {
   channelAPosition: PIXI.Point;
   channelBPosition: PIXI.Point;
 
-  constructor(componentA: Connectable, componentB: Connectable) {
+  constructor(componentA: Connectable, componentB: Connectable, weight: number = 3) {
     super();
 
     const startPointPosition = new PIXI.Point(
@@ -22,7 +22,7 @@ export class ConnectorView extends Connectable {
     );
 
     this.position = startPointPosition;
-    this.lineStyle(3, BG_MEDIUM_2);
+    this.lineStyle(weight, BG_MEDIUM_2);
     this.lineTo(
       endPointPosition.x - startPointPosition.x,
       endPointPosition.y - startPointPosition.y
