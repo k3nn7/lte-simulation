@@ -15,7 +15,15 @@ export default class ButtonView extends PIXI.Graphics {
     this.buttonMode = true;
     this.on('click', () => {
       if (this.onClick) this.onClick();
-    })
+    });
+
+    this.on('mouseover', () => {
+      this.tint = 0xaeaeae;
+    });
+
+    this.on('mouseout', () => {
+      this.tint = 0xffffff;
+    });
 
     const captionText = new PIXI.Text(caption, {
       fill: FG_2,
