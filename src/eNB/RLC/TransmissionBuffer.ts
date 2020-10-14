@@ -36,6 +36,15 @@ export default class TransmissionBuffer extends PIXI.Graphics {
     this.titleObject.position.set(WIDTH / 2, HEIGHT - (TITLE_HEIGHT / 2));
 
     this.addChild(this.titleObject);
+
+    this.interactive = true;
+    this.buttonMode = true;
+    this.on('mouseover', () => {
+      this.tint = 0xaeaeae;
+    });
+    this.on('mouseout', () => {
+      this.tint = 0xffffff;
+    });
   }
 
   async addPacket(packet: PDCPDataUnit) {

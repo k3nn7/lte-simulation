@@ -25,5 +25,14 @@ export default class BufferView extends PIXI.Graphics {
     this.title.position.set(60, 130 - (20 / 2));
 
     this.addChild(this.title);
+
+    this.interactive = true;
+    this.buttonMode = true;
+    this.on('mouseover', () => {
+      this.tint = 0xaeaeae;
+    });
+    this.on('mouseout', () => {
+      this.tint = 0xffffff;
+    });
   }
 }

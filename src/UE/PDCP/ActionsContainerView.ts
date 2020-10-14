@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import {BG_DARK_2, FG_1} from 'Common/Colors';
+import {BG_DARK_2, BG_LIGHT_1, FG_1} from 'Common/Colors';
 
 export default class ActionsContainerView extends PIXI.Container {
   sequenceAction: SequenceAction;
@@ -46,7 +46,9 @@ class Action extends PIXI.Graphics {
     this.actionText.position.set(20, 10);
 
     this.lineStyle(2, BG_DARK_2);
+    this.beginFill(BG_LIGHT_1);
     this.drawRect(0, 0, this.actionText.width + 30, 20);
+    this.endFill();
 
     this.bullet = new PIXI.Sprite(resources.bullet.texture);
     this.bullet.anchor.set(0.5, 0.5);
@@ -56,6 +58,15 @@ class Action extends PIXI.Graphics {
 
     this.addChild(this.bullet);
     this.addChild(this. actionText);
+
+    this.interactive = true;
+    this.buttonMode = true;
+    this.on('mouseover', () => {
+      this.tint = 0xaeaeae;
+    });
+    this.on('mouseout', () => {
+      this.tint = 0xffffff;
+    });
   }
 
   activate() {

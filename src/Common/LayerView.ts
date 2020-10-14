@@ -41,6 +41,15 @@ export default class LayerView extends Connectable {
 
     header.addChild(headerText, helpIcon);
 
+    header.interactive = true;
+    header.buttonMode = true;
+    header.on('mouseover', () => {
+      header.tint = 0xaeaeae;
+    });
+    header.on('mouseout', () => {
+      header.tint = 0xffffff;
+    });
+
     return header;
   }
 
