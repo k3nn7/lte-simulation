@@ -5,7 +5,7 @@ import {moveToThePoint, scaleDown, scaleUp} from 'Common/tweens';
 import {DataUnit} from "../DataUnit";
 import {ConnectorItemView} from "./ConnectorItemView";
 
-export default class KneeConnector extends Connectable {
+export default class EntitiesConnector extends Connectable {
   channelAPosition: PIXI.Point;
   channelBPosition: PIXI.Point;
   knee1Position: PIXI.Point;

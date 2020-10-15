@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import {IPPacketGenerator} from 'Common/IP/index';
 import ButtonView from 'Common/ButtonView';
-import KneeConnector from 'Common/Connector/KneeConnector';
+import EntitiesConnector from 'Common/Connector/EntitiesConnector';
 import {ENBProtocols} from "./ENBProtocols";
 import {UEProtocols} from "./UEProtocols";
 import InspectorView from "../Common/InspectorView";
@@ -12,7 +12,7 @@ export class Simulation extends PIXI.Container {
   pauseButton: ButtonView;
   enbProtocols: ENBProtocols;
   ueProtocols: UEProtocols;
-  entitiesConnector: KneeConnector;
+  entitiesConnector: EntitiesConnector;
   ipPacketGenerator: IPPacketGenerator;
   inspectorView: InspectorView;
 
@@ -31,7 +31,7 @@ export class Simulation extends PIXI.Container {
     this.startButton = new ButtonView('Send packet →');
     this.startButton.position.set(30, 0);
     this.startButton.setOnClick(() => {
-      this.start();
+      this.sendPacket();
     });
     this.addChild(this.startButton);
 
@@ -49,7 +49,7 @@ export class Simulation extends PIXI.Container {
     this.enbProtocols = new ENBProtocols(resources, this.inspectorView);
     this.ueProtocols = new UEProtocols(resources, debugMode, this.inspectorView);
 
-    this.entitiesConnector = new KneeConnector(
+    this.entitiesConnector = new EntitiesConnector(
       this.enbProtocols.phy,
       this.ueProtocols.phyDown
     );
@@ -62,7 +62,7 @@ export class Simulation extends PIXI.Container {
   }
 
 
-  async start() {
+  async sendPacket() {
     const ipPacket = this.ipPacketGenerator.generate();
     await this.enbProtocols.startPoint.addDataUnit(ipPacket);
   }
