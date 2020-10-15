@@ -2,27 +2,37 @@ import * as PIXI from 'pixi.js';
 import LayerView from 'Common/LayerView';
 import ChannelView from './ChannelView';
 import {ConnectorView} from 'Common/Connector/ConnectorView';
+import InspectorView from "../../Common/InspectorView";
 
 export default class MACView extends LayerView {
   logicalChannels: Array<ChannelView>;
   transportChannels: Array<ChannelView>;
   connectors: Array<ConnectorView>;
+  inspectorView: InspectorView;
 
-  constructor(resources: Partial<Record<string, PIXI.LoaderResource>>) {
+  constructor(
+    resources: Partial<Record<string, PIXI.LoaderResource>>,
+    inspectorView: InspectorView,
+  ) {
     super(resources, 'MAC');
+    this.inspectorView = inspectorView;
+
+    this.header.on('click', () => {
+      this.inspectorView.show('MAC', 'MAC Layer is responsible for:');
+    });
 
     this.logicalChannels = new Array<ChannelView>();
     this.transportChannels = new Array<ChannelView>();
     this.connectors = new Array<ConnectorView>();
 
     this.logicalChannels.push(
-      new ChannelView('PCCH'),
-      new ChannelView('BCCH'),
-      new ChannelView('CCCH'),
-      new ChannelView('DCCH'),
-      new ChannelView('DTCH'),
-      new ChannelView('MCCH'),
-      new ChannelView('MTCH'),
+      new ChannelView('PCCH', false, this.inspectorView),
+      new ChannelView('BCCH', false, this.inspectorView),
+      new ChannelView('CCCH', false, this.inspectorView),
+      new ChannelView('DCCH', false, this.inspectorView),
+      new ChannelView('DTCH', false, this.inspectorView),
+      new ChannelView('MCCH', false, this.inspectorView),
+      new ChannelView('MTCH', false, this.inspectorView),
     );
 
     this.logicalChannels.forEach(((value, index) => {
@@ -30,10 +40,10 @@ export default class MACView extends LayerView {
     }));
 
     this.transportChannels.push(
-      new ChannelView('PCH', true),
-      new ChannelView('BCH', true),
-      new ChannelView('DL-SCH', true),
-      new ChannelView('MCH', true),
+      new ChannelView('PCH', true, this.inspectorView),
+      new ChannelView('BCH', true, this.inspectorView),
+      new ChannelView('DL-SCH', true, this.inspectorView),
+      new ChannelView('MCH', true, this.inspectorView),
     );
     this.transportChannels[0].position.set(30, 115);
     this.transportChannels[1].position.set(75, 115);

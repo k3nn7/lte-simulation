@@ -1,10 +1,18 @@
 import * as PIXI from 'pixi.js';
 import {BG_DARK_2, FG_1} from 'Common/Colors';
 import Connectable from 'Common/Connectable';
+import InspectorView from "../../Common/InspectorView";
 
 export default class ChannelView extends Connectable {
-  constructor(name: string, captionOnBottom: boolean = false) {
+  inspectorView: InspectorView;
+
+  constructor(
+    name: string,
+    captionOnBottom: boolean = false,
+    inspectorView: InspectorView,
+  ) {
     super();
+    this.inspectorView = inspectorView;
 
     this.beginFill(BG_DARK_2);
     if (captionOnBottom) {
@@ -35,6 +43,10 @@ export default class ChannelView extends Connectable {
     });
     this.on('mouseout', () => {
       this.tint = 0xffffff;
+    });
+
+    this.on('click', () => {
+      this.inspectorView.show(name, 'PDCP Layer is responsible for:');
     });
   }
 }

@@ -10,6 +10,8 @@ const application = new PIXI.Application({width: 1200, height: 900, transparent:
 
 const loading = document.getElementById('loading');
 const navbar = document.getElementById('navbar');
+const inspector = document.getElementById('inspector');
+const simulationOverlay = document.getElementById('simulation-overlay');
 const simulationContainer = document.getElementById('simulation-container');
 simulationContainer.appendChild(application.view);
 
@@ -19,7 +21,7 @@ application.loader
   .add('bullet', 'bullet.png');
 
 application.loader.load((loader, resources) => {
-  const simulation = new Simulation(resources, application.ticker, true);
+  const simulation = new Simulation(resources, application.ticker, false, inspector, simulationOverlay);
   application.stage.addChild(simulation);
 
   application.ticker.add(() => {
@@ -29,4 +31,9 @@ application.loader.load((loader, resources) => {
   simulationContainer.classList.remove('d-none');
   navbar.classList.remove('d-none');
   loading.classList.add('d-none');
+
+  simulationOverlay.addEventListener('click', () => {
+    inspector.classList.add('d-none');
+    simulationOverlay.classList.add('d-none');
+  });
 });

@@ -2,14 +2,24 @@ import * as PIXI from 'pixi.js';
 import LayerView from 'Common/LayerView';
 import {ConnectorView} from 'Common/Connector/ConnectorView';
 import ChannelView from './ChannelView';
+import InspectorView from "../../Common/InspectorView";
 
 export default class MACView extends LayerView {
   logicalChannels: Array<ChannelView>;
   transportChannels: Array<ChannelView>;
   connectors: Array<ConnectorView>;
+  inspectorView: InspectorView;
 
-  constructor(resources: Partial<Record<string, PIXI.LoaderResource>>) {
+  constructor(
+    resources: Partial<Record<string, PIXI.LoaderResource>>,
+    inspectorView: InspectorView,
+  ) {
     super(resources, 'MAC');
+    this.inspectorView = inspectorView;
+
+    this.header.on('click', () => {
+      this.inspectorView.show('MAC', 'MAC Layer is responsible for:');
+    });
 
     this.logicalChannels = new Array<ChannelView>();
     this.transportChannels = new Array<ChannelView>();

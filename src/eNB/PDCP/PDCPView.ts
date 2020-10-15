@@ -7,6 +7,7 @@ import ActionsContainerView from './ActionsContainerView';
 import Mutex from 'async-mutex/lib/Mutex';
 import {DataUnit} from "../../Common/DataUnit";
 import {PDCPDataUnit} from "../../Common/DataUnit/PDCPDataUnit";
+import InspectorView from "../../Common/InspectorView";
 
 export default class PDCPView extends LayerView {
   mutex: Mutex;
@@ -14,9 +15,14 @@ export default class PDCPView extends LayerView {
   actionsContainer: ActionsContainerView;
   resources: Partial<Record<string, PIXI.LoaderResource>>;
   sequenceNumber: number;
+  inspectorView: InspectorView;
 
-  constructor(resources: Partial<Record<string, PIXI.LoaderResource>>) {
+  constructor(
+    resources: Partial<Record<string, PIXI.LoaderResource>>,
+    inspectorView: InspectorView,
+  ) {
     super(resources, 'PDCP');
+    this.inspectorView = inspectorView;
 
     this.mutex = new Mutex();
     this.resources = resources;
@@ -24,6 +30,10 @@ export default class PDCPView extends LayerView {
     this.actionsContainer.position.set(10, 20);
     this.body.addChild(this.actionsContainer);
     this.sequenceNumber = 0;
+
+    this.header.on('click', () => {
+      this.inspectorView.show('PDCP', 'PDCP Layer is responsible for:');
+    });
   }
 
   async onChannelA(dataUnit: DataUnit): Promise<void> {

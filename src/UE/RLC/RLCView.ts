@@ -8,13 +8,20 @@ import ButtonView from "../../Common/ButtonView";
 import {IPPacket} from "../../Common/IP/IPPacket";
 import MinimizedPacket from "../../eNB/RLC/MinimizedPacket";
 import {PDCPAck} from "../../Common/DataUnit/PDCPAck";
+import InspectorView from "../../Common/InspectorView";
 
 export default class RLCView extends LayerView {
   receptionBuffer: ReceptionBufferView;
   sendPacketButton: ButtonView;
+  inspectorView: InspectorView;
 
-  constructor(resources: Partial<Record<string, PIXI.LoaderResource>>, debugMode: boolean) {
+  constructor(
+    resources: Partial<Record<string, PIXI.LoaderResource>>,
+    debugMode: boolean,
+    inspectorView: InspectorView,
+  ) {
     super(resources, 'RLC');
+    this.inspectorView = inspectorView;
 
     this.receptionBuffer = new ReceptionBufferView(resources);
     this.receptionBuffer.position.set(10, 10);
@@ -23,6 +30,10 @@ export default class RLCView extends LayerView {
     this.initDebugMode(debugMode);
 
     setTimeout(() => this.forwardSDU(), 5000);
+
+    this.header.on('click', () => {
+      this.inspectorView.show('RLC', 'MAC Layer is responsible for:');
+    });
   }
 
   async onChannelB(data: DataUnit) {

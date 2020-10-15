@@ -9,15 +9,21 @@ import FlatSDU from './FlatSDU';
 import MinimizedPacket from './MinimizedPacket';
 import SDU from './SDU';
 import {PDCPDataUnit} from 'Common/DataUnit/PDCPDataUnit';
+import InspectorView from "../../Common/InspectorView";
 
 export default class RLCView extends LayerView {
   transmissionBuffer: TransmissionBuffer;
   retransmissionBuffer: RetransmissionBuffer;
   sdu: SDU;
   timer: TimerView
+  inspectorView: InspectorView;
 
-  constructor(resources: Partial<Record<string, PIXI.LoaderResource>>) {
+  constructor(
+    resources: Partial<Record<string, PIXI.LoaderResource>>,
+    inspectorView: InspectorView,
+  ) {
     super(resources, 'RLC');
+    this.inspectorView = inspectorView;
 
     this.transmissionBuffer = new TransmissionBuffer(resources, 'Transmission Buffer');
     this.transmissionBuffer.position.set(10, 10);
@@ -29,6 +35,10 @@ export default class RLCView extends LayerView {
     this.body.addChild(this.retransmissionBuffer);
 
     this.initEmptySDU();
+
+    this.header.on('click', () => {
+      this.inspectorView.show('RLC', 'MAC Layer is responsible for:');
+    });
   }
 
   async onChannelA(data: DataUnit) {

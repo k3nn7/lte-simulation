@@ -4,6 +4,7 @@ import ButtonView from 'Common/ButtonView';
 import KneeConnector from 'Common/Connector/KneeConnector';
 import {ENBProtocols} from "./ENBProtocols";
 import {UEProtocols} from "./UEProtocols";
+import InspectorView from "../Common/InspectorView";
 
 export class Simulation extends PIXI.Container {
   debugMode: boolean;
@@ -13,14 +14,18 @@ export class Simulation extends PIXI.Container {
   ueProtocols: UEProtocols;
   entitiesConnector: KneeConnector;
   ipPacketGenerator: IPPacketGenerator;
+  inspectorView: InspectorView;
 
   constructor(
     resources: Partial<Record<string, PIXI.LoaderResource>>,
     ticker: PIXI.Ticker,
-    debugMode: boolean
+    debugMode: boolean,
+    inspector: HTMLElement,
+    overlay: HTMLElement,
   ) {
     super();
 
+    this.inspectorView = new InspectorView(inspector, overlay);
     this.debugMode = debugMode;
 
     this.startButton = new ButtonView('Send packet →');
@@ -41,8 +46,8 @@ export class Simulation extends PIXI.Container {
     });
     this.addChild(this.pauseButton);
 
-    this.enbProtocols = new ENBProtocols(resources);
-    this.ueProtocols = new UEProtocols(resources, debugMode);
+    this.enbProtocols = new ENBProtocols(resources, this.inspectorView);
+    this.ueProtocols = new UEProtocols(resources, debugMode, this.inspectorView);
 
     this.entitiesConnector = new KneeConnector(
       this.enbProtocols.phy,

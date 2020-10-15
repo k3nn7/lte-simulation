@@ -5,6 +5,7 @@ import RLCView from '../UE/RLC/RLCView';
 import ueMACView from '../UE/MAC/MACView';
 import uePHYView from '../UE/PHY/PHYView';
 import {ConnectorView} from 'Common/Connector/ConnectorView';
+import InspectorView from "../Common/InspectorView";
 
 export class UEProtocols extends PIXI.Container {
   endPoint: StartPoint;
@@ -18,7 +19,11 @@ export class UEProtocols extends PIXI.Container {
   rlcToMac: ConnectorView;
   macToPhy: ConnectorView;
 
-  constructor(resources: Partial<Record<string, PIXI.LoaderResource>>, debugMode: boolean) {
+  constructor(
+    resources: Partial<Record<string, PIXI.LoaderResource>>,
+    debugMode: boolean,
+    inspectorView: InspectorView,
+  ) {
     super();
 
     this.position.set(600, 0);
@@ -26,19 +31,19 @@ export class UEProtocols extends PIXI.Container {
     this.endPoint = new StartPoint();
     this.endPoint.position.set(215, 0);
 
-    this.pdcpUp = new uePDCPView(resources, debugMode);
+    this.pdcpUp = new uePDCPView(resources, debugMode, inspectorView);
     this.pdcpUp.position.set(0, 50);
     this.addChild(this.pdcpUp);
 
-    this.rlcUp = new RLCView(resources, debugMode);
+    this.rlcUp = new RLCView(resources, debugMode, inspectorView);
     this.rlcUp.position.set(0, this.pdcpUp.height + this.pdcpUp.y + 50);
     this.addChild(this.rlcUp);
 
-    this.macUp = new ueMACView(resources);
+    this.macUp = new ueMACView(resources, inspectorView);
     this.macUp.position.set(0, this.rlcUp.y + this.rlcUp.height + 50);
     this.addChild(this.macUp);
 
-    this.phyDown = new uePHYView(resources);
+    this.phyDown = new uePHYView(resources, inspectorView);
     this.phyDown.position.set(0, this.macUp.y + this.macUp.height + 50);
     this.addChild(this.phyDown);
 

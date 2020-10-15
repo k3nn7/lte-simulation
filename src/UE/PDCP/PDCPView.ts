@@ -10,6 +10,7 @@ import BufferItemView from './BufferItemView';
 import ButtonView from '../../Common/ButtonView';
 import {PDCPDataUnit} from '../../Common/DataUnit/PDCPDataUnit';
 import {DataUnit} from "../../Common/DataUnit";
+import InspectorView from "../../Common/InspectorView";
 
 export default class PDCPView extends LayerView {
   mutex: Mutex;
@@ -20,9 +21,15 @@ export default class PDCPView extends LayerView {
   receptionBuffer: ReceptionBufferView;
 
   sendPacketButton: ButtonView;
+  inspectorView: InspectorView;
 
-  constructor(resources: Partial<Record<string, PIXI.LoaderResource>>, debugMode: boolean) {
+  constructor(
+    resources: Partial<Record<string, PIXI.LoaderResource>>,
+    debugMode: boolean,
+    inspectorView: InspectorView,
+  ) {
     super(resources, 'PDCP');
+    this.inspectorView = inspectorView;
 
     this.mutex = new Mutex();
     this.resources = resources;
@@ -37,6 +44,10 @@ export default class PDCPView extends LayerView {
 
     this.sequenceNumber = 0;
     setTimeout(() => this.forwardPDU(), 5000);
+
+    this.header.on('click', () => {
+      this.inspectorView.show('PDCP', 'PDCP Layer is responsible for:');
+    });
   }
 
   async forwardPDU() {
