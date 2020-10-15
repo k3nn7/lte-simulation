@@ -37,7 +37,7 @@ Poniżej opisano najbardziej kluczowe komponenty użyte w symulacji:
 Diagram UML dla klasy Simulation przedstawiono na Rys. \ref{fig:simulation_class}. Zawiera ona obiekty wszystkich symulowanych warstw, połączenia między nimi a także odpowiada za ich inicjalizację. Zawiera również obiekt klasy IPPacketGenerator odpowiadający za generowanie pakietów IP o losowej długości i inicjuje jego połączenie z przyciskiem ``Send packet``. Dzięki temu wciśnięcie przycisku powoduje wygenerowanie nowego pakietu IP i wysłanie go do pierwszej symulowanej podwarstwy tj. PDCP.
 
 \begin{figure}[ht]
-	\centerline{\frame{\includegraphics[width=0.8\textwidth]{images/simulation_class.png}}}
+	\centerline{\frame{\includegraphics[width=0.9\textwidth]{images/simulation_class.png}}}
 	\caption{Diagram UML dla klasy Simulation}
 	\label{fig:simulation_class}
 \end{figure}
@@ -56,15 +56,27 @@ Najczęściej symulowanym zachowaniem w projekcie jest przesyłanie jednostek da
 Domyślna reakcja obiektów dziedziczących po klasie Connectable na pojawienie się jednostki w kanale to przesłanie obiektu do drugiego kanału. Oznacza to, że obiekty wysłane do kanału A zostają odebrane a następnie opublikowane na kanale B. Natomiast obiekty wysłane do kanału B zostają opublikowane na kanale A. Dzieki temu domyślnie, obiekty dziedziczące po klasie Connectable, zachowuja się jak przewodniki. Takie zachowanie można zaobserwować np. w komponentach łączących warstwy pomiędzy sobą. Natomiast klasy implementujące poszczególne warstwy nadpisują domyślne zachowanie poprzez dodanie logiki odpowiadającej za przetwarzanie odebranych jednostek danych, buforowanie ich czy dodawanie nagłówków przed przesłaniem dalej.
 
 \begin{figure}[ht]
-	\centerline{\frame{\includegraphics[width=0.5\textwidth]{images/connectable_class.png}}}
+	\centerline{\frame{\includegraphics[width=0.3\textwidth]{images/connectable_class.png}}}
 	\caption{Diagram UML dla klasy Connectable}
 	\label{fig:connectable_class}
 \end{figure}
 
 \subsection{Klasa LayerView}
 
-Implementuje części wspólne wszystkich podwarstw przedstawionych w symulacji. Tj. renderowanie nagłówka z nazwą podwarstwy oraz białego pola gdzie przedstawione są mechanizmy wchodzące w skład podwarstwy.
+Implementuje części wspólne wszystkich podwarstw przedstawionych w symulacji. Tj. renderowanie nagłówka z nazwą podwarstwy oraz białego pola gdzie przedstawione są mechanizmy wchodzące w skład podwarstwy. Rys. \ref{fig:layer_view_class}
+
+\begin{figure}[ht]
+	\centerline{\frame{\includegraphics[width=0.2\textwidth]{images/layer_view_class.png}}}
+	\caption{Diagram UML dla klasy LayerView}
+	\label{fig:layer_view_class}
+\end{figure}
 
 \subsection{Klasa BufferView}
 
-W kilku miejscach symulacji można zauważyć wizualizację buforów przechowujących jednostki danych. Ich zachowanie polega na dodawaniu i usuwaniu jednostek danych a także układaniu ich w odpowiedniej kolejności. Ta logika została zaimplementowana przy użyciu klasy BufferView
+W kilku miejscach symulacji można zauważyć wizualizację buforów przechowujących jednostki danych. Ich zachowanie polega na dodawaniu i usuwaniu jednostek danych a także układaniu ich w odpowiedniej kolejności. Ta logika została zaimplementowana przy użyciu klasy BufferView (Rys. \ref{fig:buffer_view_class}).
+
+\begin{figure}[ht]
+	\centerline{\frame{\includegraphics[width=0.2\textwidth]{images/buffer_view_class.png}}}
+	\caption{Diagram UML dla klasy BufferView}
+	\label{fig:buffer_view_class}
+\end{figure}

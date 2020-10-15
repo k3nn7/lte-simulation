@@ -1,0 +1,17 @@
+@startuml
+
+class BufferView {
+  -Array<BufferItemView> items
+  
+  +addItem(BufferItemView)
+  +BufferItemView popItem()
+}
+
+class BufferItemView {
+  -DataUnit wrappedDataUnit
+  -String caption
+}
+
+BufferItemView *-- BufferView
+
+@enduml

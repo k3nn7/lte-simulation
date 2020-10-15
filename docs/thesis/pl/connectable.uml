@@ -1,0 +1,25 @@
+@startuml
+
+abstract class Connectable {
+  -Channel channelA
+  -Channel channelB
+  
+  +setChannelA(Channel)
+  +setChannelB(Channel)
+  +onChannelA(DataUnit)
+  +onChannelB(DataUnit)
+}
+
+interface DataUnit {
+  +number size
+  +Type type
+}
+
+class Channel {
+  +invoke(DataUnit)
+}
+  
+Connectable *-- DataUnit
+Connectable *-- Channel
+
+@enduml

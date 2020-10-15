@@ -1,0 +1,55 @@
+@startuml
+
+class Simulation {
+  -bool debugMode
+  -ButtonView sendPacketButton
+  -ButtonView pauseButton
+  -UEProtocols ueProtocols
+  -ENBProtocols enbProtocols
+  -EntitiesConnector entitiesConnector
+  -ipPacketGenerator IPPacketGenerator
+  -InspectorView inspectorView
+}
+
+class ButtonView {
+  +setOnClick()
+}
+
+class UEProtocols {
+  -StartPoint startPoint
+  -PDCPView pdcpSublayer
+  -RLCView rlcSublayer
+  -MACView macSublayer
+  -PHYView phyLayer
+}
+
+class ENBProtocols {
+  -EndPoint endpoint
+  -PDCPView pdcpSublayer
+  -RLCView rlcSublayer
+  -MACView macSublayer
+  -PHYView phyLayer
+}
+
+class EntitiesConnector {
+  -Connectable componentA
+  -Connectable componentB
+}
+
+class IPPacketGenerator {
+  +generate(): IPPacket
+}
+
+class InspectorView {
+  +show()
+  +hide()
+}
+
+Simulation *-- ButtonView
+Simulation *-- UEProtocols
+Simulation *-- ENBProtocols
+Simulation *-- EntitiesConnector
+Simulation *-- IPPacketGenerator
+Simulation *-- InspectorView
+
+@enduml

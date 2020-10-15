@@ -1,0 +1,20 @@
+@startuml
+
+abstract class Connectable {
+  -Channel channelA
+  -Channel channelB
+  
+  +setChannelA(Channel)
+  +setChannelB(Channel)
+  +onChannelA(DataUnit)
+  +onChannelB(DataUnit)
+}
+
+class LayerView {
+  -PIXI.Graphics header
+  -PIXI.Graphics body
+}
+
+Connectable <|-- LayerView
+
+@enduml
