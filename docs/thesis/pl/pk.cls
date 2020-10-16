@@ -121,7 +121,7 @@ Supervisor: & {\itshape \@supervisor}\\
 			\vspace{8mm plus .1fill}
 			\vspace{0.5cm}
 			{\large\bf Praca \@rodzajpracy\\[3pt]
-				na kierunku \MakeUppercase{\@degreeprogramme}
+				kierunek \@degreeprogramme
 			}
 			\vspace{0.5cm plus 1.5fill}
 		\end{center}

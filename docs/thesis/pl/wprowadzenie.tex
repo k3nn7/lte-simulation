@@ -1,27 +1,27 @@
 \chapter{Wprowadzenie}
 \label{cha:wprowadzenie}
 
-Od lat 80. XX wieku możemy zaobserwować coraz szybszy rozwój telefonii komórkowej. Osobom przyzwyczajonym do korzystania ze smartfona ze stałym dostępem do internetu w szybkiej sieci LTE lub 3G może wydawać się nieprawdopodobne, że kilkadziesiąt lat temu sieci pierwszej generacji (1G) pozwalały jedynie na rozmowy głosowe przesyłane analogowo (\cite{TanWet11}).
+Od lat 80. XX wieku możemy zaobserwować coraz szybszy rozwój telefonii komórkowej. Osobom przyzwyczajonym do korzystania ze smartfonu ze stałym dostępem do Internetu w szybkiej sieci LTE (Long Term Evolution) lub 3G (telefonia komórkowa trzeciej generacji) może wydawać się nieprawdopodobne, że kilkadziesiąt lat temu sieci pierwszej generacji (1G) pozwalały jedynie na rozmowy głosowe przesyłane analogowo \cite{TanWet11}.
 
-W ostatnich latach sposób wykorzystania sieci komórkowej uległ znaczniej zmianie - zamiast transmisji tylko połączeń głosowych obecnie ruch sieciowy zdominowany jest przez transmisję danych w oparciu o protokół IP. Infrastruktura sieci komórkowej musi wspierać coraz większą liczbę podłączonych urządzeń. Z kolei urządzenia wykorzystywane są już nie tylko do rozmów głosowych ale również do przesyłania wideo, muzyki, prowadzenia wideokonferencji oraz rozrywki elektronicznej. Dodatkowo użytkownicy oczekują, że dostęp do sieci będzie możliwy ciągle i w każdym miejscu bez zauważalnych spadków prędkości.
+W ostatnich latach sposób wykorzystania sieci komórkowej uległ znaczniej zmianie - zamiast transmisji tylko połączeń głosowych obecnie ruch sieciowy zdominowany jest przez transmisję danych w oparciu o protokół IP (Internet Protocol). Infrastruktura sieci komórkowej musi wspierać coraz większą liczbę podłączonych urządzeń. Z kolei urządzenia wykorzystywane są już nie tylko do rozmów głosowych, ale również do przesyłania wideo, muzyki, prowadzenia wideokonferencji oraz rozrywki elektronicznej. Dodatkowo użytkownicy oczekują, że dostęp do sieci będzie możliwy ciągle i w każdym miejscu bez zauważalnych spadków prędkości.
 
-W odpowiedzi na to technologia dostępu zdalnego rozwija się w zawrotnym tempie co powoduje, że jest coraz bardziej złożona. Aby zrozumieć zasady jej działania obecnie potrzebne jest zdobycie rozległej wiedzy z zakresu przetwarzania sygnałów cyfrowych, sieci komputerowych, informatyki. Właśnie nad problemem wysokiego progu wejścia w technologię LTE postanowiłem się pokłonić w mojej pracy.
+W odpowiedzi na to technologia dostępu zdalnego rozwija się w zawrotnym tempie co powoduje, że jest coraz bardziej złożona. Aby zrozumieć zasady jej działania obecnie potrzebne jest zdobycie rozległej wiedzy z zakresu przetwarzania sygnałów cyfrowych, sieci komputerowych, informatyki. Właśnie nad problemem wysokiego progu wejścia w technologię LTE postanowiłem się pokłonić w mojej pracy.
 
 \section{Cele pracy}					
 \label{sec:celePracy}
 
 Celem pracy było przygotowanie interaktywnej symulacji stosu protokołów używanych w LTE po to, aby ułatwić jego zrozumienia osobie chcącej zgłębić ten temat. Ilość mechanizmów obecnych w LTE oraz ich wzajemnie zależności sprawiają, że ich pojęcie może stanowić spore wyzwanie.
 
-Dostępna jest specjalistyczna literatura opisująca jak dane są przetwarzane przez poszczególne warstwy stosu protokołów LTE i chociaż symulacja nie jest w stanie jej zastąpić to jednak wiele koncepcji związanych z przepływem pakietów w czasie znacznie łatwiej jest pokazać na animowanym diagramie niż opisać w tekście. Dzięki temu symulacja może okazać się dobrym uzupełnieniem literatury pozwalającym na szybsze zrozumienie niektórych zagadnień.
+Dostępna jest specjalistyczna literatura opisująca jak dane są przetwarzane przez poszczególne warstwy stosu protokołów LTE i chociaż symulacja nie jest w stanie jej zastąpić to jednak wiele koncepcji związanych z przepływem pakietów w czasie znacznie łatwiej jest pokazać na animowanym diagramie niż opisać w tekście. Dzięki temu symulacja może okazać się dobrym uzupełnieniem literatury pozwalającym na szybsze zrozumienie niektórych zagadnień.
 
 Interaktywne elementy dodatkowo pozwalają użytkownikowi na zmodyfikowanie parametrów symulacji i przekonanie się jaki wpływ mają one na zachowanie mechanizmów będących częścią stosu protokołów LTE.
 
-Połączenie animacji oraz mechanizmów interakcji pozwala na zwięzłe przedstawienie procesów, które obecnie wymagają dziesiątek stron tekstu, elastycznej wyobraźni czytelnika oraz sporo jego czasu. Zmniejszenie czasu, potrzebnego na przekazanie wiedzy na temat obecnych systemów LTE być może pozwoli później na jego lepsze wykorzystanie przy np. przy opracowywaniu nowych rozwiązań i technologi.
+Połączenie animacji oraz mechanizmów interakcji pozwala na zwięzłe przedstawienie procesów, które obecnie wymagają dziesiątek stron tekstu, elastycznej wyobraźni czytelnika oraz sporo jego czasu. Zmniejszenie czasu, potrzebnego na przekazanie wiedzy na temat obecnych systemów LTE być może pozwoli później na jego lepsze wykorzystanie przy np. przy opracowywaniu nowych rozwiązań i technologii.
 
 \section{Zawartość pracy}
 \label{sec:zawartoscPracy}
 
-W mojej pracy skupiłem się na przygotowaniu symulacji podwarstw warstwy 2. stosu protokołów LTE. Ograniczyłem się do płaszczyzny danych użytkownika (user plane). Ostatecznie pozwoliło to zasymulować kompletny proces przesyłu pakietu IP od urządzenia użytkownika do stacji bazowej oraz w kierunku przeciwnym.
+W mojej pracy skupiłem się na przygotowaniu symulacji podwarstw warstwy 2. stosu protokołów LTE. Ograniczyłem się do płaszczyzny danych użytkownika (user plane). Ostatecznie pozwoliło to zasymulować kompletny proces przesyłania pakietu IP od urządzenia użytkownika do stacji bazowej oraz w kierunku przeciwnym.
 
 Poszczególne rozdziały pracy zawierają:
 

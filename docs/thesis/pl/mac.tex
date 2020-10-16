@@ -1,7 +1,7 @@
 \chapter{Podwarstwa Medium Access Control}
 \label{cha:mac}
 
-Podwarstwa MAC (Medium Access Control) jest trzecią z podwarstw warstwy 2.. Z podwarstwą RLC komunikuje się ona za pośrednictwem kanałów logicznych (logical channels) i wymienia z nią jednostki danych (SDU). Natomiast z warstwą fizyczną (PHY) komunikuje się przy użyciu kanałów transportowych (transport channels) i odbiera oraz przekazuje do niej dane w formie bloków transportowych. \cite{Cox14}
+Podwarstwa MAC (Medium Access Control) jest trzecią z podwarstw warstwy 2. Z podwarstwą RLC komunikuje się ona za pośrednictwem kanałów logicznych (logical channels) i wymienia z nią jednostki danych (SDU). Natomiast z warstwą fizyczną (PHY) komunikuje się przy użyciu kanałów transportowych (transport channels) i odbiera oraz przekazuje do niej dane w formie bloków transportowych. \cite{Cox14}
 
 \begin{figure}
 	\centerline{\includegraphics[width=0.4\textwidth]{images/mac_overview.png}}
@@ -12,15 +12,15 @@ Podwarstwa MAC (Medium Access Control) jest trzecią z podwarstw warstwy 2.. Z p
 Do funkcji podwarstwy MAC możemy zaliczyć:
 
 \begin{enumerate} 
-	\item Mapowanie jednostek danych (SDU) przesyłanych do kanałów logicznych na kanały transportowe gdzie formowane są w bloki tranportowe zawierające PDU
-	\item Planowanie jak i kiedy jednostki danych mają zostać dostarczone
+	\item Mapowanie jednostek danych (SDU) przesyłanych do kanałów logicznych na kanały transportowe, gdzie formowane są w bloki transportowe zawierające PDU
+	\item Planowanie jak i kiedy jednostki danych mają zostać dostarczone
 	\item Swobodny dostęp
 	\item Zarządzenie synchronizacją czasu pomiędzy urządzeniem użytkownika a stacją bazową 
 \end{enumerate}
 
 \section{Mapowanie kanałów}
 
-Podwarstwa MAC komunikuje się z podwarstwą RLC za pośrednictwem kanałów logicznych. Można je podzielić na kanały ``control channels`` transportujące dane dotyczące ``control plane`` oraz na kanały ''traffic channels'' transportujące dane dotyczące ''control plane''.
+Podwarstwa MAC komunikuje się z podwarstwą RLC za pośrednictwem kanałów logicznych. Można je podzielić na kanały ``control channels`` transportujące dane dotyczące ``control plane`` oraz na kanały ''traffic channels'' transportujące dane dotyczące ''control plane''.
 
 Wyróżniamy następujące kanały logiczne typu ``control channels``:
 
@@ -29,19 +29,19 @@ Wyróżniamy następujące kanały logiczne typu ``control channels``:
 	\item Paging Control Channel (PCCH) - służy do informowania urządzeń użytkownika o zdarzeniach zachodzących w sieci
 	\item Common Control Channel (CCCH) - pozwala na przesyłanie informacji kontrolnych w dwóch kierunkach pomiędzy urządzeniem użytkownika i stacją bazową (dotyczy urządzeń, które nie ustanowiły połączenia na poziomie warstwy RRC)
 	\item Multicast Control Channel (MCCH) - służy do publikowania informacji kontrolnych od stacji bazowej do wielu urządzeń użytkownika w ramach tzw. Multimedia Broadcast Multicast Services (MBMS)
-	\item Dedicated Control Channel (DCCH) - pozwala na przesyłanie informacji kontrolnych w dwóch kierunkach pomiędzy urządzeniem użytkownika i stacją bazową (dotyczy urządzeń które ustanowiły połączenie na poziomie warstwy RRC)
+	\item Dedicated Control Channel (DCCH) - pozwala na przesyłanie informacji kontrolnych w dwóch kierunkach pomiędzy urządzeniem użytkownika i stacją bazową (dotyczy urządzeń, które ustanowiły połączenie na poziomie warstwy RRC)
 \end{enumerate}
 
 Kanały logiczne typu ``traffic channels`` są następujące:
 
 \begin{enumerate}
-	\item Dedicated Traffic Channel (DTCH) - kanał przeznaczony do transportu danych użytkownika w dwóch kierunkach pomiędzy urządzeniem użytkownika oraz stacją bazową
-	\item Multicast Traffic Channel (MTCH) - słuzy do publikowania danych od stacji bazowej do wielu urządzeń użytkownika w ramach MBMS
+	\item Dedicated Traffic Channel (DTCH) - kanał przeznaczony do transportu danych użytkownika w dwóch kierunkach pomiędzy urządzeniem użytkownika oraz stacją bazową
+	\item Multicast Traffic Channel (MTCH) - służy do publikowania danych od stacji bazowej do wielu urządzeń użytkownika w ramach MBMS
 \end{enumerate}
 
-Z warstwą fizyczną (PHY), podwarstwa MAC komunikuje się przy użyciu kanałów transportowych ``transport channels``. Dzielimy na kanały, ktore wysyłają dane od stacji bazowej do urządzenia użytkownika tzw. ``downlink channels`` oraz kanały używane do wysyłania danych od urządzenia użytkownika do stacji bazowej ``uplink channels``.
+Z warstwą fizyczną (PHY), podwarstwa MAC komunikuje się przy użyciu kanałów transportowych ``transport channels``. Dzielimy na kanały, które wysyłają dane od stacji bazowej do urządzenia użytkownika tzw. ``downlink channels`` oraz kanały używane do wysyłania danych od urządzenia użytkownika do stacji bazowej ``uplink channels``.
 
-Wyrózniamy następujące ``downlink channels``:
+Wyróżniamy następujące ``downlink channels``:
 
 \begin{enumerate}
 	\item Broadcast Channel (BCH) - ten kanał posiada jeden predefiniowany format przesyłania danych a także przesyła dane do wszystkich urządzeń w zasięgu danej stacji bazowej
@@ -53,19 +53,19 @@ Wyrózniamy następujące ``downlink channels``:
 Oraz następujące ``uplink channels``:
 
 \begin{enumerate}
-	\item Uplink Shared Channel (UL-SCH) - oferuje wsparcie dla korekcji błędów HARQ, oferuje dynamiczne dynamiczne dostosowywanie parametrów połączenia 
+	\item Uplink Shared Channel (UL-SCH) - oferuje wsparcie dla korekcji błędów HARQ, oferuje dynamiczne dostosowywanie parametrów połączenia 
 	\item Random Access Channel (RACH)
 \end{enumerate}
 
 \begin{figure}
 	\centerline{\includegraphics[width=0.8\textwidth]{images/mac_downlink_mapping.png}}
-	\caption{Mapowanie kanałów logicznych na kanały transportowe dla downlink channels}
+	\caption{Mapowanie kanałów logicznych na transportowe dla downlink channels}
 	\label{fig:mac_downlink_mapping}
 \end{figure}
 
 \begin{figure}
 	\centerline{\includegraphics[width=0.5\textwidth]{images/mac_uplink_mapping.png}}
-	\caption{Mapowanie kanałów logicznych na kanały transportowe dla uplink channels}
+	\caption{Mapowanie kanałów logicznych na transportowe dla uplink channels}
 	\label{fig:mac_uplink_mapping}
 \end{figure}
 
@@ -86,13 +86,13 @@ Oprócz transmisji danych użytkownika podwarstwa MAC odpowiada za wysyłanie or
 		\hline
 		Power headroom & Informacja o dostępnej mocy transmisyjnej urządzenia użytkownika \\
 		\hline
-		Extended power headroom & Dostępna moc transmisyja podczas łączenia nośników danych \\
+		Extended power headroom & Dostępna moc transmisyjna podczas łączenia nośników danych \\
 		\hline
 		DRX command & Przełącza urządzenie użytkownika w tryb uśpienia \\
 		\hline
-		Timming advance command & Dostosowuje postęp czasowy w urządzeniu użytkownika \\
+		Timing advance command & Dostosowuje postęp czasowy w urządzeniu użytkownika \\
 		\hline
-		UE contention resolution identity & Rozwiązuje problem z rywalizacją o dostęp do kanału transisyjnego pomiędzy urządzeniami użytkownika podczas swobodnego dostępu \\
+		UE contention resolution identity & Rozwiązuje problem z rywalizacją o dostęp do kanału transmisyjnego pomiędzy urządzeniami użytkownika podczas swobodnego dostępu \\
 		\hline
 		MCH scheduling information & Przesyła informacje do urządzenia użytkownika związane z planowaniem MBMS \\
 		\hline
@@ -106,10 +106,10 @@ Oprócz transmisji danych użytkownika podwarstwa MAC odpowiada za wysyłanie or
 
 \section{Transmisja danych}
 
-Aby urządzenie użytkownika mogło przesłać dane najpierw musi otrzymać od stacji bazowej slot czasowy na transmisję. Z kolei aby otrzymać slot czasowy musi poinformować stację bazową o tym, że posiada dane gotowe do wysłania. W tym celu urządzenie użytkownika wysyła element kontrolny BSR (Buffer Status Report) informujący o tym jak dużo danych jest gotowych do transmisji. BSR wysyłany jest w 3 sytuacjach:
+Aby urządzenie użytkownika mogło przesłać dane najpierw musi otrzymać od stacji bazowej slot czasowy na transmisję. Z kolei, aby otrzymać slot czasowy musi poinformować stację bazową o tym, że posiada dane gotowe do wysłania. W tym celu urządzenie użytkownika wysyła element kontrolny BSR (Buffer Status Report) informujący o tym jak dużo danych jest gotowych do transmisji. BSR wysyłany jest w 3 sytuacjach:
 
 \begin{enumerate}
-	\item jeżeli po okresie gdy bufor transmisji był pusty pojawiły się w nim dane gotowe do transmisji
+	\item jeżeli po okresie gdy bufor transmisji był pusty pojawiły się w nim dane gotowe do transmisji
 	\item jeżeli w buforze pojawiły się dane gotowe do transmisji o wyższym priorytecie niż dane znajdujące się do tej pory w buforze
 	\item jeżeli dane w buforze oczekują na transmisje i licznik czasowy zakończył odliczanie
 \end{enumerate}
@@ -124,7 +124,7 @@ Algorytm priorytetyzacji jest następujący: w pierwszej kolejności dane są po
 
 \section{Korekcja błędów HARQ}
 
-Mechanizm HARQ łączy mechanizm kontroli błędów ARQ (Automatic Repeat Request) oraz mechanizm korekcji błędów FEC (Forward Error Correction). Pozwala to uniknąć problemów związanych z korzystaniem z każdego z tych mechanizmów osobno. 
+Mechanizm HARQ łączy mechanizm kontroli błędów ARQ (Automatic Repeat Request) oraz mechanizm korekcji błędów FEC (Forward Error Correction). Pozwala to uniknąć problemów związanych z korzystaniem z każdego z tych mechanizmów osobno. 
 ARQ oferuje wysoką stabilność transmitowanych danych i pewność, że dotrą one bez błędów. Jednak konieczność ponawiania transmisji sprawia, że przepustowość łącza znacznie spada jeżeli występuje duża ilość błędów. A także rośnie opóźnienie w dostarczeniu danych co może mieć negatywny wpływ na usługi, które do prawidłowego działania wymagają małego opóźnienia (np. VoIP).
 Z kolei FEC oferuje stałą przepustowość bez względu na liczbę błędów podczas transmisji. Minusem jest konieczność implementacji złożonych kodów do korekcji błędów, które znacznie komplikują implementację.
 
@@ -136,7 +136,7 @@ Mechanizm DRX (Discontinuous Reception) ma za zadanie zmniejszenie zużycia bate
 
 \section{Struktura pakietów}
 
-Jednostka danych używana przy komunikacji między podwarstwą MAC a warstwą fizyczną ma ogólną strukturę przedstawioną na Rys. \ref{fig:mac_pdu}. Składa się ona z elementów kontrolnych wymienionych w sekcji \ref{sec:mac_control_elements} oraz z jednostek danych (SDU) odebranych z kanałów logicznych. Do każdego elementu kontrolnego oraz jednostki danych przypisany jest nagłówek znajdujący się w części nagłówkowej pakietu (MAC header). Nagłówki odpowiadające jednostkom danych określają ich rozmiar oraz kanał logiczny z którego pochodzą, natomiast nagłówki odpowiadające elementom kontrolnym określają ich typ oraz rozmiar. Szegółową strukturę elementu nagłówka przedstawiono na Rys. \ref{fig:mac_pdu_subheader}. Składa się on z następujących pól:
+Jednostka danych używana przy komunikacji między podwarstwą MAC a warstwą fizyczną ma ogólną strukturę przedstawioną na Rys. \ref{fig:mac_pdu}. Składa się ona z elementów kontrolnych wymienionych w sekcji \ref{sec:mac_control_elements} oraz z jednostek danych (SDU) odebranych z kanałów logicznych. Do każdego elementu kontrolnego oraz jednostki danych przypisany jest nagłówek znajdujący się w części nagłówkowej pakietu (MAC header). Nagłówki odpowiadające jednostkom danych określają ich rozmiar oraz kanał logiczny z którego pochodzą, natomiast nagłówki odpowiadające elementom kontrolnym określają ich typ oraz rozmiar. Szczegółową strukturę elementu nagłówka przedstawiono na Rys. \ref{fig:mac_pdu_subheader}. Składa się on z następujących pól:
 
 \begin{enumerate}
 	\item R (1 bit) zarezerwowane pola, aktualnie nieużywane. Posiadają wartość ustawioną na 0

@@ -1,7 +1,7 @@
 \chapter{Stos protokołów LTE}
 \label{cha:protokoly}
 
-Do prawidłowej komunikacji pomiędzy poszczególnymi urządzeniami w sieci najczęściej potrzebny jest zestaw wielu mechanizmów i reguł, które uczynią ją możliwą a także efektywną. Aby zmniejszyć ich złożoność a także ułatwić zrozumienie, implementację i dalszy rozwój takie mechanizmy i reguły są dzielone na osobne protokoły stanowiące razem stos protokołów. W stosie protokołów protokoły najniższego rzędu odpowiadają za komunikację ze sprzętem a protokoły najwyższego rzędu udostępniają interfejs z którego korzystają aplikacje przestrzeni użytkownika. Pomiędzy nimi znajdują się pośrednie warstwy dodające funkcjonalności takie jak korekcja błędów, kompresja, zapewnienie kolejności, eliminacja duplikatów.
+Do prawidłowej komunikacji pomiędzy poszczególnymi urządzeniami w sieci najczęściej potrzebny jest zestaw wielu mechanizmów i reguł, które uczynią ją możliwą a także efektywną. Aby zmniejszyć ich złożoność a także ułatwić zrozumienie, implementację i dalszy rozwój takie mechanizmy i reguły są dzielone na osobne protokoły stanowiące razem stos protokołów. W stosie protokołów protokoły najniższego rzędu odpowiadają za komunikację ze sprzętem a protokoły najwyższego rzędu udostępniają interfejs, z którego korzystają aplikacje przestrzeni użytkownika. Pomiędzy nimi znajdują się pośrednie warstwy dodające funkcjonalności takie jak korekcja błędów, kompresja, zapewnienie kolejności, eliminacja duplikatów.
 
 Protokoły tego samego rzędu na jednym urządzeniu wymieniają komunikaty pomiędzy protokołem tego samego rzędu na sąsiednim urządzeniu (strzałka 1. na Rys. \ref{fig:protocols_stack}). Podczas wysyłania danych protokoły wyższego rzędu wysyłają komunikaty do protokołów niższego rzędu (strzałka 2. na Rys. \ref{fig:protocols_stack}) a podczas odbierania danych protokoły niższego rzędu wysyłają komunikaty do protokołów wyższego rzędu (strzałka 3. na Rys. \ref{fig:protocols_stack}). 
 
@@ -25,16 +25,16 @@ Tak więc przy transmisji danych warstwa N odbiera SDU z warstwy N + 1 i wysyła
 Stos protokołów LTE można odnieść do wszystkich siedmiu warstw modelu OSI (ISO Open Systems Interconnection Reference Model, Rys. \ref{fig:osi}). Model OSI jest traktowany jako model odniesienia dla większości rodzin protokołów komunikacyjnych. Podstawowym założeniem modelu jest podział systemów sieciowych na 7 warstw współpracujących ze sobą w ściśle określony sposób. \cite{Wiki01} Model OSI definiuje następujące 7 warstw:
 
 \begin{enumerate}
-	\item Warstwa aplikacji - odpowiada za udostępnianie interfejsu z którego korzystają aplikacje przestrzeni użytkownika
+	\item Warstwa aplikacji - odpowiada za udostępnianie interfejsu, z którego korzystają aplikacje przestrzeni użytkownika
 	\item Warstwa prezentacji - ma za zadanie przetworzenie danych z warstwy aplikacji do postaci kanonicznej, zgodnej ze specyfikacją OSI-RM
 	\item Warstwa sesji - pozwala na stworzenie i utrzymanie sesji w ramach połączenia pomiędzy dwoma urządzeniami
 	\item Warstwa transportowa - odbiera dane z wyższych warstw, dzieli na mniejsze fragmenty i dostarcza do niższych warstw. Odpowiada również za korekcję błędów
-	\item Warstwa sieciowa - posiada wiedzę na temat topologi sieci i odpowiada za wytyczenie odpowiedniej trasy od nadawcy do odbiorcy
+	\item Warstwa sieciowa - posiada wiedzę na temat topologii sieci i odpowiada za wytyczenie odpowiedniej trasy od nadawcy do odbiorcy
 	\item Warstwa łącza danych - ma za zadanie obsługę błędów transmisji z warstwy fizycznej tak aby nie wpływały one na wyższe warstwy
 	\item Warstwa fizyczna - odpowiada za przesyłanie bitów danych przez kanał komunikacyjny
 \end{enumerate}
 
-W tej pracy oraz w przygotowanej symulacji skupiono się na protokołach odpowiadającym warstwie 2. modelu OSI tj. warstwie łącza danych (Rys. \ref{fig:osi_to_lte}). LTE wyróżnia 3 podwarstwy (przedstawione po prawej stronie Rys. \ref{fig:osi_to_lte}) w obrębie warstwy 2. modelu OSI. Są to:
+W tej pracy oraz w przygotowanej symulacji skupiono się na protokołach odpowiadającym warstwie 2. modelu OSI tj. warstwie łącza danych (Rys. \ref{fig:osi_to_lte}). LTE wyróżnia 3 podwarstwy (przedstawione po prawej stronie Rys. \ref{fig:osi_to_lte}) w obrębie warstwy 2. modelu OSI. Są to:
 
 \begin{enumerate}
 	\item Podwarstwa Packet Data Convergence Protocol (PDCP) - odpowiadająca za kwestię bezpieczeństwa transferu danych, kompresji nagłówków IP i stabilne dostarczanie pakietów podczas przełączanie urządzenia użytkownika pomiędzy stacjami bazowymi
@@ -42,7 +42,7 @@ W tej pracy oraz w przygotowanej symulacji skupiono się na protokołach odpowi
 	\item Podwarstwa Medium Access Control (MAC) - zarządza transmisją pakietów w czasie, steruje zachowaniem warstwy fizycznej
 \end{enumerate}
 
-Na Rys. \ref{fig:ip_through_layers} pokazano w ogólny sposób jak przykładowe pakiety IP są modyfikowane przez poszczególne podwarstwy warstwy 2. zanim zostaną dostarczone do warstwy fizycznej. Możemy tutaj zobaczyć jak pakiet IP odebrany z warstwy sieciowej, trafia do podwarstwy PDCP gdzie jest szyfrowany, jego nagłówek jest kompresowany i dodawany jest nagłówek podwarstwy PDCP. Proces ten dokladniej opisano w rozdziale \ref{cha:pdcp}. Następnie, w podwarstwie RLC, otrzymany pakiet jest dzielony na mniejsze fragmenty lub łączony z innymi (w zależności od potrzeb) i dodawany jest nagłówek podwarstwy RLC. Dokładny opis tego procesu zawarto w rozdziale \ref{cha:rlc}. Ostatnia podwarstwa - MAC - w razie konieczności łączy kilka jednostek danych z wyższej warstwy w jeden blok transportowy, dodaje swój nagłówek i przekazuje do warstwy fizycznej (rozdział \ref{cha:mac}).
+Na Rys. \ref{fig:ip_through_layers} pokazano w ogólny sposób jak przykładowe pakiety IP są modyfikowane przez poszczególne podwarstwy warstwy 2. zanim zostaną dostarczone do warstwy fizycznej. Możemy tutaj zobaczyć jak pakiet IP odebrany z warstwy sieciowej, trafia do podwarstwy PDCP gdzie jest szyfrowany, jego nagłówek jest kompresowany i dodawany jest nagłówek podwarstwy PDCP. Proces ten dokładniej opisano w rozdziale \ref{cha:pdcp}. Następnie, w podwarstwie RLC, otrzymany pakiet jest dzielony na mniejsze fragmenty lub łączony z innymi (w zależności od potrzeb) i dodawany jest nagłówek podwarstwy RLC. Dokładny opis tego procesu zawarto w rozdziale \ref{cha:rlc}. Ostatnia podwarstwa - MAC - w razie konieczności łączy kilka jednostek danych z wyższej warstwy w jeden blok transportowy, dodaje swój nagłówek i przekazuje do warstwy fizycznej (rozdział \ref{cha:mac}).
 
 \begin{figure}
 	\centerline{\includegraphics[width=1.0\textwidth]{images/osi_to_lte.png}}
@@ -52,6 +52,6 @@ Na Rys. \ref{fig:ip_through_layers} pokazano w ogólny sposób jak przykładowe 
 
 \begin{figure}
 	\centerline{\includegraphics[width=1.0\textwidth]{images/pdu_overview.png}}
-	\caption{Przetwarzanie pakietu IP na poszczegółnych podwarstwach warstwy 2.}
+	\caption{Przetwarzanie pakietu IP na podwarstwach warstwy 2.}
 	\label{fig:ip_through_layers}
 \end{figure}
