@@ -3,9 +3,7 @@
 
 Największym wyzwaniem podczas projektowania symulacji było znalezienie odpowiedniego balansu pomiędzy dokładnością przygotowanego modelu a ilością informacji prezentowanych na ekranie. Bardzo szczegółowy model wymaga przedstawienia tak wielu elementów, że symulacja staje się kompletnie nieczytelna. Natomiast model zbyt ogólny może nie posiadać elementów kluczowych do zrozumienia choćby podstawowych mechanizmów będących częścią stosu protokołów LTE.
 
-Z wstępnie postawionych założeń udało się osiągnąć wykonanie symulacji kompletnego przepływu pakietu IP od urządzenia użytkownika do stacji bazowej. W tym przedstawiono udział wszystkich podwarstw warstwy 2. Szczególną uwagę poświęcono na implementacji mechanizmu ponownej transmisji i zapewnieniu dostarczenia pakietów w odpowiedniej kolejności na podwarstwie RLC.
-
-Te elementy, które zostały zwizualizowane ogólnie, jak np. szyfrowanie na poziomie podwarstwy PDCP, posiadają dokładniejszy opis dostępny po kliknięciu myszą.
+Z wstępnie postawionych założeń udało się osiągnąć wykonanie symulacji kompletnego przepływu pakietu IP od urządzenia użytkownika do stacji bazowej. W tym przedstawiono udział wszystkich podwarstw warstwy 2. Szczególną uwagę poświęcono implementacji mechanizmu ponownej transmisji i zapewnieniu dostarczenia pakietów w odpowiedniej kolejności na podwarstwie RLC. Użytkownik ma również możliwośc ręcznego przerwania połączenia pomiędzy urządzeniem użytkownika a stacją bazową i zaobserwowania zachowania się poszczególnych podwarstw w takiej sytuacji. Daje to możliwość interakcji z wykonaną symulacją co powinno jeszcze bardziej ułatwić zrozumienie mechanizmów oraz odpowiedzialności poszczególnych komponentów. Dzięki temu cel pracy został osiągnięty
 
 \section{Dalsze możliwości rozwoju}
 
@@ -16,7 +14,3 @@ Z powodu ograniczeń czasowych nie było możliwe zaimplementowanie wszystkich p
 	\item Przedstawienie koncepcji nośników radiowych. W symulacji całkowicie pominięto kwestię istnienia nośników radiowych.
 	\item Przedstawienie koncepcji płaszczyzny danych użytkownika (user plane) i płaszczyzny kontrolnej (control plane). Każda z przedstawionych podwarstw może działać w dwóch trybach w zależności od płaszczyzny danych. W obecnej wersji symulacji przedstawiono tylko płaszczyznę danych użytkownika
 \end{enumerate}
-
-\section{Wnioski}
-
-Na podstawie wykonanego projektu cel pracy został osiągnięty. Osoba chcąca zapoznać się z tematem komunikacji pomiędzy urządzeniem użytkownika a stacją bazową w technologii LTE może skorzystać z wykonanej symulacji, aby lepiej zobaczyć jak poszczególne komponenty komunikują się ze sobą oraz jakie są odpowiedzialności. Autor ma nadzieję, że pozwoli to na zmniejszenia progu wejścia potrzebnego do zrozumienia podstaw a może i bardziej dogłębnego zrozumienia technologii jaką jest LTE.

@@ -145,3 +145,17 @@ Flaga poll bit jest ustawiana po stronie nadajnika w następujących sytuacjach:
 	\item Jeżeli liczba bajtów wysłanych do odbiornika od czasu ostatniego potwierdzenia przekroczyła liczbę określoną przez parametr Poll Byte
 	\item Jeżeli licznik czasowy T poll retransmit zakończył odliczanie i nie ma żadnych pakietów w buforze transmisji lub retransmisji (wówczas ponownie wysyłany jest ostatnio wysłany pakiet danych z ustawioną flagą poll bit)
 \end{enumerate}
+
+\section{Symulacja podwarstwy RLC}
+
+W ramach wykonanej symulacji przedstawiono gromadzenie jednostek danych w buforze transmisji a następnie konstruowanie bloku transportowego przez łączenie kilku jednostek danych, które są w stanie zmieścić się w bloku transportowym. Następnie jednostka danych jest przesyłana do niższej warstwy a także umieszczana w buforze retransmisji i rozpoczyna się odliczanie. Jeżeli zostanie odebrane potwierdzenie, wówaczas jest ona usuwana z bufora retransmisji. W przeciwnym wypadku po upływie odliczania zostaje ona ponownie wysłana z bufora retransmisji do niższych warstw.
+
+Z kolei po stronie odbiornika odebrane jednostki danych są umieszczane w buforze gdzie są sortowane wg numeru sekwencyjnego a także wysyłany jest pakiet potwierdzający odebranie jednostki danych.
+
+Możliwe jest również przerwanie połączenia pomiędzy urządzeniem użytkownika a stacją bazową co pozwala zaobserwować sytuację kiedy nadawca nie otrzymuje potwierdzeń od odbiorcy i ponawia transmisję pakietów. Rys. \ref{fig:rlc_simulation}.
+
+\begin{figure}[ht]
+	\centerline{\frame{\includegraphics[width=0.9\textwidth]{images/rlc_simulation.png}}}
+	\caption{Symulacja podwarstwy RLC}
+	\label{fig:rlc_simulation}
+\end{figure}

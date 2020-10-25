@@ -16,9 +16,9 @@
 \ProvidesClass{} 
 \DeclareOption{pdflatex}{\pdflatextrue}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}} 
-\ProcessOptions\LoadClass[a4paper,twoside,openright]{report} 
+\ProcessOptions\LoadClass[a4paper,oneside]{report} 
 
-%\RequirePackage{times}
+\RequirePackage{times}
 \RequirePackage[T1]{fontenc}
 \RequirePackage{graphicx}
 \RequirePackage{geometry}

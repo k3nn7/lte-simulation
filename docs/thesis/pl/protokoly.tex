@@ -34,13 +34,19 @@ Stos protokołów LTE można odnieść do wszystkich siedmiu warstw modelu OSI (
 	\item Warstwa fizyczna - odpowiada za przesyłanie bitów danych przez kanał komunikacyjny
 \end{enumerate}
 
-W tej pracy oraz w przygotowanej symulacji skupiono się na protokołach odpowiadającym warstwie 2. modelu OSI tj. warstwie łącza danych (Rys. \ref{fig:osi_to_lte}). LTE wyróżnia 3 podwarstwy (przedstawione po prawej stronie Rys. \ref{fig:osi_to_lte}) w obrębie warstwy 2. modelu OSI. Są to:
+W tej pracy oraz w przygotowanej symulacji skupiono się na protokołach odpowiadającym warstwie 2. modelu OSI tj. warstwie łącza danych (Rys. \ref{fig:osi_to_lte}). LTE wyróżnia 3 podwarstwy (przedstawione po prawej stronie Rys. \ref{fig:osi_to_lte} a także na zrzucie ekranu z wykonanej symulacji na Rys. \ref{fig:simulation2}) w obrębie warstwy 2. modelu OSI. Są to:
 
 \begin{enumerate}
 	\item Podwarstwa Packet Data Convergence Protocol (PDCP) - odpowiadająca za kwestię bezpieczeństwa transferu danych, kompresji nagłówków IP i stabilne dostarczanie pakietów podczas przełączanie urządzenia użytkownika pomiędzy stacjami bazowymi
 	\item Podwarstwa Radio Link Control (RLC) - odpowiada za zapewnienie prawidłowego dostarczenia pakietów, których warstwa fizyczna nie była w stanie dostarczyć, poprzez ich ponowną retransmisję
 	\item Podwarstwa Medium Access Control (MAC) - zarządza transmisją pakietów w czasie, steruje zachowaniem warstwy fizycznej
 \end{enumerate}
+
+\begin{figure}
+	\centerline{\includegraphics[width=1.0\textwidth]{images/simulation.png}}
+	\caption{Zrzut ekranu z wykonanej symulacji}
+	\label{fig:simulation2}
+\end{figure}
 
 Na Rys. \ref{fig:ip_through_layers} pokazano w ogólny sposób jak przykładowe pakiety IP są modyfikowane przez poszczególne podwarstwy warstwy 2. zanim zostaną dostarczone do warstwy fizycznej. Możemy tutaj zobaczyć jak pakiet IP odebrany z warstwy sieciowej, trafia do podwarstwy PDCP gdzie jest szyfrowany, jego nagłówek jest kompresowany i dodawany jest nagłówek podwarstwy PDCP. Proces ten dokładniej opisano w rozdziale \ref{cha:pdcp}. Następnie, w podwarstwie RLC, otrzymany pakiet jest dzielony na mniejsze fragmenty lub łączony z innymi (w zależności od potrzeb) i dodawany jest nagłówek podwarstwy RLC. Dokładny opis tego procesu zawarto w rozdziale \ref{cha:rlc}. Ostatnia podwarstwa - MAC - w razie konieczności łączy kilka jednostek danych z wyższej warstwy w jeden blok transportowy, dodaje swój nagłówek i przekazuje do warstwy fizycznej (rozdział \ref{cha:mac}).
 

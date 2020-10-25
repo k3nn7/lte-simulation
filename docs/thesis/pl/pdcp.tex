@@ -73,3 +73,13 @@ Ostatnim krokiem jest dodanie nagłówków warstwy PDCP i zbudowanie pakietu PDU
 	\caption{Pakiet PDU z 12-bitowym numerem sekwencyjnym}
 	\label{fig:pdcp12bit}
 \end{figure}
+
+\section{Symulacja podwarstwy PDCP}
+
+W ramach wykonanej symulacji przedstawiono jak pakiet IP otrzymany z wyższej warstwy przechodzi przez proces nadania numeru sekwencyjnego, kompresji, szyfrowania i dodawania nagłówka. Proces kompresji i szyfrowania zaprezentowano ogólnie jednak użytkownik może zapoznać się ze szczegółami klikając na bloczki odpowiadające tym procesom. Po stronie odbiornika przedstawiono również bufor odpowiadający za gromadzenie odebranych pakietów i przesyłanie ich do wyższych warstw w odpowiedniej kolejności (Rys. \ref{fig:pdcp_simulation}).
+
+\begin{figure}[ht]
+	\centerline{\frame{\includegraphics[width=0.9\textwidth]{images/pdcp_simulation.png}}}
+	\caption{Symulacja podwarstwy PDCP}
+	\label{fig:pdcp_simulation}
+\end{figure}
