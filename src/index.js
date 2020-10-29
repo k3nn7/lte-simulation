@@ -24,6 +24,8 @@ application.loader.load((loader, resources) => {
   const simulation = new Simulation(resources, application.ticker, false, inspector, simulationOverlay);
   application.stage.addChild(simulation);
 
+
+
   application.ticker.add(() => {
     TWEEN.update(application.ticker.lastTime);
   });

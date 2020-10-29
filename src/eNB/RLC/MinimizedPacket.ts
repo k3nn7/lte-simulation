@@ -1,20 +1,20 @@
 import * as PIXI from 'pixi.js';
 import {BG_MEDIUM_2} from 'Common/Colors';
-import {PDCPDataUnit} from "../../Common/DataUnit/PDCPDataUnit";
 import {heartbeat} from "../../Common/tweens";
 import {DataUnit, Type} from 'Common/DataUnit';
+import FlatSDU from "./FlatSDU";
 
 export default class MinimizedPacket extends PIXI.Graphics implements DataUnit {
   size: number;
-  packets: PDCPDataUnit[];
+  sdu: FlatSDU
   tween: any;
   type: Type;
 
-  constructor(size: number, packets: PDCPDataUnit[]) {
+  constructor(size: number, sdu: FlatSDU) {
     super();
 
     this.size = size;
-    this.packets = packets;
+    this.sdu = sdu;
 
     const val1 = Math.random(),
       val2 = Math.random(),

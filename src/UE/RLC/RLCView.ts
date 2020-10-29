@@ -9,6 +9,7 @@ import {IPPacket} from "../../Common/IP/IPPacket";
 import MinimizedPacket from "../../eNB/RLC/MinimizedPacket";
 import {PDCPAck} from "../../Common/DataUnit/PDCPAck";
 import InspectorView from "../../Common/InspectorView";
+import FlatSDU from "../../eNB/RLC/FlatSDU";
 
 export default class RLCView extends LayerView {
   receptionBuffer: ReceptionBufferView;
@@ -41,7 +42,7 @@ export default class RLCView extends LayerView {
       const bufferItem = new BufferItemView(data, 'SDU');
       await this.receptionBuffer.addItem(bufferItem);
 
-      this.channelB(new PDCPAck(data.packets[0], 1));
+      this.channelB(new PDCPAck(data.sdu, 1));
     }
   }
 
@@ -49,7 +50,7 @@ export default class RLCView extends LayerView {
     if (this.receptionBuffer.items.length > 0) {
       const item = await this.receptionBuffer.popItem();
 
-      item.wrappedItem.packets.forEach((pdcpDataUnit: PDCPDataUnit) => {
+      item.wrappedItem.sdu.packets.forEach((pdcpDataUnit: PDCPDataUnit) => {
         this.channelA(pdcpDataUnit);
       });
     }
@@ -65,10 +66,13 @@ export default class RLCView extends LayerView {
       this.onChannelB(
         new MinimizedPacket(
           50,
-          [new PDCPDataUnit(
-            new IPPacket('foooo sdafasdfasdfasdfasdfasdf dsfafdsfasfasdfa', 10),
-            1
-          )]
+          new FlatSDU(
+            0,
+            [new PDCPDataUnit(
+              new IPPacket('foooo sdafasdfasdfasdfasdfasdf dsfafdsfasfasdfa', 10),
+              1
+            )]
+          )
         )
       )
     });

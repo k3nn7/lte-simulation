@@ -8,6 +8,7 @@ export default class TimerView extends PIXI.Container {
   timer: PIXI.Graphics;
   isCounting: boolean;
   isFinished: boolean;
+  isStopped: boolean;
 
   constructor() {
     super();
@@ -35,13 +36,21 @@ export default class TimerView extends PIXI.Container {
       () => {
         this.isCounting = true;
         this.isFinished = false;
+        this.isStopped = false;
       },
       () => {
         this.isCounting = false;
         this.isFinished = true;
-        resolve();
+        if (!this.isStopped) {
+          resolve();
+        }
+        this.isStopped = true;
       },
       time
     ));
+  }
+
+  stopCounting() {
+    this.isStopped = true;
   }
 }

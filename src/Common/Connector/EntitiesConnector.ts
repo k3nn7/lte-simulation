@@ -10,6 +10,7 @@ export default class EntitiesConnector extends Connectable {
   channelBPosition: PIXI.Point;
   knee1Position: PIXI.Point;
   knee2Position: PIXI.Point;
+  connected: boolean;
 
   constructor(componentA: Connectable, componentB: Connectable) {
     super();
@@ -47,9 +48,12 @@ export default class EntitiesConnector extends Connectable {
 
     this.setChannelA((dataUnit: DataUnit) => componentA.onChannelB(dataUnit));
     this.setChannelB((dataUnit: DataUnit) => componentB.onChannelB(dataUnit));
+    this.connected = true;
   }
 
   async onChannelA(data: DataUnit) {
+    if (!this.connected) return;
+
     await this.transferData(
       data,
       [this.channelAPosition, this.knee1Position, this.knee2Position, this.channelBPosition],
@@ -58,6 +62,8 @@ export default class EntitiesConnector extends Connectable {
   }
 
   async onChannelB(data: DataUnit) {
+    if (!this.connected) return;
+
     await this.transferData(
       data,
       [this.channelBPosition, this.knee2Position, this.knee1Position, this.channelAPosition],
@@ -81,5 +87,15 @@ export default class EntitiesConnector extends Connectable {
     itemView.stop();
     this.removeChild(itemView);
     channel(itemView.dataUnit);
+  }
+
+  switchConnection() {
+    if (this.connected) {
+      this.connected = false;
+      this.alpha = 0.2;
+    } else {
+      this.connected = true;
+      this.alpha = 1.0;
+    }
   }
 }

@@ -10,6 +10,7 @@ export class Simulation extends PIXI.Container {
   debugMode: boolean;
   startButton: ButtonView;
   pauseButton: ButtonView;
+  disconnectButton: ButtonView;
   enbProtocols: ENBProtocols;
   ueProtocols: UEProtocols;
   entitiesConnector: EntitiesConnector;
@@ -45,6 +46,13 @@ export class Simulation extends PIXI.Container {
       }
     });
     this.addChild(this.pauseButton);
+
+    this.disconnectButton = new ButtonView('Disconnect');
+    this.disconnectButton.position.set(450, 780);
+    this.disconnectButton.setOnClick(() => {
+      this.entitiesConnector.switchConnection();
+    });
+    this.addChild(this.disconnectButton);
 
     this.enbProtocols = new ENBProtocols(resources, this.inspectorView);
     this.ueProtocols = new UEProtocols(resources, debugMode, this.inspectorView);

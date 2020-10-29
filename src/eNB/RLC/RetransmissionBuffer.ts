@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import {BG_DARK_2, FG_2} from 'Common/Colors';
 import {Mutex} from 'async-mutex';
-import {moveToThePoint} from 'Common/tweens';
+import {disappear, moveToThePoint} from 'Common/tweens';
 import FlatSDU from "./FlatSDU";
 
 const WIDTH = 120;
@@ -72,5 +72,30 @@ export default class RetransmissionBuffer extends PIXI.Graphics {
 
   setOnPacketRetransmission(handler: (_: FlatSDU) => void) {
     this.packetRetransmissionHandler = handler;
+  }
+
+  async updatePacketsPositions() {
+    await Promise.all(this.packets.map((packet, i) => {
+      const destination = {x: 5, y: HEIGHT - 5 - 16 - TITLE_HEIGHT - i * 21};
+      return moveToThePoint(packet, destination, 500);
+    }));
+  }
+
+  async removePacketBySN(sn: number) {
+    const release = await this.mutex.acquire();
+    const that = this;
+
+    this.packets = this.packets.filter((value => {
+      if (value.serialNumber === sn) {
+        value.stopCounting();
+        disappear(value, 300).then(() => that.removeChild(value));
+        return false;
+      } else {
+        return true;
+      }
+    }));
+
+    await this.updatePacketsPositions();
+    release();
   }
 }

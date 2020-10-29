@@ -10,6 +10,7 @@ import MinimizedPacket from './MinimizedPacket';
 import SDU from './SDU';
 import {PDCPDataUnit} from 'Common/DataUnit/PDCPDataUnit';
 import InspectorView from "../../Common/InspectorView";
+import {PDCPAck} from "../../Common/DataUnit/PDCPAck";
 
 export default class RLCView extends LayerView {
   transmissionBuffer: TransmissionBuffer;
@@ -17,6 +18,7 @@ export default class RLCView extends LayerView {
   sdu: SDU;
   timer: TimerView
   inspectorView: InspectorView;
+  sduSN: number;
 
   constructor(
     resources: Partial<Record<string, PIXI.LoaderResource>>,
@@ -24,6 +26,7 @@ export default class RLCView extends LayerView {
   ) {
     super(resources, 'RLC');
     this.inspectorView = inspectorView;
+    this.sduSN = 0;
 
     this.transmissionBuffer = new TransmissionBuffer(resources, 'Transmission Buffer');
     this.transmissionBuffer.position.set(10, 10);
@@ -31,7 +34,7 @@ export default class RLCView extends LayerView {
 
     this.retransmissionBuffer = new RetransmissionBuffer(resources, 'Retransmission Buffer');
     this.retransmissionBuffer.position.set(270, 10);
-    this.retransmissionBuffer.setOnPacketRetransmission(flatSdu => this.transmitSDU2(flatSdu))
+    this.retransmissionBuffer.setOnPacketRetransmission(flatSdu => this.retransmitSDU(flatSdu))
     this.body.addChild(this.retransmissionBuffer);
 
     this.initEmptySDU();
@@ -44,6 +47,12 @@ export default class RLCView extends LayerView {
   async onChannelA(data: DataUnit) {
     if (data instanceof PDCPDataUnit) {
       await this.addPacket(data);
+    }
+  }
+
+  async onChannelB(data: DataUnit): Promise<void> {
+    if (data instanceof PDCPAck) {
+      await this.retransmissionBuffer.removePacketBySN(data.acked.serialNumber);
     }
   }
 
@@ -87,8 +96,8 @@ export default class RLCView extends LayerView {
 
     const rawPackets = this.sdu.packets.map((packet: Packet): PDCPDataUnit => packet.wrappedPacket);
 
-    const flatSDU = new FlatSDU(rawPackets),
-      flatSDURetransmission = new FlatSDU(rawPackets, 90);
+    const flatSDU = new FlatSDU(this.sduSN, rawPackets),
+      flatSDURetransmission = new FlatSDU(this.sduSN, rawPackets, 90);
     flatSDU.alpha = 0.0;
     flatSDURetransmission.alpha = 0.0;
     flatSDU.position.set(138, 60);
@@ -105,19 +114,19 @@ export default class RLCView extends LayerView {
 
     scaleDown(flatSDU, 500);
 
-    this.channelB(new MinimizedPacket(50, flatSDU.packets));
+    this.channelB(new MinimizedPacket(50, flatSDU));
 
     this.initEmptySDU();
   }
 
-  async transmitSDU2(sdu: FlatSDU) {
-    const newSDU = new FlatSDU(sdu.packets, sdu.width);
+  async retransmitSDU(sdu: FlatSDU) {
+    const newSDU = new FlatSDU(sdu.serialNumber, sdu.packets, sdu.width);
     newSDU.position = this.toLocal(new PIXI.Point(0, 0), sdu);
     this.body.addChild(newSDU);
     await moveToThePoint(newSDU, {x: 138, y: 125}, 500);
     scaleDown(newSDU, 500);
 
-    this.channelB(new MinimizedPacket(50, sdu.packets));
+    this.channelB(new MinimizedPacket(50, sdu));
   }
 
 }
