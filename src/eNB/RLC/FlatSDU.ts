@@ -10,12 +10,12 @@ export default class FlatSDU extends PIXI.Graphics {
   packets: PDCPDataUnit[];
   caption: PIXI.Text;
   timer: TimerView;
-  serialNumber: number;
+  sequenceNumber: number;
 
   constructor(serialNumber: number, packets: PDCPDataUnit[], width: number = WIDTH) {
     super();
 
-    this.serialNumber = serialNumber;
+    this.sequenceNumber = serialNumber;
     this.packets = packets;
     this.beginFill(BG_DARK_2);
     this.drawRect(0, 0, width, HEIGHT);

@@ -2,7 +2,7 @@ import {DataUnit, Type} from 'Common/DataUnit';
 import {PDCPDataUnit} from 'Common/DataUnit/PDCPDataUnit';
 import FlatSDU from "../../eNB/RLC/FlatSDU";
 
-export class PDCPAck implements DataUnit {
+export class ACK implements DataUnit {
   acked: FlatSDU;
   readonly sequenceNumber: number;
   readonly tint: number;

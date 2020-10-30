@@ -10,7 +10,7 @@ import MinimizedPacket from './MinimizedPacket';
 import SDU from './SDU';
 import {PDCPDataUnit} from 'Common/DataUnit/PDCPDataUnit';
 import InspectorView from "../../Common/InspectorView";
-import {PDCPAck} from "../../Common/DataUnit/PDCPAck";
+import {ACK} from "../../Common/DataUnit/ACK";
 
 export default class RLCView extends LayerView {
   transmissionBuffer: TransmissionBuffer;
@@ -51,8 +51,8 @@ export default class RLCView extends LayerView {
   }
 
   async onChannelB(data: DataUnit): Promise<void> {
-    if (data instanceof PDCPAck) {
-      await this.retransmissionBuffer.removePacketBySN(data.acked.serialNumber);
+    if (data instanceof ACK) {
+      await this.retransmissionBuffer.removePacketBySequenceNumber(data.acked.sequenceNumber);
     }
   }
 
@@ -98,6 +98,7 @@ export default class RLCView extends LayerView {
 
     const flatSDU = new FlatSDU(this.sduSN, rawPackets),
       flatSDURetransmission = new FlatSDU(this.sduSN, rawPackets, 90);
+    this.sduSN++;
     flatSDU.alpha = 0.0;
     flatSDURetransmission.alpha = 0.0;
     flatSDU.position.set(138, 60);
@@ -120,7 +121,7 @@ export default class RLCView extends LayerView {
   }
 
   async retransmitSDU(sdu: FlatSDU) {
-    const newSDU = new FlatSDU(sdu.serialNumber, sdu.packets, sdu.width);
+    const newSDU = new FlatSDU(sdu.sequenceNumber, sdu.packets, sdu.width);
     newSDU.position = this.toLocal(new PIXI.Point(0, 0), sdu);
     this.body.addChild(newSDU);
     await moveToThePoint(newSDU, {x: 138, y: 125}, 500);

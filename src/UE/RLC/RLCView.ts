@@ -7,7 +7,7 @@ import {PDCPDataUnit} from "../../Common/DataUnit/PDCPDataUnit";
 import ButtonView from "../../Common/ButtonView";
 import {IPPacket} from "../../Common/IP/IPPacket";
 import MinimizedPacket from "../../eNB/RLC/MinimizedPacket";
-import {PDCPAck} from "../../Common/DataUnit/PDCPAck";
+import {ACK} from "../../Common/DataUnit/ACK";
 import InspectorView from "../../Common/InspectorView";
 import FlatSDU from "../../eNB/RLC/FlatSDU";
 
@@ -42,7 +42,7 @@ export default class RLCView extends LayerView {
       const bufferItem = new BufferItemView(data, 'SDU');
       await this.receptionBuffer.addItem(bufferItem);
 
-      this.channelB(new PDCPAck(data.sdu, 1));
+      this.channelB(new ACK(data.sdu, 1));
     }
   }
 

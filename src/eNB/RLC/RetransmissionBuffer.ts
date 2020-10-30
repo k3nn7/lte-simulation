@@ -76,17 +76,17 @@ export default class RetransmissionBuffer extends PIXI.Graphics {
 
   async updatePacketsPositions() {
     await Promise.all(this.packets.map((packet, i) => {
-      const destination = {x: 5, y: HEIGHT - 5 - 16 - TITLE_HEIGHT - i * 21};
+      const destination = {x: 5, y: HEIGHT - 5 - 20 - TITLE_HEIGHT - i * 25};
       return moveToThePoint(packet, destination, 500);
     }));
   }
 
-  async removePacketBySN(sn: number) {
+  async removePacketBySequenceNumber(sn: number) {
     const release = await this.mutex.acquire();
     const that = this;
 
     this.packets = this.packets.filter((value => {
-      if (value.serialNumber === sn) {
+      if (value.sequenceNumber === sn) {
         value.stopCounting();
         disappear(value, 300).then(() => that.removeChild(value));
         return false;
