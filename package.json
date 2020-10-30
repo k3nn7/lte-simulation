@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "test": "TS_NODE_PROJECT=tsconfig.test.json mocha --require ts-node/register tests/**/*.spec.ts",
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --open",
+    "build": "webpack --mode=production"
   },
   "author": "",
   "license": "ISC",
